@@ -30,7 +30,8 @@
   };
 
   R.precio = function (n) {
-    return "S/ " + Number(n).toLocaleString("es-PE", { maximumFractionDigits: 2 });
+    // Entre "S/" y la cifra va un espacio duro (U+00A0): el precio nunca se parte en dos líneas
+    return "S/ " + Number(n).toLocaleString("es-PE", { maximumFractionDigits: 2 });
   };
 
   R.foto = function (slug, i) {

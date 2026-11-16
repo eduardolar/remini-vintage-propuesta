@@ -560,6 +560,7 @@ button { cursor: pointer; }
 
 .tarjeta-foto {
   position: relative;
+  flex: none; /* la foto mantiene el 4:5 aunque la fila sea más alta */
   aspect-ratio: 4 / 5;
   background: var(--foto-fondo);
 }
