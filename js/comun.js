@@ -426,4 +426,14 @@
   });
 
   document.addEventListener("DOMContentLoaded", R.actualizarBolsa);
+
+  // Ficha en el móvil: el botón flotante de la bolsa solo sale cuando la cabecera (con «Mi bolsa») ya no
+  // se ve, para que arriba del todo no tape el precio grande y al bajar siga a mano.
+  document.addEventListener("DOMContentLoaded", function () {
+    var boton = document.querySelector(".pagina-ficha .boton-bolsa");
+    if (!boton || !("IntersectionObserver" in window)) return;
+    new IntersectionObserver(function (entradas) {
+      document.body.classList.toggle("bolsa-cabecera-visible", entradas[0].isIntersecting);
+    }).observe(boton);
+  });
 })();

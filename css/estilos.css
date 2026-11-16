@@ -1581,6 +1581,7 @@ button { cursor: pointer; }
   font-size: var(--texto-s);
 }
 .item-quitado strong { color: var(--texto); }
+.bolsa-pie[hidden] { display: none; }
 .bolsa-pie {
   display: grid;
   gap: 10px;
@@ -1674,6 +1675,8 @@ button { cursor: pointer; }
     bottom: calc(16px + 60px + 14px + env(safe-area-inset-bottom, 0px));
   }
 
+  /* Ficha: mientras se ve la cabecera (con su «Mi bolsa»), sin flotante, que taparía el precio grande */
+  .pagina-ficha.bolsa-cabecera-visible .bolsa-flotante { display: none; }
   /* Ficha: el botón va encima de la barra fija, sin tocarla */
   .pagina-ficha .bolsa-flotante:not([hidden]) {
     bottom: calc(var(--alto-barra) + 14px + env(safe-area-inset-bottom, 0px));
