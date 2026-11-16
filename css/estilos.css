@@ -1487,6 +1487,16 @@ button { cursor: pointer; }
   color: var(--texto-suave);
 }
 .bolsa-vacia svg { width: 48px; height: 48px; color: var(--texto-tenue); }
+/* Fila «Quitaste X · Deshacer» en el sitio de la prenda quitada */
+.item-quitado {
+  grid-template-columns: 1fr auto;
+  min-height: 64px;
+  background: transparent;
+  outline-style: dashed;
+  color: var(--texto-suave);
+  font-size: var(--texto-s);
+}
+.item-quitado strong { color: var(--texto); }
 .bolsa-pie {
   display: grid;
   gap: 10px;
@@ -1510,6 +1520,7 @@ button { cursor: pointer; }
   bottom: 16px;
   z-index: 50;
   transform: translateX(-50%);
+  width: max-content; /* sin esto, con left: 50% solo usa media pantalla y se parte en dos líneas */
   max-width: calc(100% - 32px);
   padding: 10px 18px;
   border-radius: var(--radio-pastilla);
@@ -1519,6 +1530,7 @@ button { cursor: pointer; }
   font-size: var(--texto-s);
   box-shadow: var(--sombra);
   text-align: center;
+  pointer-events: none; /* solo informa: no bloquea el toque en lo que tape */
 }
 .aviso:empty { display: none; }
 .pagina-ficha .aviso { bottom: calc(var(--alto-barra) + env(safe-area-inset-bottom, 0px) + 12px); }
