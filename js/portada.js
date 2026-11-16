@@ -212,6 +212,16 @@
     if (buscar.value !== estado.q) buscar.value = estado.q;
     limpiar.hidden = !conFiltros;
 
+    // Botón «Filtrar» del móvil: cuántos filtros hay puestos (categoría, talla, precio, marca y búsqueda)
+    var activos = (estado.cat !== "todas" ? 1 : 0) + ["talla", "precio", "marca", "q"].filter(function (k) { return !!estado[k]; }).length;
+    var cuenta = document.querySelector("[data-filtros-activos]");
+    var cuentaTexto = document.querySelector("[data-filtros-activos-texto]");
+    if (cuenta) {
+      cuenta.textContent = activos ? String(activos) : "";
+      cuenta.hidden = activos === 0;
+      cuentaTexto.textContent = activos ? ", " + activos + (activos === 1 ? " filtro activo" : " filtros activos") : "";
+    }
+
     R.actualizarBolsa();
   }
 
@@ -362,6 +372,24 @@
     });
 
     window.addEventListener("pagehide", guardarPosicion);
+
+    /* «Filtrar» (móvil): visible solo dentro de la colección y con los filtros fuera de la vista */
+    var irAFiltros = document.querySelector("[data-ir-a-filtros]");
+    var controles = document.querySelector(".controles");
+    if (irAFiltros && controles && "IntersectionObserver" in window) {
+      var verControles = true;
+      var verColeccion = false;
+      var ponerFiltrar = function () { irAFiltros.hidden = verControles || !verColeccion; };
+      new IntersectionObserver(function (e) { verControles = e[0].isIntersecting; ponerFiltrar(); }).observe(controles);
+      new IntersectionObserver(function (e) { verColeccion = e[0].isIntersecting; ponerFiltrar(); }, { rootMargin: "0px 0px -80px 0px" })
+        .observe(document.getElementById("rejilla"));
+      irAFiltros.addEventListener("click", function () {
+        var suave = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        controles.scrollIntoView({ block: "start", behavior: suave ? "smooth" : "auto" });
+        var chip = document.querySelector('.chip[aria-pressed="true"]') || document.querySelector(".chip[data-cat]");
+        if (chip) chip.focus({ preventScroll: true });
+      });
+    }
 
     // Atrás/adelante o hash editado a mano
     window.addEventListener("hashchange", function () {
