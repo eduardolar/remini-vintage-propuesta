@@ -65,16 +65,25 @@
 
   /* ---------- Filtrado ---------- */
 
-  function filtrar() {
-    var q = R.normalizar(estado.q.trim());
+  function filtrar(e) {
+    e = e || estado;
+    var q = R.normalizar(e.q.trim());
     return prendas.filter(function (p) {
-      if (estado.cat !== "todas" && p.categoria !== estado.cat) return false;
-      if (estado.talla && p.talla !== estado.talla) return false;
-      if (estado.marca && p.marca !== estado.marca) return false;
-      if (estado.precio && !PRECIOS[estado.precio](Number(p.precio))) return false;
+      if (e.cat !== "todas" && p.categoria !== e.cat) return false;
+      if (e.talla && p.talla !== e.talla) return false;
+      if (e.marca && p.marca !== e.marca) return false;
+      if (e.precio && !PRECIOS[e.precio](Number(p.precio))) return false;
       if (q && R.normalizar(p.nombre + " " + p.marca).indexOf(q) === -1) return false;
       return true;
     });
+  }
+
+  /* Cuántas prendas habría cambiando solo lo indicado (para chips y desplegables) */
+  function cuantasCon(cambios) {
+    var e = {};
+    for (var k in estado) e[k] = estado[k];
+    for (var c in cambios) e[c] = cambios[c];
+    return filtrar(e).length;
   }
 
   /* ---------- Pintado ---------- */
@@ -119,17 +128,61 @@
     );
   }
 
+  /* Sin resultados: decir por qué y dar la salida más útil. Si hay búsqueda y otros filtros
+     (p. ej. «audigier» con Casacas elegida), ofrecer buscar lo mismo en todas las prendas. */
+  function htmlSinResultados() {
+    var q = estado.q.trim();
+    var otros = estado.cat !== "todas" || !!estado.talla || !!estado.precio || !!estado.marca;
+    var enTodas = q && otros ? filtrar({ cat: "todas", talla: "", precio: "", marca: "", q: q }).length : 0;
+    var texto;
+    if (q && otros) texto = "«" + R.esc(q) + "» no aparece con los filtros que elegiste.";
+    else if (q) texto = "No encontramos «" + R.esc(q) + "». Prueba con la marca o con menos letras: cada viernes entran nuevas.";
+    else texto = "No hay prendas con esos filtros. Prueba con otra talla o categoría: cada viernes entran nuevas.";
+
+    return (
+      '<li class="estado">' +
+      "<h3>Nada por aquí</h3>" +
+      "<p>" + texto + "</p>" +
+      (enTodas
+        ? '<button type="button" class="boton boton-primario" data-buscar-en-todas>Ver «' + R.esc(q) + "» en todas (" + enTodas + ")</button>" +
+          '<button type="button" class="boton boton-secundario" data-limpiar>Ver todas las prendas</button>'
+        : '<button type="button" class="boton boton-primario" data-limpiar>Ver todas las prendas</button>') +
+      "</li>"
+    );
+  }
+
+  /* Desplegables: cada opción dice cuántas prendas daría y las que darían 0 se desactivan
+     (en vez de dejar elegirlas y enseñar «Nada por aquí»). La opción vacía, cuando hay
+     algo elegido, dice «Todas las tallas» para que se entienda que quita el filtro. */
+  var VACIAS = {
+    talla: ["Talla", "Todas las tallas"],
+    precio: ["Precio", "Todos los precios"],
+    marca: ["Marca", "Todas las marcas"]
+  };
+  function ponerCuentas(select, k) {
+    Array.prototype.forEach.call(select.options, function (o) {
+      if (!o.hasAttribute("data-texto")) o.setAttribute("data-texto", o.textContent);
+      var base = o.getAttribute("data-texto");
+      if (!o.value) {
+        o.textContent = VACIAS[k] ? VACIAS[k][select.value ? 1 : 0] : base;
+        return;
+      }
+      var cambio = {};
+      cambio[k] = o.value;
+      var n = cuantasCon(cambio);
+      var elegida = o.value === select.value;
+      // la elegida va sin número: es lo que se ve con el desplegable cerrado
+      o.textContent = elegida ? base : base + " (" + n + ")";
+      o.disabled = n === 0 && !elegida;
+    });
+  }
+
   function pintar() {
     var lista = filtrar();
     var conFiltros = hayFiltros(estado);
 
     if (!lista.length) {
-      rejilla.innerHTML =
-        '<li class="estado">' +
-        "<h3>Nada por aquí</h3>" +
-        "<p>No hay prendas con esos filtros. Prueba con otra talla o categoría: cada viernes entran nuevas.</p>" +
-        '<button type="button" class="boton boton-primario" data-limpiar>Ver todas las prendas</button>' +
-        "</li>";
+      rejilla.innerHTML = htmlSinResultados();
     } else {
       rejilla.innerHTML = lista.map(tarjeta).join("") + (conFiltros ? "" : tarjetaVendida());
     }
@@ -144,11 +197,17 @@
     document.querySelectorAll(".chip[data-cat]").forEach(function (chip) {
       chip.setAttribute("aria-pressed", chip.getAttribute("data-cat") === estado.cat ? "true" : "false");
     });
+    // Las cuentas de los chips tienen en cuenta talla, precio, marca y búsqueda:
+    // con «audigier» escrito, «Camisas 1» y «Casacas 0» dicen dónde está antes de tocar
+    document.querySelectorAll("[data-cuenta]").forEach(function (el) {
+      el.textContent = String(cuantasCon({ cat: el.getAttribute("data-cuenta") }));
+    });
     selects.forEach(function (s) {
       var k = s.getAttribute("data-filtro");
       s.value = estado[k];
       if (s.value !== estado[k]) s.value = ""; // valor del hash que no existe
       s.classList.toggle("activo", !!s.value);
+      ponerCuentas(s, k);
     });
     if (buscar.value !== estado.q) buscar.value = estado.q;
     limpiar.hidden = !conFiltros;
@@ -190,12 +249,31 @@
     marca.insertAdjacentHTML("beforeend", marcas.map(function (m) {
       return '<option value="' + R.esc(m) + '">' + R.esc(m) + "</option>";
     }).join(""));
+    // Las cuentas de chips y desplegables las pone pintar(), según los demás filtros
+  }
 
-    document.querySelectorAll("[data-cuenta]").forEach(function (el) {
-      var cat = el.getAttribute("data-cuenta");
-      var n = cat === "todas" ? prendas.length : prendas.filter(function (p) { return p.categoria === cat; }).length;
-      el.textContent = String(n);
-    });
+  /* ---------- Posición al volver ----------
+     Las prendas se pintan después de cargar el JSON, cuando el navegador ya intentó
+     restaurar el scroll (y antes se forzaba ir a la colección con filtros). Se guarda la
+     posición al salir y se recupera al volver con «Atrás» o al recargar. */
+
+  var CLAVE_POSICION = "remini-propuesta-posicion";
+
+  function guardarPosicion() {
+    try {
+      sessionStorage.setItem(CLAVE_POSICION, JSON.stringify({ url: location.href, y: window.scrollY }));
+    } catch (e) { /* sin almacenamiento */ }
+  }
+
+  function restaurarPosicion() {
+    var tipo = "navigate";
+    try { tipo = performance.getEntriesByType("navigation")[0].type; } catch (e) { /* navegador antiguo */ }
+    if (tipo !== "back_forward" && tipo !== "reload") return false;
+    var guardada = null;
+    try { guardada = JSON.parse(sessionStorage.getItem(CLAVE_POSICION) || "null"); } catch (e) { /* nada */ }
+    if (!guardada || guardada.url !== location.href || !(guardada.y > 0)) return false;
+    window.scrollTo({ top: guardada.y, behavior: "instant" });
+    return true;
   }
 
   /* ---------- Arranque ---------- */
@@ -223,8 +301,9 @@
 
         pintar();
 
-        // Enlace compartido con filtros: llevar directamente a la colección
-        if (hayFiltros(estado)) document.getElementById("coleccion").scrollIntoView();
+        // Al volver desde una ficha (o recargar), seguir donde estaba; si no, un enlace
+        // compartido con filtros lleva directamente a la colección
+        if (!restaurarPosicion() && hayFiltros(estado)) document.getElementById("coleccion").scrollIntoView();
       },
       function () {
         rejilla.setAttribute("aria-busy", "false");
@@ -261,6 +340,8 @@
     buscar.form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (prendas.length) cambiar({ q: buscar.value });
+      // En el móvil, cerrar el teclado: si no, tapa media lista de resultados
+      if (window.matchMedia("(pointer: coarse)").matches) buscar.blur();
       document.getElementById("coleccion").scrollIntoView();
     });
 
@@ -271,8 +352,16 @@
         pintar();
         document.querySelector('.chip[data-cat="todas"]').focus();
       }
+      if (e.target.closest("[data-buscar-en-todas]")) {
+        estado = { cat: "todas", talla: "", precio: "", marca: "", q: estado.q };
+        escribirHash();
+        pintar();
+        document.querySelector('.chip[data-cat="todas"]').focus();
+      }
       if (e.target.closest("[data-reintentar]")) cargar();
     });
+
+    window.addEventListener("pagehide", guardarPosicion);
 
     // Atrás/adelante o hash editado a mano
     window.addEventListener("hashchange", function () {
