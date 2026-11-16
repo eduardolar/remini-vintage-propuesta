@@ -108,11 +108,15 @@
     return "https://wa.me/?text=" + encodeURIComponent(mensaje);
   };
 
+  /* El mensaje acaba en «El envío sería a: » para que el cursor quede ahí y solo haya que
+     escribir el distrito o la ciudad (con un «[ciudad]» en medio, muchos lo mandarían tal cual). */
+  var CIERRE_ENVIO = "El envío sería a: ";
+
   R.mensajeUna = function (p) {
     return (
-      "Hola, quiero reservar *" + p.nombre + "* (talla " + p.talla + ", " + R.precio(p.precio) + "). " +
-      R.urlAbsoluta(R.enlacePrenda(p.slug)) +
-      " ¿Me confirmas el envío a [ciudad]?"
+      "Hola, quiero reservar *" + p.nombre + "* (talla " + p.talla + ", " + R.precio(p.precio) + ").\n" +
+      R.urlAbsoluta(R.enlacePrenda(p.slug)) + "\n" +
+      "¿Sigue disponible? " + CIERRE_ENVIO
     );
   };
 
@@ -129,7 +133,8 @@
     return (
       "Hola, quiero reservar estas " + lista.length + " prendas:\n" +
       lineas.join("\n") +
-      "\nTotal: " + R.precio(total) + ". ¿Me confirmas el envío a [ciudad]?"
+      "\nTotal: " + R.precio(total) + " más el envío.\n" +
+      "¿Siguen disponibles? " + CIERRE_ENVIO
     );
   };
 

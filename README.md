@@ -39,8 +39,8 @@ Entre paréntesis, la mejora del estudio a la que responde.
 | Envío y pago | Justo debajo del precio: «Envío Lima S/ __ (24-48 h) · Provincias por Shalom u Olva (2-5 días) · Yape, Plin o transferencia». | *Envío y pago, justo debajo del precio* |
 | Galería | Tres fotos que se deslizan en el móvil, con miniaturas; la página deja al final un hueco del alto de la barra, así que nada queda tapado. | Detalle *hueco al final de la ficha* |
 | Medidas y defectos | «Pecho __ cm · Largo __ cm · Manga __ cm» (en pantalones y shorts: cintura, largo y tiro) y un bloque «Defectos». | *Medidas en centímetros y defectos a la vista* |
-| Barra fija | Precio, «Guardar» y «Reservar por WhatsApp» (verde, texto oscuro) con el mensaje ya escrito: «Hola, quiero reservar *Nombre* (talla X, S/ precio). enlace ¿Me confirmas el envío a [ciudad]?». | *«Reservar» abre WhatsApp con el mensaje ya escrito* |
-| Mi bolsa | Panel lateral con las prendas guardadas, total y «Reservar las N por WhatsApp · S/ total», que manda **un solo mensaje** con todas. | *Reservar varias prendas de una vez* |
+| Barra fija | Precio, «Guardar» y «Reservar por WhatsApp» (verde, texto oscuro) con el mensaje ya escrito: «Hola, quiero reservar *Nombre* (talla X, S/ precio). enlace ¿Sigue disponible? El envío sería a: », que acaba ahí para que solo haya que escribir el distrito o la ciudad. | *«Reservar» abre WhatsApp con el mensaje ya escrito* |
+| Mi bolsa | Panel lateral con las prendas guardadas, total y «Reservar las N por WhatsApp · S/ total», que manda **un solo mensaje** con todas (con el total «más el envío»). | *Reservar varias prendas de una vez* |
 | SEO de muestra | `<title>` y descripción propios de cada prenda, JSON-LD `Product` (marca, talla, fotos, precio en PEN, InStock, UsedCondition) y texto alternativo real en cada foto («Nombre, talla X, vista 1 de 3»). | *Cada página con su título…*, *Mapa del sitio y texto en las fotos*, *Datos de producto para Google* |
 
 ### Accesibilidad y calidad
