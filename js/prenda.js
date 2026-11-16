@@ -92,16 +92,24 @@
     }
 
     ficha.innerHTML =
-      /* Encima del pliegue: marca, nombre con el precio al lado, talla, estado, categoría y envío */
-      '<div class="ficha-cabeza">' +
-      '<nav aria-label="Migas de pan"><ol class="migas">' +
+      '<nav class="ficha-migas" aria-label="Migas de pan"><ol class="migas">' +
       '<li><a href="index.html" data-volver>Inicio</a></li>' +
       '<li><a href="' + urlCat + '">' + R.esc(nombreCat) + "</a></li>" +
       '<li aria-current="page">' + R.esc(p.nombre) + "</li>" +
       "</ol></nav>" +
+
+      /* Galería antes que la cabecera: en el móvil la foto sale primero; en el ordenador
+         la rejilla la pone a la izquierda igual que antes */
+      '<section class="galeria" aria-label="Fotos de la prenda">' +
+      '<div class="galeria-pista" tabindex="0" aria-label="Fotos: desliza o usa las flechas">' + figuras + "</div>" +
+      '<ul class="miniaturas" aria-label="Elegir foto">' + miniaturas + "</ul>" +
+      "</section>" +
+
+      /* Marca, nombre con el precio al lado, talla, estado, categoría y envío */
+      '<div class="ficha-cabeza">' +
       '<div class="ficha-marca-fila">' +
       '<p class="ficha-marca">' + R.esc(p.marca) + (p.joyita ? ' <span class="etiqueta etiqueta-joyita">Joyita</span>' : "") + "</p>" +
-      '<button type="button" class="boton-compartir" data-compartir>' + ICONO_COMPARTIR + "Compartir</button>" +
+      '<button type="button" class="boton-compartir" data-compartir>' + ICONO_COMPARTIR + '<span class="texto-compartir">Compartir</span></button>' +
       "</div>" +
       '<div class="ficha-titulo">' +
       "<h1>" + R.esc(p.nombre) + "</h1>" +
@@ -119,11 +127,6 @@
       '<p class="nota-ejemplo">Precios y plazos de ejemplo: Leslie pondría los suyos. «Reservar por WhatsApp» abre el chat sin número (número de Leslie).</p>' +
       "</div>" +
       "</div>" +
-
-      '<section class="galeria" aria-label="Fotos de la prenda">' +
-      '<div class="galeria-pista" tabindex="0" aria-label="Fotos: desliza o usa las flechas">' + figuras + "</div>" +
-      '<ul class="miniaturas" aria-label="Elegir foto">' + miniaturas + "</ul>" +
-      "</section>" +
 
       '<div class="ficha-detalles">' +
       (p.descripcion
