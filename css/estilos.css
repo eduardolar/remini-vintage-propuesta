@@ -22,7 +22,7 @@
   --whatsapp-claro: #4be283;
   --sobre-whatsapp: #0a2414;   /* texto oscuro sobre el verde: 9:1 */
   --vendida: #9a9184;
-  --foto-fondo: #f4f1ea;       /* las fotos de prenda tienen fondo blanco */
+  --foto-fondo: #ffffff;       /* las fotos de prenda tienen fondo blanco */
   --ejemplo-borde: #8a7330;
 
   /* Tipografía */
@@ -138,21 +138,14 @@ button { cursor: pointer; }
   line-height: 1.35;
 }
 .franja .contenedor {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px 8px;
-  flex-wrap: wrap;
   min-height: 44px;
-  padding-block: 4px;
+  padding-block: 6px;
   text-align: center;
 }
 .franja strong { color: var(--texto); font-weight: 600; }
 .franja a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 36px;
-  padding-inline: 6px;
+  display: inline-block;
+  padding: 6px 4px;
   font-weight: 600;
   position: relative;
 }
@@ -160,7 +153,7 @@ button { cursor: pointer; }
 .franja a::after {
   content: "";
   position: absolute;
-  inset: -6px -4px;
+  inset: -10px -6px;
 }
 
 /* --------------------------------------------------------------------------
@@ -251,6 +244,14 @@ button { cursor: pointer; }
 .boton-bolsa:hover { border-color: var(--acento); }
 .boton-bolsa svg { width: 20px; height: 20px; color: var(--acento); flex: none; }
 
+/* Móviles estrechos (360-399 px): todo cabe en una fila */
+@media (max-width: 399px) {
+  .marca { gap: 8px; }
+  .marca img { width: 36px; height: 36px; }
+  .marca span { font-size: 1.125rem; }
+  .boton-bolsa { padding: 0 12px; gap: 6px; }
+}
+
 @media (min-width: 768px) {
   .cabecera .contenedor {
     grid-template-columns: auto 1fr auto;
@@ -319,6 +320,7 @@ button { cursor: pointer; }
 /* Etiquetas */
 .etiqueta {
   display: inline-flex;
+  font-family: var(--fuente-texto);
   align-items: center;
   gap: 4px;
   padding: 3px 10px;
@@ -418,6 +420,7 @@ button { cursor: pointer; }
 
 .controles {
   display: grid;
+  grid-template-columns: minmax(0, 1fr); /* que el carrusel no ensanche la página */
   gap: 10px;
   margin-bottom: 12px;
 }
@@ -511,7 +514,7 @@ button { cursor: pointer; }
 
 @media (min-width: 1024px) {
   .controles {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 12px 24px;
   }
@@ -810,7 +813,7 @@ button { cursor: pointer; }
    Ficha de prenda
    -------------------------------------------------------------------------- */
 
-.pagina-ficha { padding-bottom: calc(var(--alto-barra) + env(safe-area-inset-bottom, 0px)); }
+.pagina-ficha { padding-bottom: calc(var(--alto-barra) + 16px + env(safe-area-inset-bottom, 0px)); }
 
 .ficha {
   display: grid;
@@ -905,9 +908,6 @@ button { cursor: pointer; }
 
 /* Galería */
 .galeria { grid-area: galeria; display: grid; gap: 10px; align-content: start; min-width: 0; }
-@media (min-width: 900px) {
-  .galeria { position: sticky; top: 64px; }
-}
 .galeria-pista {
   display: flex;
   overflow-x: auto;
@@ -930,7 +930,8 @@ button { cursor: pointer; }
   max-height: 62svh;
 }
 @media (min-width: 900px) {
-  .galeria-pista figure { max-height: none; }
+  /* foto + miniaturas caben en pantalla y la barra fija no las tapa */
+  .galeria-pista figure { max-height: max(400px, calc(100vh - 310px)); max-height: max(400px, calc(100svh - 310px)); }
 }
 .galeria-pista img {
   width: 100%;
@@ -1012,6 +1013,9 @@ button { cursor: pointer; }
     overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
   }
   .barra-compra .boton-guardar { padding-inline: 0; width: var(--tactil); }
+  .barra-compra .precio { font-size: 1.375rem; }
+  .barra-compra .boton-whatsapp { padding-inline: 12px; gap: 6px; font-size: var(--texto-s); white-space: nowrap; }
+  .barra-compra .boton-whatsapp svg { width: 18px; height: 18px; }
 }
 @media (min-width: 768px) {
   .barra-compra .contenedor { padding-inline: var(--margen); gap: 12px; }
