@@ -25,6 +25,10 @@
   --foto-fondo: #ffffff;       /* las fotos de prenda tienen fondo blanco */
   --ejemplo-borde: #8a7330;
   --tinta: #0a0806;            /* bordes y sombras duras */
+  --sombra-oscura: #4a3e2c;    /* sombra dura de lo oscuro: se ve sobre --fondo */
+  --sombra-dura: 4px 4px 0 var(--sombra-oscura);
+  --sombra-dura-s: 3px 3px 0 var(--sombra-oscura);
+  --sombra-crema: 3px 3px 0 var(--texto);  /* para lo amarillo y lo verde */
 
   /* Tipografía */
   --fuente-titulos: "Anton", Impact, "Arial Narrow", "Roboto Condensed", sans-serif;
@@ -220,8 +224,9 @@ button { cursor: pointer; }
   min-height: var(--tactil);
   padding: 10px 14px 10px 42px;
   border-radius: var(--radio-pastilla);
-  border: 1px solid var(--borde-control);
+  border: 2px solid var(--borde-control);
   background: var(--superficie);
+  box-shadow: var(--sombra-dura-s);
   font-size: var(--texto-m); /* 16 px: iOS no hace zoom */
 }
 .buscador input::placeholder { color: var(--texto-tenue); opacity: 1; }
@@ -236,8 +241,9 @@ button { cursor: pointer; }
   min-height: var(--tactil);
   padding: 0 16px;
   border-radius: var(--radio-pastilla);
-  border: 1px solid var(--borde-control);
+  border: 2px solid var(--borde-control);
   background: var(--superficie);
+  box-shadow: var(--sombra-dura-s);
   font-weight: 600;
   font-size: var(--texto-s);
   white-space: nowrap;
@@ -283,21 +289,24 @@ button { cursor: pointer; }
   line-height: 1.2;
   text-decoration: none;
   text-align: center;
-  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s, transform 0.12s, box-shadow 0.12s;
 }
+/* Al pulsar, el botón "se hunde" sobre su sombra */
+.boton:active { transform: translate(2px, 2px); box-shadow: none; }
 .boton svg { width: 20px; height: 20px; flex: none; }
 
-.boton-primario { background: var(--acento); color: var(--sobre-acento); }
+.boton-primario { background: var(--acento); color: var(--sobre-acento); border-color: var(--tinta); box-shadow: var(--sombra-crema); }
 .boton-primario:hover { background: var(--acento-claro); color: var(--sobre-acento); }
 
 .boton-secundario {
   background: transparent;
   color: var(--texto);
   border-color: var(--borde-control);
+  box-shadow: var(--sombra-dura-s);
 }
 .boton-secundario:hover { border-color: var(--acento); color: var(--texto); }
 
-.boton-whatsapp { background: var(--whatsapp); color: var(--sobre-whatsapp); }
+.boton-whatsapp { background: var(--whatsapp); color: var(--sobre-whatsapp); border-color: var(--tinta); box-shadow: var(--sombra-crema); }
 .boton-whatsapp:hover { background: var(--whatsapp-claro); color: var(--sobre-whatsapp); }
 
 /* Guardar: contorno; guardada: relleno amarillo */
@@ -305,6 +314,7 @@ button { cursor: pointer; }
   background: transparent;
   color: var(--texto);
   border-color: var(--borde-control);
+  box-shadow: var(--sombra-dura-s);
   font-size: var(--texto-s);
   padding-inline: 14px;
 }
@@ -312,8 +322,9 @@ button { cursor: pointer; }
 .boton-guardar .icono-guardada { display: none; }
 .boton-guardar[aria-pressed="true"] {
   background: var(--acento);
-  border-color: var(--acento);
+  border-color: var(--tinta);
   color: var(--sobre-acento);
+  box-shadow: var(--sombra-crema);
 }
 .boton-guardar[aria-pressed="true"] .icono-guardar { display: none; }
 .boton-guardar[aria-pressed="true"] .icono-guardada { display: block; }
@@ -775,7 +786,7 @@ button { cursor: pointer; }
   scrollbar-width: none;
   /* que el carrusel llegue a los bordes de la pantalla en móvil */
   margin-inline: calc(var(--margen) * -1);
-  padding: 4px var(--margen);
+  padding: 4px var(--margen) 6px;
   list-style: none;
 }
 .categorias::-webkit-scrollbar { display: none; }
@@ -788,8 +799,9 @@ button { cursor: pointer; }
   min-height: 44px;
   padding: 0 16px;
   border-radius: var(--radio-pastilla);
-  border: 1px solid var(--borde-control);
+  border: 2px solid var(--borde-control);
   background: var(--superficie);
+  box-shadow: var(--sombra-dura-s);
   color: var(--texto);
   font-weight: 600;
   font-size: var(--texto-s);
@@ -798,8 +810,9 @@ button { cursor: pointer; }
 .chip:hover { border-color: var(--acento); }
 .chip[aria-pressed="true"] {
   background: var(--acento);
-  border-color: var(--acento);
+  border-color: var(--tinta);
   color: var(--sobre-acento);
+  box-shadow: var(--sombra-crema);
 }
 .chip-cuenta {
   font-weight: 500;
@@ -817,7 +830,8 @@ button { cursor: pointer; }
   min-height: 44px;
   padding: 8px 30px 8px 12px;
   border-radius: var(--radio-pastilla);
-  border: 1px solid var(--borde-control);
+  border: 2px solid var(--borde-control);
+  box-shadow: var(--sombra-dura-s);
   background-color: var(--superficie);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23cfc5b4' stroke-width='2'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -866,7 +880,8 @@ button { cursor: pointer; }
     margin-inline: 0;
     padding-inline: 0;
   }
-  .filtros { grid-template-columns: repeat(3, 170px); }
+  .filtros { grid-template-columns: repeat(3, 156px); }
+  .chip { padding: 0 14px; }
   .resumen { grid-column: 1 / -1; }
 }
 
@@ -893,18 +908,19 @@ button { cursor: pointer; }
   width: 100%;
   border-radius: var(--radio);
   background: var(--superficie);
-  outline: 1px solid var(--borde);
-  outline-offset: -1px;
+  border: 2px solid var(--borde-control);
+  box-shadow: var(--sombra-dura);
   overflow: hidden;
-  transition: outline-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
 }
-.tarjeta:hover { outline-color: var(--acento); }
+.tarjeta:hover { border-color: var(--acento); box-shadow: 4px 4px 0 var(--acento); transform: translate(-1px, -1px); }
 
 .tarjeta-foto {
   position: relative;
   flex: none; /* la foto mantiene el 4:5 aunque la fila sea más alta */
   aspect-ratio: 4 / 5;
   background: var(--foto-fondo);
+  border-bottom: 2px solid var(--borde-control);
 }
 .tarjeta-foto img {
   width: 100%;
@@ -915,7 +931,7 @@ button { cursor: pointer; }
 .tarjeta-foto .etiqueta {
   position: absolute;
   top: 8px; left: 8px;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.35);
+  border: 2px solid var(--tinta);
 }
 
 .tarjeta-cuerpo {
@@ -979,8 +995,8 @@ button { cursor: pointer; }
 }
 
 /* Ejemplo de prenda vendida */
-.tarjeta-vendida { background: #191512; }
-.tarjeta-vendida:hover { outline-color: var(--borde); }
+.tarjeta-vendida { background: #191512; border-color: var(--borde); box-shadow: none; }
+.tarjeta-vendida:hover { border-color: var(--borde); box-shadow: none; transform: none; }
 .tarjeta-vendida img { filter: grayscale(1) contrast(0.85) brightness(0.8); }
 .tarjeta-vendida .franja-vendida {
   position: absolute;
@@ -1074,8 +1090,8 @@ button { cursor: pointer; }
   padding: 18px;
   border-radius: var(--radio);
   background: var(--superficie);
-  outline: 1px solid var(--borde);
-  outline-offset: -1px;
+  border: 2px solid var(--borde-control);
+  box-shadow: var(--sombra-dura);
 }
 .paso::before {
   content: counter(paso);
@@ -1086,6 +1102,8 @@ button { cursor: pointer; }
   border-radius: 50%;
   background: var(--acento);
   color: var(--sobre-acento);
+  border: 2px solid var(--tinta);
+  box-shadow: 2px 2px 0 var(--texto);
   font-family: var(--fuente-titulos);
   font-size: 1.375rem;
 }
