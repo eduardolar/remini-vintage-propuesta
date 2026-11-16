@@ -29,6 +29,7 @@
   <link rel="preload" as="image" href="img/portada.webp" fetchpriority="high">
   <script src="js/comun.js" defer></script>
   <script src="js/portada.js" defer></script>
+  <script src="js/hero.js" defer></script>
 </head>
 <body>
   <a class="saltar" href="#coleccion">Saltar a la colección</a>
@@ -62,12 +63,75 @@
 
   <main>
     <section class="hero" aria-labelledby="hero-titulo">
-      <img src="img/portada.webp" alt="Puesto nocturno de Remini Vintage: percheros con polos, camisas y casacas, y una persona con conjunto blanco" width="1000" height="599" fetchpriority="high">
-      <div class="contenedor hero-texto">
-        <h1 id="hero-titulo">Vintage Y2K único <span class="punto" aria-hidden="true">·</span> Envíos a todo el Perú</h1>
-        <p>Nuevas cada viernes · Pagas con Yape o Plin</p>
+      <img class="hero-fondo" src="img/portada.webp" alt="Puesto nocturno de Remini Vintage: percheros con polos, camisas y casacas, y una persona con conjunto blanco" width="1000" height="599" fetchpriority="high">
+
+      <div class="hero-contenido">
+        <h1 id="hero-titulo" class="hero-titulo">
+          <span class="hero-remini">Remini</span>
+          <span class="hero-vintage">Vintage</span>
+        </h1>
+        <p class="hero-lema">Y2K único <span class="punto" aria-hidden="true">·</span> Envíos a todo el Perú</p>
+        <p class="hero-dato">Nuevas cada viernes · Pagas con Yape o Plin</p>
         <a class="boton boton-primario" href="#coleccion">Ver colección</a>
       </div>
+
+      <!-- Piezas que flotan alrededor del título. Las polaroids son enlaces a su ficha;
+           lo demás es decoración (aria-hidden). data-prof: cuánto se mueven con el scroll. -->
+      <div class="flotantes">
+        <a class="flota polaroid f-tigre" href="prenda.html?p=polo-all-over-print-tiger" data-prof="0.28" style="--rot:-8deg">
+          <span class="vaiven">
+            <img src="img/prendas/polo-all-over-print-tiger-1.webp" alt="" width="1000" height="1350" decoding="async">
+            <span class="polaroid-pie"><span class="sr">Ver </span>Polo Tiger <b>S/&nbsp;50</b></span>
+          </span>
+        </a>
+        <a class="flota polaroid f-audigier" href="prenda.html?p=camisa-christian-audigier-rosas-y-dagas" data-prof="0.4" style="--rot:7deg">
+          <span class="vaiven" style="--retraso:-2.5s">
+            <img src="img/prendas/camisa-christian-audigier-rosas-y-dagas-1.webp" alt="" width="1000" height="1350" loading="lazy" decoding="async">
+            <span class="polaroid-pie"><span class="sr">Ver </span>Camisa Audigier <b>S/&nbsp;500</b></span>
+          </span>
+        </a>
+        <a class="flota polaroid f-coogi" href="prenda.html?p=short-denim-coogi-bordado" data-prof="0.18" style="--rot:5deg">
+          <span class="vaiven" style="--retraso:-4s">
+            <img src="img/prendas/short-denim-coogi-bordado-1.webp" alt="" width="1000" height="1350" loading="lazy" decoding="async">
+            <span class="polaroid-pie"><span class="sr">Ver </span>Short Coogi <b>S/&nbsp;150</b></span>
+          </span>
+        </a>
+
+        <div class="flota f-etiqueta" data-prof="0.12" aria-hidden="true">
+          <div class="colgar">
+            <span class="hilo"></span>
+            <span class="etiqueta-precio">S/&nbsp;500<small>XXXL</small></span>
+          </div>
+        </div>
+
+        <div class="flota f-sello" data-prof="0.22" style="--rot:-12deg" aria-hidden="true">
+          <span class="sello">Prenda<br>única</span>
+        </div>
+
+        <div class="flota f-chat" data-prof="0.34" style="--rot:3deg" aria-hidden="true">
+          <span class="vaiven" style="--retraso:-1.5s">
+            <span class="burbuja">¿Sigue disponible?<small>19:42 <span class="vistos">✓✓</span></small></span>
+          </span>
+        </div>
+
+        <div class="flota f-yape" data-prof="0.5" style="--rot:-6deg" aria-hidden="true">
+          <span class="vaiven" style="--retraso:-3s">
+            <span class="chip-yape">Yape <span class="check">✓</span></span>
+          </span>
+        </div>
+
+        <div class="flota f-cinta" data-prof="0.08" style="--rot:-7deg" aria-hidden="true">
+          <span class="cinta">Envío a todo el Perú ✦ Envío a todo el Perú</span>
+        </div>
+
+        <span class="flota destello d1" data-prof="0.6" aria-hidden="true"></span>
+        <span class="flota destello d2" data-prof="0.3" aria-hidden="true"></span>
+        <span class="flota destello d3" data-prof="0.7" aria-hidden="true"></span>
+        <span class="flota destello d4" data-prof="0.45" aria-hidden="true"></span>
+        <span class="flota destello d5" data-prof="0.25" aria-hidden="true"></span>
+      </div>
+
+      <button class="pausar" type="button" hidden><span class="pausar-icono" aria-hidden="true">❚❚</span> <span class="pausar-texto">Pausar animaciones</span></button>
     </section>
 
     <section id="coleccion" class="coleccion contenedor" aria-labelledby="coleccion-titulo">

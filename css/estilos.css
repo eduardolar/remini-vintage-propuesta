@@ -24,6 +24,7 @@
   --vendida: #9a9184;
   --foto-fondo: #ffffff;       /* las fotos de prenda tienen fondo blanco */
   --ejemplo-borde: #8a7330;
+  --tinta: #0a0806;            /* bordes y sombras duras */
 
   /* Tipografía */
   --fuente-titulos: "Anton", Impact, "Arial Narrow", "Roboto Condensed", sans-serif;
@@ -352,65 +353,406 @@ button { cursor: pointer; }
 }
 
 /* --------------------------------------------------------------------------
-   Portada (hero)
+   Portada (hero): título enorme sobre la foto nocturna y piezas que flotan.
+   Las piezas van por detrás del texto (z-index 1 frente a 2): nunca lo tapan.
    -------------------------------------------------------------------------- */
 
 .hero {
   position: relative;
-  height: clamp(230px, 40vh, 520px);
-  height: clamp(230px, 40svh, 520px);
-  overflow: hidden;
+  isolation: isolate;
+  overflow: clip;
+  display: grid;
+  place-items: center;
+  padding: 18px var(--margen) 64px;
   background: #0c0a07;
 }
-.hero img {
+.hero-fondo {
   position: absolute;
   inset: 0;
+  z-index: -2;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: 45% 30%;
 }
-.hero::after {
+/* Foto oscurecida: el texto queda sobre un fondo casi negro (AA de sobra) */
+.hero::before {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: -1;
   background:
-    linear-gradient(to top, rgb(12 10 7 / 0.92) 0%, rgb(12 10 7 / 0.55) 45%, rgb(12 10 7 / 0.1) 75%),
-    linear-gradient(to right, rgb(12 10 7 / 0.55), transparent 60%);
+    radial-gradient(ellipse 55% 60% at 50% 48%, rgb(12 10 7 / 0.6), transparent 75%),
+    linear-gradient(rgb(12 10 7 / 0.74), rgb(12 10 7 / 0.88));
 }
-.hero-texto {
+
+.hero-contenido {
   position: relative;
-  z-index: 1;
-  height: 100%;
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  gap: 10px;
-  padding-block: 20px;
+  align-items: center;
+  text-align: center;
 }
-.hero h1 {
+
+.hero-titulo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 14px;
   font-family: var(--fuente-titulos);
   font-weight: 400;
-  font-size: clamp(1.75rem, 7vw, 3.5rem);
-  line-height: 1.02;
-  letter-spacing: 0.01em;
+  line-height: 0.92;
   text-transform: uppercase;
-  max-width: 18ch;
-  text-shadow: 0 2px 12px rgb(0 0 0 / 0.5);
 }
-.hero h1 .punto { color: var(--acento); }
-.hero p {
+.hero-remini {
+  font-size: clamp(3.5rem, min(17vw, 14vh), 8.25rem);
+  font-size: clamp(3.5rem, min(17vw, 14svh), 8.25rem);
+  letter-spacing: 0.03em;
   color: var(--texto);
+  text-shadow: 0.05em 0.05em 0 var(--tinta);
+}
+.hero-vintage {
+  margin-top: 0.06em;
+  padding: 0.07em 0.16em 0.01em;
+  font-size: clamp(2.75rem, min(13vw, 11vh), 6.5rem);
+  font-size: clamp(2.75rem, min(13vw, 11svh), 6.5rem);
+  letter-spacing: 0.03em;
+  background: var(--acento);
+  color: var(--sobre-acento);
+  border: 3px solid var(--tinta);
+  border-radius: 4px;
+  box-shadow: 0.07em 0.07em 0 var(--tinta);
+  transform: rotate(-2.5deg);
+}
+
+.hero-lema {
   font-size: var(--texto-s);
-  font-weight: 600;
-  text-shadow: 0 1px 8px rgb(0 0 0 / 0.7);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto);
 }
+.hero-lema .punto { color: var(--acento); }
+.hero-dato {
+  margin: 2px 0 14px;
+  font-size: var(--texto-s);
+  font-weight: 500;
+  color: var(--texto-suave);
+}
+
 @media (min-width: 768px) {
-  .hero { height: clamp(300px, 45vh, 560px); height: clamp(300px, 45svh, 560px); }
-  .hero-texto { padding-block: 36px; gap: 14px; }
-  .hero p { font-size: var(--texto-l); }
+  .hero {
+    min-height: clamp(400px, 56vh, 600px);
+    min-height: clamp(400px, 56svh, 600px);
+    padding: 32px var(--margen) 76px;
+  }
+  .hero-titulo { margin-bottom: 20px; }
+  .hero-lema { font-size: var(--texto-l); }
+  .hero-dato { margin: 4px 0 20px; font-size: var(--texto-m); }
 }
+
+/* Botón «Pausar animaciones» (solo con JS; sin él no hay nada que pausar) */
+.pausar {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  z-index: 3;
+  translate: -50% 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--borde-control);
+  border-radius: var(--radio-pastilla);
+  background: rgb(12 10 7 / 0.8);
+  color: var(--texto-suave);
+  font-size: var(--texto-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pausar[hidden] { display: none; }
+.pausar:hover { color: var(--texto); border-color: var(--acento); }
+.pausar-icono { font-size: 0.6875rem; color: var(--acento); }
+@media (min-width: 768px) {
+  .pausar { bottom: 14px; }
+}
+
+/* ---------- Piezas flotantes ---------- */
+
+.flotantes { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.flota {
+  position: absolute;
+  transform: translate3d(var(--mx, 0px), calc(var(--py, 0px) + var(--my, 0px)), 0) rotate(var(--rot, 0deg)) scale(var(--esc, 1));
+  will-change: transform;
+}
+.vaiven {
+  display: block;
+  animation: flotar 6s ease-in-out infinite alternate;
+  animation-delay: var(--retraso, 0s);
+}
+@keyframes flotar { from { transform: translateY(-7px); } to { transform: translateY(7px); } }
+
+/* Polaroids: enlaces reales a la ficha */
+.polaroid {
+  --ancho: 150px;
+  pointer-events: auto;
+  display: block;
+  width: var(--ancho);
+  color: var(--sobre-acento);
+  text-decoration: none;
+  border-radius: 3px;
+}
+.polaroid .vaiven {
+  padding: 7px 7px 0;
+  background: #fbf7ee;
+  border: 2px solid var(--tinta);
+  border-radius: 3px;
+  box-shadow: 6px 6px 0 var(--tinta);
+  transition: box-shadow 0.15s;
+}
+.polaroid img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center 38%;
+  background: var(--foto-fondo);
+  outline: 1px solid #e2dacb;
+}
+.polaroid-pie {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 2px 8px;
+  font-size: var(--texto-xs);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--sobre-acento);
+}
+.polaroid-pie b {
+  font-family: var(--fuente-titulos);
+  font-weight: 400;
+  font-size: 1.125rem;
+  letter-spacing: 0.02em;
+}
+.polaroid:hover { color: var(--sobre-acento); }
+.polaroid:hover .vaiven { box-shadow: 6px 6px 0 var(--acento); }
+.polaroid:focus-visible { outline: 3px solid var(--acento); outline-offset: 4px; }
+
+/* Etiqueta de precio colgada de un hilo */
+.colgar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: 50% 0;
+  animation: balanceo 4.5s ease-in-out infinite alternate;
+}
+@keyframes balanceo { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
+.hilo {
+  position: relative;
+  z-index: 1;
+  width: 2px;
+  height: var(--hilo, 64px);
+  margin-bottom: -6px;
+  background: #e8dcc4;
+}
+.etiqueta-precio {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px 14px 10px;
+  background: #e9cf9a;
+  color: var(--sobre-acento);
+  border: 2px solid var(--tinta);
+  border-radius: 14px 14px 6px 6px;
+  box-shadow: 5px 5px 0 var(--tinta);
+  font-family: var(--fuente-titulos);
+  font-size: 1.625rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+.etiqueta-precio::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: #0c0a07;
+}
+.etiqueta-precio small {
+  margin-top: 4px;
+  font-family: var(--fuente-texto);
+  font-size: var(--texto-xs);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+/* Sello «Prenda única» */
+.sello {
+  display: block;
+  padding: 8px 12px 6px;
+  border: 3px solid var(--acento);
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+  border-radius: 6px;
+  background: rgb(12 10 7 / 0.55);
+  color: var(--acento);
+  font-family: var(--fuente-titulos);
+  font-size: 1.375rem;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* Burbuja de chat (mensaje enviado de WhatsApp) */
+.burbuja {
+  display: block;
+  padding: 8px 12px 5px;
+  background: #d9fdd3;
+  color: var(--sobre-whatsapp);
+  border: 2px solid var(--tinta);
+  border-radius: 14px 14px 3px 14px;
+  box-shadow: 5px 5px 0 var(--tinta);
+  font-size: var(--texto-m);
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.burbuja small {
+  display: block;
+  text-align: right;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #3d5a47;
+}
+.burbuja .vistos { color: #1b7fc4; letter-spacing: -0.2em; }
+
+/* Chip «Yape ✓» */
+.chip-yape {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px 7px 16px;
+  background: #742284;
+  color: #ffffff;
+  border: 2px solid var(--tinta);
+  border-radius: var(--radio-pastilla);
+  box-shadow: 4px 4px 0 var(--tinta);
+  font-size: var(--texto-l);
+  font-weight: 800;
+  line-height: 1;
+}
+.chip-yape .check {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #10cbb4;
+  color: var(--sobre-acento);
+  font-size: 0.8125rem;
+}
+
+/* Trozo de cinta de embalaje */
+.cinta {
+  display: block;
+  padding: 9px 26px;
+  background: rgb(214 178 112 / 0.94);
+  color: #3a2a10;
+  font-size: var(--texto-s);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  clip-path: polygon(0 0, 100% 0, 98.5% 20%, 100% 40%, 98.5% 60%, 100% 80%, 98.5% 100%, 0 100%, 1.5% 80%, 0 60%, 1.5% 40%, 0 20%);
+}
+
+/* Destellos Y2K */
+.destello {
+  width: 22px;
+  height: 22px;
+  background: var(--acento);
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+  animation: titilar 3.4s ease-in-out infinite alternate;
+}
+.d2 { animation-delay: -1.2s; width: 16px; height: 16px; }
+.d3 { animation-delay: -2.1s; width: 28px; height: 28px; }
+.d4 { animation-delay: -0.6s; width: 14px; height: 14px; }
+.d5 { animation-delay: -2.8s; }
+@keyframes titilar { from { opacity: 0.55; scale: 0.8; } to { opacity: 1; scale: 1.1; } }
+
+/* Posiciones en escritorio */
+.f-tigre    { left: 5%;  top: 9%; }
+.f-coogi    { left: 15%; bottom: 10%; --ancho: 136px; }
+.f-yape     { left: 4%;  top: 62%; }
+.f-sello    { left: 22%; top: 12%; }
+.f-audigier { right: 5%; top: 10%; }
+.f-etiqueta { right: 21%; top: 0; }
+.f-chat     { right: 18%; bottom: 20%; }
+.f-cinta    { right: -30px; bottom: 6%; }
+.d1 { left: 30%; top: 42%; }
+.d2 { left: 12%; top: 50%; }
+.d3 { right: 30%; top: 30%; }
+.d4 { right: 3%;  top: 58%; }
+.d5 { left: 36%; bottom: 10%; }
+
+/* Tableta: menos piezas y más pequeñas */
+@media (max-width: 1100px) {
+  .f-sello, .f-cinta, .f-yape, .d5 { display: none; }
+  .polaroid { --ancho: 124px; }
+  .f-tigre { left: 2%; }
+  .f-coogi { left: 3%; bottom: 8%; --ancho: 112px; }
+  .f-audigier { right: 2%; }
+  .f-etiqueta { right: 17%; }
+  .f-chat { right: 3%; bottom: 10%; }
+}
+@media (min-width: 768px) and (max-width: 900px) {
+  .f-etiqueta, .d1, .d3 { display: none; }
+}
+
+/* Móvil: solo cuatro piezas pequeñas, junto a «REMINI» arriba y al botón abajo */
+@media (max-width: 767px) {
+  .f-audigier, .f-coogi, .f-sello, .f-cinta, .destello { display: none; }
+  .f-yape { display: block; }
+
+  .polaroid { --ancho: 80px; }
+  .polaroid .vaiven { padding: 5px 5px 0; box-shadow: 4px 4px 0 var(--tinta); }
+  .polaroid-pie { padding: 4px 1px 6px; font-size: 0.75rem; }
+  .polaroid-pie b { font-size: 0.9375rem; }
+
+  .f-tigre { left: 12px; top: 10px; --rot: -7deg; }
+  .f-etiqueta { right: 6%; top: 0; --hilo: 16px; }
+  .etiqueta-precio { font-size: 1.125rem; padding: 14px 9px 7px; box-shadow: 3px 3px 0 var(--tinta); }
+  .etiqueta-precio small { font-size: 0.6875rem; }
+
+  /* Abajo, a los lados de «Ver colección» y «Pausar animaciones» (el lema queda libre) */
+  .f-yape { left: 8px; top: auto; bottom: 74px; }
+  .chip-yape { font-size: var(--texto-s); padding: 5px 7px 5px 11px; gap: 6px; box-shadow: 3px 3px 0 var(--tinta); }
+  .chip-yape .check { width: 18px; height: 18px; font-size: 0.6875rem; }
+
+  .f-chat { right: 6px; bottom: 14px; }
+  .burbuja { font-size: 0.8125rem; padding: 6px 9px 4px; white-space: normal; max-width: 86px; box-shadow: 3px 3px 0 var(--tinta); }
+  .burbuja small { font-size: 0.6875rem; }
+}
+
+/* Móvil estrecho (≤ 380 px): el título se estrecha y la polaroid también */
+@media (max-width: 380px) {
+  .polaroid { --ancho: 76px; }
+  .f-tigre { left: 10px; }
+  .f-chat { right: 4px; }
+  .burbuja { max-width: 80px; font-size: 0.75rem; }
+  .pausar { padding: 0 12px; }
+}
+
+/* Animaciones en pausa (botón de la portada) */
+.pausado .vaiven,
+.pausado .colgar,
+.pausado .destello { animation-play-state: paused; }
 
 /* --------------------------------------------------------------------------
    Colección: categorías, filtros y cuadrícula
@@ -1177,4 +1519,7 @@ button { cursor: pointer; }
     scroll-behavior: auto !important;
   }
   .cargando { animation: none; border-top-color: var(--borde); border-right-color: var(--acento); }
+  /* Portada quieta: sin flotación, balanceo ni destellos (el parallax lo apaga hero.js) */
+  .vaiven, .colgar, .destello { animation: none; }
+  .pausar { display: none !important; }
 }
