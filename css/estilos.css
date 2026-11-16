@@ -754,6 +754,8 @@ button { cursor: pointer; }
 /* Móvil estrecho (≤ 380 px): el título se estrecha y la polaroid también */
 @media (max-width: 380px) {
   .polaroid { --ancho: 76px; }
+  /* «Yape ✓» quedaba pegado a «Ver colección» y parecía otro botón: fuera */
+  .f-yape { display: none; }
   .f-tigre { left: 10px; }
   .f-chat { right: 4px; }
   .burbuja { max-width: 80px; font-size: 0.75rem; }
@@ -899,6 +901,9 @@ button { cursor: pointer; }
   .rejilla { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 .rejilla > li { display: flex; }
+/* «Cargando…» y «Nada por aquí» van en columna (título, texto y botones uno debajo de otro) */
+.rejilla > li.estado { display: grid; }
+.estado .boton { max-width: 100%; }
 
 /* Tarjeta de prenda */
 .tarjeta {
