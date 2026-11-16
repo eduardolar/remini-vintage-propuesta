@@ -1223,6 +1223,30 @@ button { cursor: pointer; }
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+/* Marca a la izquierda y «Compartir» a la derecha, en la misma línea (no añade alto) */
+.ficha-marca-fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-block: -6px; /* el botón mide 44 px; la línea de la marca no crece */
+}
+.boton-compartir {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: var(--radio-pastilla);
+  border: 1px solid var(--borde-control);
+  background: transparent;
+  color: var(--texto-suave);
+  font-size: var(--texto-xs);
+  font-weight: 600;
+}
+.boton-compartir:hover { border-color: var(--acento); color: var(--texto); }
+.boton-compartir svg { width: 16px; height: 16px; }
 .ficha-titulo {
   display: flex;
   flex-wrap: wrap;

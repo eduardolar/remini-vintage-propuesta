@@ -95,11 +95,14 @@
       /* Encima del pliegue: marca, nombre con el precio al lado, talla, estado, categoría y envío */
       '<div class="ficha-cabeza">' +
       '<nav aria-label="Migas de pan"><ol class="migas">' +
-      '<li><a href="index.html">Inicio</a></li>' +
+      '<li><a href="index.html" data-volver>Inicio</a></li>' +
       '<li><a href="' + urlCat + '">' + R.esc(nombreCat) + "</a></li>" +
       '<li aria-current="page">' + R.esc(p.nombre) + "</li>" +
       "</ol></nav>" +
+      '<div class="ficha-marca-fila">' +
       '<p class="ficha-marca">' + R.esc(p.marca) + (p.joyita ? ' <span class="etiqueta etiqueta-joyita">Joyita</span>' : "") + "</p>" +
+      '<button type="button" class="boton-compartir" data-compartir>' + ICONO_COMPARTIR + "Compartir</button>" +
+      "</div>" +
       '<div class="ficha-titulo">' +
       "<h1>" + R.esc(p.nombre) + "</h1>" +
       '<p class="precio"><span class="sr">Precio: </span>' + R.precio(p.precio) + "</p>" +
@@ -141,6 +144,7 @@
       '<p><a class="boton boton-secundario" href="' + urlCat + '">Ver más ' + R.esc(nombreCat.toLowerCase()) + "</a></p>" +
       "</div>";
 
+    actual = p;
     ficha.setAttribute("aria-busy", "false");
     activarGaleria();
     pintarBarra(p);
@@ -190,6 +194,46 @@
     }, { passive: true });
   }
 
+  /* ---------- Compartir: hoja del sistema en el móvil; si no hay, copiar el enlace ---------- */
+
+  var ICONO_COMPARTIR =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
+
+  var actual = null; // prenda pintada
+
+  function compartir() {
+    if (!actual) return;
+    var url = R.urlAbsoluta(R.enlacePrenda(actual.slug));
+    if (navigator.share) {
+      navigator.share({
+        title: actual.nombre + " · Remini Vintage",
+        text: actual.nombre + " (talla " + actual.talla + ", " + R.precio(actual.precio) + ")",
+        url: url
+      }).catch(function () { /* cancelado: no pasa nada */ });
+      return;
+    }
+    function aMano() { window.prompt("Copia el enlace de la prenda:", url); }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(url).then(function () {
+        R.avisar("Enlace copiado: pégalo donde quieras");
+      }, aMano);
+    } else {
+      aMano();
+    }
+  }
+
+  /* «Inicio» vuelve a la colección como la dejó (filtros y posición) si viene de ella:
+     con «Atrás» del historial y no con un enlace nuevo, que la abriría desde arriba. */
+  function vieneDeLaColeccion() {
+    try {
+      var r = new URL(document.referrer);
+      var carpeta = location.pathname.replace(/[^/]*$/, "");
+      return r.origin === location.origin && (r.pathname === carpeta || r.pathname === carpeta + "index.html");
+    } catch (e) {
+      return false;
+    }
+  }
+
   function noEncontrada() {
     document.title = "Prenda no encontrada · Remini Vintage";
     ficha.setAttribute("aria-busy", "false");
@@ -220,6 +264,12 @@
     ficha = document.querySelector(".ficha");
     document.addEventListener("click", function (e) {
       if (e.target.closest("[data-reintentar]")) cargar();
+      if (e.target.closest("[data-compartir]")) compartir();
+      if (e.target.closest("[data-volver]") && vieneDeLaColeccion() && history.length > 1 &&
+          !e.ctrlKey && !e.metaKey && !e.shiftKey && e.button === 0) {
+        e.preventDefault();
+        history.back();
+      }
     });
     cargar();
   });
