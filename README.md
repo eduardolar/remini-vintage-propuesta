@@ -21,8 +21,8 @@ Entre paréntesis, la mejora del estudio a la que responde.
 
 | Parte | Qué enseña | Mejora del estudio |
 | --- | --- | --- |
-| Cabecera | Logo y «REMINI VINTAGE», buscador por nombre o marca (sin importar tildes) y «Mi bolsa (n)». | *Reservar varias prendas de una vez* |
-| Foto de portada | Ocupa ~40 % del alto en el móvil y ~45 % en el ordenador, con «VINTAGE Y2K ÚNICO · ENVÍOS A TODO EL PERÚ» como título (la marca y lo que vende, no una prenda) y «Ver colección». En el móvil ya asoma la primera fila de prendas. | *Que las prendas se vean antes*; detalle *Que el título principal sea la marca* |
+| Cabecera | Logo y «REMINI VINTAGE», buscador por nombre o marca (sin importar tildes) y «Mi bolsa (n)». Desde 601 px se queda pegada bajo la franja al bajar; en el móvil, en cuanto guardas una prenda aparece un botón redondo de «Mi bolsa» abajo a la derecha. | *Reservar varias prendas de una vez* |
+| Portada | «REMINI VINTAGE» enorme sobre la foto nocturna oscurecida, «Y2K ÚNICO · ENVÍOS A TODO EL PERÚ», «Nuevas cada viernes · Pagas con Yape o Plin» y «Ver colección». Alrededor flotan tres polaroids de prendas reales (enlazan a su ficha), una etiqueta de precio colgada, el sello «Prenda única», un «¿Sigue disponible?» de WhatsApp, «Yape ✓», cinta de embalaje y destellos; se mueven despacio y con el scroll, hay un botón «Pausar animaciones» y con «reducir movimiento» todo queda quieto. En el móvil solo quedan cuatro piezas pequeñas, y a 390×844 y 1366×900 ya asoma la primera fila de prendas. | *Que las prendas se vean antes*; detalle *Que el título principal sea la marca* |
 | Categorías y filtros | Todas, Camisas, Casacas, Pantalones, Polos y Shorts (deslizables en el móvil), y filtros de talla, precio (hasta S/ 100, S/ 100-250, más de S/ 250) y marca. El estado va en la dirección (`index.html#casacas&talla=M`), así que se puede compartir. | *Filtros y categorías ordenadas* |
 | «Joyita» | Es una etiqueta amarilla sobre la foto, no una categoría: la camisa Christian Audigier sale en Camisas. | *Filtros y categorías ordenadas* |
 | Tarjetas | Foto 4:5, marca, nombre completo (sin «…»), talla, estado, precio grande y «Guardar». 2 columnas en el móvil, 3 en tableta y 4 en el ordenador. | Detalles: *nombre sin cortar*, *más contraste en el texto pequeño* |
@@ -47,7 +47,7 @@ Entre paréntesis, la mejora del estudio a la que responde.
 
 - Contraste AA en todo el texto; el texto pequeño en mayúsculas tiene al menos 13 px y un gris claro.
 - Botones y enlaces de 44-48 px, contorno amarillo de 2 px al navegar con teclado y enlace «Saltar a la colección».
-- Respeta «reducir movimiento» del sistema.
+- Respeta «reducir movimiento» del sistema, y la portada tiene un botón «Pausar animaciones» (se recuerda en el navegador).
 - Sin scroll lateral desde 360 px de ancho.
 - Imágenes con `width`/`height` y carga diferida, salvo la foto de portada y la primera foto de la ficha.
 - Sin contadores falsos de urgencia.
@@ -85,6 +85,7 @@ Todas las rutas son relativas, así que funciona también en GitHub Pages bajo
 - `css/estilos.css`: estilos con variables de color, tipografía y espacios.
 - `js/comun.js`: carga de datos, «Mi bolsa» (localStorage) y mensajes de WhatsApp.
 - `js/portada.js`: categorías, filtros y buscador con el estado en la dirección.
+- `js/hero.js`: parallax de las piezas de la portada y botón «Pausar animaciones».
 - `js/prenda.js`: ficha, galería, título, descripción y JSON-LD.
 - `datos/prendas.json`: las 7 prendas.
 - `img/`: logo, foto de portada y 3 fotos por prenda.
