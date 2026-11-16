@@ -1524,6 +1524,102 @@ button { cursor: pointer; }
 .pagina-ficha .aviso { bottom: calc(var(--alto-barra) + env(safe-area-inset-bottom, 0px) + 12px); }
 
 /* --------------------------------------------------------------------------
+   Mi bolsa siempre a mano
+   Móvil (≤ 600 px): botón flotante redondo, solo con prendas guardadas.
+   Desde 601 px: la cabecera se queda pegada bajo la franja de prototipo.
+   -------------------------------------------------------------------------- */
+
+.bolsa-flotante { display: none; }
+
+@media (max-width: 600px) {
+  .bolsa-flotante:not([hidden]) {
+    position: fixed;
+    right: calc(16px + env(safe-area-inset-right, 0px));
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    z-index: 35;
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    border-radius: 50%;
+    border: 2px solid var(--tinta);
+    background: var(--acento);
+    color: var(--sobre-acento);
+    box-shadow: var(--sombra-crema);
+  }
+  .bolsa-flotante svg { width: 26px; height: 26px; }
+  .bolsa-flotante:hover { background: var(--acento-claro); }
+  .bolsa-flotante:active { transform: translate(2px, 2px); box-shadow: none; }
+  .bolsa-flotante:focus-visible { outline: 3px solid var(--texto); outline-offset: 3px; }
+  .bolsa-flotante-cuenta {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    display: grid;
+    place-items: center;
+    min-width: 26px;
+    height: 26px;
+    padding: 0 6px;
+    border-radius: var(--radio-pastilla);
+    border: 2px solid var(--acento);
+    background: var(--fondo);
+    color: var(--texto);
+    font-size: var(--texto-xs);
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  /* Portada: el pie deja sitio al botón y el aviso sube por encima */
+  body:has(.bolsa-flotante:not([hidden])) .pie {
+    padding-bottom: calc(28px + 60px + 16px + env(safe-area-inset-bottom, 0px));
+  }
+  body:has(.bolsa-flotante:not([hidden])) .aviso {
+    bottom: calc(16px + 60px + 14px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Ficha: el botón va encima de la barra fija, sin tocarla */
+  .pagina-ficha .bolsa-flotante:not([hidden]) {
+    bottom: calc(var(--alto-barra) + 14px + env(safe-area-inset-bottom, 0px));
+  }
+  .pagina-ficha:has(.bolsa-flotante:not([hidden])) {
+    padding-bottom: calc(var(--alto-barra) + 16px + 74px + env(safe-area-inset-bottom, 0px));
+  }
+  .pagina-ficha:has(.bolsa-flotante:not([hidden])) .pie { padding-bottom: 28px; }
+  .pagina-ficha:has(.bolsa-flotante:not([hidden])) .aviso {
+    bottom: calc(var(--alto-barra) + 14px + 60px + 14px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (min-width: 601px) {
+  :root { --alto-franja: 45px; } /* la franja cabe en una línea desde 601 px */
+  .cabecera {
+    position: sticky;
+    top: var(--alto-franja);
+    z-index: 39;
+  }
+  /* Las anclas quedan bajo franja + cabecera (dos filas hasta 767 px, una desde 768) */
+  [id] { scroll-margin-top: 190px; }
+}
+@media (min-width: 768px) {
+  [id] { scroll-margin-top: 130px; }
+}
+
+/* Rebote del contador al guardar */
+[data-contador-bolsa] { display: inline-block; }
+.bolsa-flotante-cuenta[data-contador-bolsa] { display: grid; }
+.rebota { animation: rebote 0.45s ease-out; }
+@keyframes rebote {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.35); }
+  65% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rebota { animation: none; }
+}
+
+/* --------------------------------------------------------------------------
    Movimiento reducido
    -------------------------------------------------------------------------- */
 

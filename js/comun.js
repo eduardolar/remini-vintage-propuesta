@@ -175,6 +175,15 @@
     escribir(leer().filter(function (s) { return s !== slug; }));
   }
 
+  /* Pequeño rebote del contador al guardar (el CSS lo anula con movimiento reducido) */
+  function rebotar() {
+    document.querySelectorAll("[data-contador-bolsa], [data-bolsa-flotante]").forEach(function (el) {
+      el.classList.remove("rebota");
+      void el.offsetWidth; // reinicia la animación si se guarda dos veces seguidas
+      el.classList.add("rebota");
+    });
+  }
+
   var temporizadorAviso = null;
   function avisar(texto) {
     var aviso = document.getElementById("aviso");
@@ -195,7 +204,11 @@
       el.textContent = String(n);
     });
     document.querySelectorAll("[data-abrir-bolsa]").forEach(function (el) {
-      el.setAttribute("aria-label", "Mi bolsa: " + n + (n === 1 ? " prenda" : " prendas"));
+      el.setAttribute("aria-label", "Mi bolsa, " + n + (n === 1 ? " prenda" : " prendas"));
+    });
+    // Botón flotante del móvil: solo con algo dentro
+    document.querySelectorAll("[data-bolsa-flotante]").forEach(function (el) {
+      el.hidden = n === 0;
     });
     document.querySelectorAll("[data-guardar]").forEach(function (boton) {
       var guardada = lista.indexOf(boton.getAttribute("data-guardar")) !== -1;
@@ -289,7 +302,8 @@
       var ahora = alternar(slug);
       R.actualizarBolsa();
       var n = leer().length;
-      avisar(ahora ? nombre + " guardada en Mi bolsa (" + n + ")" : nombre + " quitada de Mi bolsa (" + n + ")");
+      if (ahora) rebotar();
+      avisar(ahora ? "Guardada en tu bolsa: " + nombre + " (" + n + ")" : "Quitada de tu bolsa: " + nombre + " (" + n + ")");
       return;
     }
 

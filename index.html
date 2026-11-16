@@ -254,6 +254,12 @@
     </div>
   </footer>
 
+  <!-- Mi bolsa a mano en el móvil: solo aparece con al menos una prenda -->
+  <button type="button" class="bolsa-flotante" data-abrir-bolsa data-bolsa-flotante aria-haspopup="dialog" aria-label="Mi bolsa, 0 prendas" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+    <span class="bolsa-flotante-cuenta" data-contador-bolsa aria-hidden="true">0</span>
+  </button>
+
   <dialog id="bolsa" class="bolsa" aria-labelledby="bolsa-titulo">
     <div class="bolsa-interior">
       <div class="bolsa-cabeza">
