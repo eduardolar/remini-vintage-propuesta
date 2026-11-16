@@ -1,0 +1,96 @@
+{
+  "nota": "Prendas reales de remini-vintage.vercel.app a 16/11/2026, copiadas para el prototipo con permiso de Leslie. Las medidas, el envío y los pagos todavía no existen en la tienda: en el prototipo van como ejemplo y marcados así.",
+  "prendas": [
+    {
+      "slug": "camisa-christian-audigier-rosas-y-dagas",
+      "nombre": "Camisa Christian Audigier Rosas y Dagas",
+      "marca": "Christian Audigier",
+      "epoca": "Y2K",
+      "categoria": "camisas",
+      "joyita": true,
+      "talla": "XXXL",
+      "estado": "9/10",
+      "precio": 500,
+      "descripcion": "Única camisa y en buen estado.",
+      "fotos": 3
+    },
+    {
+      "slug": "casaca-denim-southpole-grafico-dj",
+      "nombre": "Casaca Denim Southpole Gráfico DJ",
+      "marca": "Southpole",
+      "epoca": "Y2K",
+      "categoria": "casacas",
+      "joyita": false,
+      "talla": "M",
+      "estado": "8/10",
+      "precio": 120,
+      "descripcion": "Casaca en buen estado, con leve desgaste.",
+      "fotos": 3
+    },
+    {
+      "slug": "jeans-km-kosmo-lupo-bordado-aguilas",
+      "nombre": "Jeans K&M Kosmo Lupo Bordado Águilas",
+      "marca": "K&M",
+      "epoca": "Y2K",
+      "categoria": "pantalones",
+      "joyita": false,
+      "talla": "Estándar",
+      "estado": "8/10",
+      "precio": 150,
+      "descripcion": null,
+      "fotos": 3
+    },
+    {
+      "slug": "short-denim-coogi-bordado",
+      "nombre": "Short Denim Coogi Bordado",
+      "marca": "Coogi",
+      "epoca": "Y2K",
+      "categoria": "shorts",
+      "joyita": false,
+      "talla": "38",
+      "estado": "10/10",
+      "precio": 150,
+      "descripcion": "Nuevo, sin estrenar.",
+      "fotos": 3
+    },
+    {
+      "slug": "polo-all-over-print-tiger",
+      "nombre": "Polo All-Over Print Tiger",
+      "marca": "Liquid Blue",
+      "epoca": "90s",
+      "categoria": "polos",
+      "joyita": false,
+      "talla": "XL",
+      "estado": "8/10",
+      "precio": 50,
+      "descripcion": null,
+      "fotos": 3
+    },
+    {
+      "slug": "polo-harley-davidson-chimney-rock-nc",
+      "nombre": "Polo Harley-Davidson Chimney Rock NC",
+      "marca": "Harley-Davidson",
+      "epoca": "Vintage",
+      "categoria": "polos",
+      "joyita": false,
+      "talla": "Estándar",
+      "estado": "7/10",
+      "precio": 20,
+      "descripcion": "Polo azul, estado aceptable.",
+      "fotos": 3
+    },
+    {
+      "slug": "casaca-frankio-garage-just-design",
+      "nombre": "Casaca Frankio Garage Just Design",
+      "marca": "Just Design",
+      "epoca": "Y2K",
+      "categoria": "casacas",
+      "joyita": false,
+      "talla": "XL",
+      "estado": "9/10",
+      "precio": 100,
+      "descripcion": null,
+      "fotos": 3
+    }
+  ]
+}
