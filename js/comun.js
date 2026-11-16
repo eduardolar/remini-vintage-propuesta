@@ -102,7 +102,7 @@
   };
 
   /* ---------------- WhatsApp ---------------- */
-  /* Sin número: en la tienda real iría el de Leslie (wa.me/51XXXXXXXXX). */
+  /* Sin número: en la tienda real iría el de la tienda (wa.me/51XXXXXXXXX). */
 
   R.enlaceWhatsApp = function (mensaje) {
     return "https://wa.me/?text=" + encodeURIComponent(mensaje);
@@ -303,7 +303,7 @@
           (n === 1 ? "Reservar la prenda" : "Reservar las " + n) + " por WhatsApp · " + R.precio(total) +
           "</a>" +
           '<p class="nota-ejemplo">' + (n > 1 ? "Un solo mensaje con todas. " : "") +
-          "Ejemplo: el chat se abre sin número (número de Leslie).</p>";
+          "Ejemplo: el chat se abre sin número (número de la tienda).</p>";
       },
       function () {
         listaEl.innerHTML = '<li class="bolsa-vacia"><p>No se pudieron cargar las prendas. Sirve la web con <code>python -m http.server</code>.</p></li>';

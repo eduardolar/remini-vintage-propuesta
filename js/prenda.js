@@ -124,7 +124,7 @@
       '<div class="envio bloque-ejemplo">' +
       '<p class="envio-cabeza">Envío y pago <span class="etiqueta etiqueta-ejemplo">Ejemplo</span></p>' +
       "<p>Envío Lima S/ __ (24-48 h) · Provincias por Shalom u Olva (2-5 días) · Yape, Plin o transferencia</p>" +
-      '<p class="nota-ejemplo">Precios y plazos de ejemplo: Leslie pondría los suyos. «Reservar por WhatsApp» abre el chat sin número (número de Leslie).</p>' +
+      '<p class="nota-ejemplo">Precios y plazos de ejemplo: la tienda pondría los suyos. «Reservar por WhatsApp» abre el chat sin número (número de la tienda).</p>' +
       "</div>" +
       "</div>" +
 
@@ -134,10 +134,10 @@
         : "") +
       '<section class="bloque-ejemplo"><h2>Medidas <span class="etiqueta etiqueta-ejemplo">Ejemplo</span></h2>' +
       '<p class="medidas">' + medidasEjemplo(p) + "</p>" +
-      '<p class="nota-ejemplo">(ejemplo: Leslie las añadiría al subir la prenda; medidas en plano, de costura a costura)</p></section>' +
+      '<p class="nota-ejemplo">(ejemplo: la tienda las añadiría al subir la prenda; medidas en plano, de costura a costura)</p></section>' +
       '<section class="bloque-ejemplo"><h2>Defectos <span class="etiqueta etiqueta-ejemplo">Ejemplo</span></h2>' +
       '<p class="descripcion">Defectos: __ (por ejemplo «mancha pequeña en el puño izquierdo», con su foto)</p>' +
-      '<p class="nota-ejemplo">(ejemplo: Leslie los añadiría al subir la prenda; si no tiene, «Sin defectos»)</p></section>' +
+      '<p class="nota-ejemplo">(ejemplo: la tienda los añadiría al subir la prenda; si no tiene, «Sin defectos»)</p></section>' +
       "<section><h2>Cómo comprar</h2>" +
       '<ol class="mini-pasos">' +
       "<li>Reservas por WhatsApp con el botón de abajo.</li>" +

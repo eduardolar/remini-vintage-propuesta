@@ -1,7 +1,7 @@
 # Remini Vintage · propuesta de rediseño
 
-**Esto no es la tienda.** Es un prototipo que Eduardo Lara ha hecho para Leslie,
-dueña de [Remini Vintage](https://remini-vintage.vercel.app/), para enseñarle cómo
+**Esto no es la tienda.** Es un prototipo de propuesta para la dueña de
+[Remini Vintage](https://remini-vintage.vercel.app/), para enseñar cómo
 quedarían en su web las mejoras del estudio *«Propuestas para Remini Vintage»*
 (16/11/2026). No se vende nada desde aquí: los botones de WhatsApp abren el chat
 sin número y la bolsa solo se guarda en tu navegador.
@@ -28,7 +28,7 @@ Entre paréntesis, la mejora del estudio a la que responde.
 | Tarjetas | Foto 4:5, marca, nombre completo (sin «…»), talla, estado, precio grande y «Guardar». 2 columnas en el móvil, 3 en tableta y 4 en el ordenador. | Detalles: *nombre sin cortar*, *más contraste en el texto pequeño* |
 | Prenda vendida | Una tarjeta de **ejemplo** en gris con la franja «VENDIDA» y sin botón. | *Las prendas vendidas, a la vista* |
 | Cómo comprar | Tres pasos: reservas por WhatsApp, pagas con Yape, Plin o transferencia, te llega en 24-48 h en Lima o 2-5 días en provincias. | *Envío y pago* |
-| Quién vende | Hueco para la foto de Leslie, texto, Instagram, TikTok y opiniones de clientes. | *Quién vende* |
+| Quién vende | Hueco para la foto de quien vende, texto, Instagram, TikTok y opiniones de clientes. | *Quién vende* |
 | Open Graph | Título, descripción y la foto de portada al compartir el enlace. | *Cada página con su título, su descripción y su foto* |
 
 ### Ficha de prenda
@@ -58,9 +58,9 @@ Entre paréntesis, la mejora del estudio a la que responde.
 
 Todo esto va marcado en la página con la etiqueta «Ejemplo» o con un borde discontinuo:
 
-- **Medidas y defectos**: la tienda aún no los tiene; Leslie los añadiría al subir cada prenda.
+- **Medidas y defectos**: la tienda aún no los tiene; la tienda los añadiría al subir cada prenda.
 - **Envío y pago**: el precio del envío en Lima va como `S/ __` y los plazos son orientativos.
-- **WhatsApp**: el enlace es `https://wa.me/?text=…` **sin número**; en la tienda real iría el de Leslie (`https://wa.me/51XXXXXXXXX?text=…`).
+- **WhatsApp**: el enlace es `https://wa.me/?text=…` **sin número**; en la tienda real iría el de la tienda (`https://wa.me/51XXXXXXXXX?text=…`).
 - **Quién vende**: el texto, la foto (de momento el logo), los enlaces de Instagram y TikTok («(pon tu enlace)») y las opiniones de clientes.
 - **La prenda vendida**: es una tarjeta inventada que reutiliza una foto de la Casaca Frankio Garage.
 - **Open Graph**: `og:image` va con ruta relativa porque el prototipo se publica en una subcarpeta; en la tienda real debe ser una URL absoluta.
@@ -95,5 +95,4 @@ Sin frameworks ni librerías; solo las fuentes Anton e Inter de Google Fonts.
 
 ## Créditos
 
-Las fotos, las prendas y el logo son de **Remini Vintage** y se usan con permiso de Leslie.
-Prototipo hecho por Eduardo Lara para Leslie.
+Las fotos, las prendas y el logo son de **Remini Vintage** y se usan con permiso de la tienda.
