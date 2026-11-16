@@ -406,6 +406,19 @@
     if (objetivo.id === "bolsa") objetivo.close();
   });
 
+  // Atajo de teclado: «/» lleva al buscador (si no se está escribiendo ya en otro campo)
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "/" || e.ctrlKey || e.metaKey || e.altKey) return;
+    var t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    var dialogo = document.getElementById("bolsa");
+    var campo = document.getElementById("buscar");
+    if (!campo || (dialogo && dialogo.open)) return;
+    e.preventDefault();
+    campo.focus();
+    campo.select();
+  });
+
   // Otra pestaña cambió la bolsa
   window.addEventListener("storage", function (e) {
     if (e.key === CLAVE) R.actualizarBolsa();
