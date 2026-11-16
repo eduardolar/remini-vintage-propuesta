@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Remini Vintage · Ropa vintage y Y2K única con envíos a todo el Perú</title>
+  <meta name="description" content="Prendas vintage y Y2K únicas: casacas, polos, camisas, jeans y shorts de marca. Nuevas cada viernes, pagas con Yape o Plin y envíos a todo el Perú.">
+  <meta name="theme-color" content="#14110d">
+
+  <!-- Open Graph (muestra). En la tienda real og:image y og:url deben ser URL absolutas. -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_PE">
+  <meta property="og:site_name" content="Remini Vintage">
+  <meta property="og:title" content="Remini Vintage · Vintage Y2K único, envíos a todo el Perú">
+  <meta property="og:description" content="Nuevas cada viernes. Reservas por WhatsApp y pagas con Yape o Plin.">
+  <meta property="og:image" content="https://eduardolar.github.io/remini-vintage-propuesta/img/compartir.jpg">
+  <meta property="og:url" content="https://eduardolar.github.io/remini-vintage-propuesta/sobria/">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Percheros con ropa vintage de noche y una persona con conjunto blanco">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="../img/logo-remini.webp" type="image/webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="preload" as="image" href="../img/portada.webp" fetchpriority="high">
+  <script src="js/comun.js" defer></script>
+  <script src="js/portada.js" defer></script>
+</head>
+<body>
+  <a class="saltar" href="#coleccion">Saltar a la colección</a>
+
+  <div class="franja" role="note">
+    <div class="contenedor">
+      <span><strong>Propuesta de rediseño para Remini Vintage</strong> · prototipo, no es la tienda real ·</span>
+      <a href="https://remini-vintage.vercel.app/" rel="noopener">Ver la tienda</a> · <a href="../">Ver la versión animada</a>
+    </div>
+  </div>
+
+  <header class="cabecera">
+    <div class="contenedor">
+      <a class="marca" href="index.html">
+        <img src="../img/logo-remini.webp" alt="" width="253" height="256">
+        <span>Remini Vintage</span>
+      </a>
+
+      <form class="buscador" role="search" action="index.html">
+        <label class="sr" for="buscar">Buscar por nombre o marca</label>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="buscar" name="q" type="search" placeholder="Busca por nombre o marca" autocomplete="off" enterkeyhint="search">
+      </form>
+
+      <button type="button" class="boton-bolsa" data-abrir-bolsa aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+        <span>Mi bolsa (<span data-contador-bolsa>0</span>)</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-titulo">
+      <img src="../img/portada.webp" alt="Puesto nocturno de Remini Vintage: percheros con polos, camisas y casacas, y una persona con conjunto blanco" width="1000" height="599" fetchpriority="high">
+      <div class="contenedor hero-texto">
+        <h1 id="hero-titulo">Vintage Y2K único <span class="punto" aria-hidden="true">·</span> Envíos a todo el Perú</h1>
+        <p>Nuevas cada viernes · Pagas con Yape o Plin</p>
+        <a class="boton boton-primario" href="#coleccion">Ver colección</a>
+      </div>
+    </section>
+
+    <section id="coleccion" class="coleccion contenedor" aria-labelledby="coleccion-titulo">
+      <h2 id="coleccion-titulo" class="sr">Colección</h2>
+
+      <div class="controles">
+        <ul class="categorias" aria-label="Categorías">
+          <li><button type="button" class="chip" data-cat="todas" aria-pressed="true">Todas <span class="chip-cuenta" data-cuenta="todas"></span></button></li>
+          <li><button type="button" class="chip" data-cat="camisas" aria-pressed="false">Camisas <span class="chip-cuenta" data-cuenta="camisas"></span></button></li>
+          <li><button type="button" class="chip" data-cat="casacas" aria-pressed="false">Casacas <span class="chip-cuenta" data-cuenta="casacas"></span></button></li>
+          <li><button type="button" class="chip" data-cat="pantalones" aria-pressed="false">Pantalones <span class="chip-cuenta" data-cuenta="pantalones"></span></button></li>
+          <li><button type="button" class="chip" data-cat="polos" aria-pressed="false">Polos <span class="chip-cuenta" data-cuenta="polos"></span></button></li>
+          <li><button type="button" class="chip" data-cat="shorts" aria-pressed="false">Shorts <span class="chip-cuenta" data-cuenta="shorts"></span></button></li>
+        </ul>
+
+        <div class="filtros" role="group" aria-label="Filtros">
+          <div>
+            <label class="sr" for="f-talla">Filtrar por talla</label>
+            <select id="f-talla" data-filtro="talla">
+              <option value="">Talla</option>
+            </select>
+          </div>
+          <div>
+            <label class="sr" for="f-precio">Filtrar por precio</label>
+            <select id="f-precio" data-filtro="precio">
+              <option value="">Precio</option>
+              <option value="hasta-100">Hasta S/ 100</option>
+              <option value="100-250">S/ 100-250</option>
+              <option value="mas-250">Más de S/ 250</option>
+            </select>
+          </div>
+          <div>
+            <label class="sr" for="f-marca">Filtrar por marca</label>
+            <select id="f-marca" data-filtro="marca">
+              <option value="">Marca</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="resumen">
+          <p id="resultado" role="status" aria-live="polite">Cargando prendas…</p>
+          <button type="button" class="boton-limpiar" data-limpiar hidden>Quitar filtros</button>
+        </div>
+      </div>
+
+      <ul id="rejilla" class="rejilla" aria-labelledby="coleccion-titulo" aria-busy="true">
+        <li class="estado"><span class="cargando" aria-hidden="true"></span><p>Cargando prendas…</p></li>
+      </ul>
+      <noscript><p class="estado">Para ver las prendas hace falta activar JavaScript.</p></noscript>
+    </section>
+
+    <section id="como-comprar" class="seccion" aria-labelledby="como-titulo">
+      <div class="contenedor">
+        <h2 id="como-titulo" class="titulo-seccion">Cómo comprar <span class="resalte">en 3 pasos</span></h2>
+        <ol class="pasos">
+          <li class="paso">
+            <h3>Reservas por WhatsApp</h3>
+            <p>Toca «Reservar por WhatsApp» en la prenda (o en Mi bolsa para varias): el mensaje ya va escrito.</p>
+          </li>
+          <li class="paso">
+            <h3>Pagas con Yape, Plin o transferencia</h3>
+            <p>Leslie te confirma la prenda y el envío, y pagas como te quede mejor.</p>
+          </li>
+          <li class="paso">
+            <h3>Te llega a casa</h3>
+            <p>En 24-48 h en Lima o en 2-5 días en provincias, por Shalom u Olva.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="quien-vende" class="seccion" aria-labelledby="quien-titulo">
+      <div class="contenedor">
+        <h2 id="quien-titulo" class="titulo-seccion">Quién <span class="resalte">vende</span></h2>
+        <div class="quien">
+          <div class="hueco-foto">
+            <img src="../img/logo-remini.webp" alt="Logo de Remini Vintage" width="253" height="256" loading="lazy">
+            <p>Aquí va tu foto o la de tu puesto <span class="etiqueta etiqueta-ejemplo">Ejemplo</span></p>
+          </div>
+
+          <div class="quien-texto">
+            <p><span class="etiqueta etiqueta-ejemplo">Texto de ejemplo</span></p>
+            <p>Soy Leslie y desde Lima elijo una por una prendas vintage y Y2K que no vas a encontrar en otro lado. Cada viernes subo nuevas; como son piezas únicas, la primera en reservar se la lleva.</p>
+            <ul class="redes">
+              <li><a class="boton boton-secundario" href="#">Instagram <span class="pon">(pon tu enlace)</span></a></li>
+              <li><a class="boton boton-secundario" href="#">TikTok <span class="pon">(pon tu enlace)</span></a></li>
+            </ul>
+
+            <h3 class="sr">Opiniones de clientes</h3>
+            <ul class="opiniones">
+              <li class="bloque-ejemplo">
+                <blockquote>
+                  <p>«Aquí iría una opinión real de una clienta, o una captura de su mensaje.»</p>
+                  <footer>Opinión de ejemplo · nombre y ciudad</footer>
+                </blockquote>
+              </li>
+              <li class="bloque-ejemplo">
+                <blockquote>
+                  <p>«Otra opinión real: cómo le llegó la prenda y si era como en las fotos.»</p>
+                  <footer>Opinión de ejemplo · nombre y ciudad</footer>
+                </blockquote>
+              </li>
+              <li class="bloque-ejemplo">
+                <blockquote>
+                  <p>«Una más, mejor si es de provincias, para que se vea que el envío funciona.»</p>
+                  <footer>Opinión de ejemplo · nombre y ciudad</footer>
+                </blockquote>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p>Prototipo hecho por Eduardo Lara para Leslie · Fotos y prendas de Remini Vintage</p>
+      <p>Propuesta de rediseño: no se vende nada desde aquí. La tienda real está en <a href="https://remini-vintage.vercel.app/" rel="noopener">remini-vintage.vercel.app</a>.</p>
+    </div>
+  </footer>
+
+  <dialog id="bolsa" class="bolsa" aria-labelledby="bolsa-titulo">
+    <div class="bolsa-interior">
+      <div class="bolsa-cabeza">
+        <h2 id="bolsa-titulo">Mi bolsa</h2>
+        <button type="button" class="boton boton-secundario" data-cerrar-bolsa>Cerrar</button>
+      </div>
+      <ul id="bolsa-lista" class="bolsa-lista"></ul>
+      <div id="bolsa-pie" class="bolsa-pie" hidden></div>
+    </div>
+  </dialog>
+
+  <p id="aviso" class="aviso" role="status" aria-live="polite"></p>
+</body>
+</html>
