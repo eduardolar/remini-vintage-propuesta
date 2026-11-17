@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <title>El perchero · Trastienda de Remini Vintage (prototipo)</title>
+  <meta name="theme-color" content="#14110d">
+
+  <link rel="icon" href="img/logo-remini.webp" type="image/webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/estilos.css?v=20261117-4">
+  <link rel="stylesheet" href="css/admin.css?v=20261117-4">
+  <script src="js/admin.js?v=20261117-4" defer></script>
+</head>
+<body class="pagina-admin">
+  <a class="saltar" href="#perchero">Saltar al perchero</a>
+
+  <div class="franja" role="note">
+    <div class="contenedor">
+      <span><strong>Propuesta de rediseño para Remini Vintage</strong><span class="solo-ancho"> · prototipo del panel, no es el panel real</span> ·</span>
+      <a href="https://remini-vintage.vercel.app/" rel="noopener noreferrer">Ver la tienda real</a>
+    </div>
+  </div>
+
+  <header class="cabecera cabecera-admin">
+    <div class="contenedor">
+      <a class="marca" href="admin.html">
+        <img src="img/logo-remini.webp" alt="" width="253" height="256">
+        <span>Remini Vintage</span>
+        <span class="marca-trastienda">Trastienda</span>
+      </a>
+
+      <nav class="cabecera-acciones" aria-label="Trastienda">
+        <button type="button" class="boton boton-primario boton-colgar" data-abrir-taller aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          <span>Colgar<span class="solo-ancho"> prenda</span></span>
+        </button>
+        <a class="boton-redondo" href="index.html" aria-label="Ver la tienda">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 10l9-6 9 6"/><path d="M5 9v11h14V9"/><path d="M10 20v-6h4v6"/></svg>
+          <span class="boton-redondo-texto" aria-hidden="true">Tienda</span>
+        </a>
+        <a class="boton-redondo" href="login.html" data-cerrar-sesion aria-label="Salir de la trastienda">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 4h4v16h-4"/><path d="M10 8l-4 4 4 4"/><path d="M6 12h10"/></svg>
+          <span class="boton-redondo-texto" aria-hidden="true">Salir</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ Saludo: como la portada, pero de la trastienda ============ -->
+    <section class="trastienda" aria-labelledby="trastienda-titulo">
+      <img class="trastienda-fondo" src="img/portada.webp" alt="" width="1000" height="599">
+
+      <div class="trastienda-flotantes" aria-hidden="true">
+        <div class="flota tf-rotulo">
+          <div class="colgar"><span class="hilo"></span><span class="etiqueta-precio">S/&nbsp;500<small>XXXL</small></span></div>
+        </div>
+        <div class="flota tf-sello" style="--rot:-12deg"><span class="sello">Solo<br>personal</span></div>
+        <div class="flota tf-chat" style="--rot:3deg"><span class="burbuja">¿Sigue disponible?<small>19:42 <span class="vistos">✓✓</span></small></span></div>
+        <span class="flota destello td-1"></span>
+        <span class="flota destello td-2"></span>
+        <span class="flota destello td-3"></span>
+      </div>
+
+      <div class="contenedor trastienda-contenido">
+        <p class="trastienda-ante">La trastienda de Remini Vintage</p>
+        <h1 id="trastienda-titulo" class="titulo-bloque titulo-grande">
+          <span class="titulo-bloque-1">El</span>
+          <span class="titulo-bloque-2">Perchero</span>
+        </h1>
+
+        <div class="pegatinas" role="group" aria-labelledby="pegatinas-ayuda">
+          <p id="pegatinas-ayuda" class="pegatinas-ayuda">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5h16l-6 8v6l-4-2v-4z"/></svg>
+            Toca una pegatina para ver solo esas
+          </p>
+          <div class="pegatinas-fila">
+            <button type="button" class="pegatina peg-todas" data-filtro-estado="todas" aria-pressed="true">
+              <b data-cuenta="todas">0</b> <span data-texto-cuenta="todas">en total</span>
+            </button>
+            <button type="button" class="pegatina peg-percha" data-filtro-estado="disponible" aria-pressed="false">
+              <b data-cuenta="disponible">0</b> <span data-texto-cuenta="disponible">en percha</span>
+            </button>
+            <button type="button" class="pegatina peg-reservada" data-filtro-estado="reservada" aria-pressed="false">
+              <b data-cuenta="reservada">0</b> <span data-texto-cuenta="reservada">reservadas</span>
+            </button>
+            <button type="button" class="pegatina peg-vendida" data-filtro-estado="vendida" aria-pressed="false">
+              <b data-cuenta="vendida">0</b> <span data-texto-cuenta="vendida">vendidas</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="nota-prototipo" role="note">
+          <p><strong>Prototipo:</strong> <span class="solo-ancho">lo que cambies solo queda en este navegador, no en la tienda real.</span><span class="solo-movil">solo se guarda aquí.</span></p>
+          <button type="button" class="boton-texto" data-restablecer>Restablecer<span class="solo-ancho">&nbsp;demo</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ El perchero (inventario) ============ -->
+    <section id="perchero" class="perchero contenedor" aria-labelledby="perchero-titulo">
+      <h2 id="perchero-titulo" class="sr">Prendas del perchero</h2>
+
+      <div class="perchero-controles">
+        <form class="buscador" role="search" data-buscador>
+          <label class="sr" for="buscar-inv">Buscar en el perchero por nombre o marca</label>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="buscar-inv" type="search" placeholder="Busca por nombre o marca" autocomplete="off" enterkeyhint="search">
+        </form>
+        <ul class="categorias" data-cat-filtros aria-label="Categorías"></ul>
+        <div class="resumen">
+          <p id="inv-resumen" role="status" aria-live="polite">Cargando el perchero…</p>
+          <button type="button" class="boton-limpiar" data-limpiar-filtros hidden>Ver todas</button>
+        </div>
+      </div>
+
+      <ul id="inv-lista" class="percha" aria-labelledby="perchero-titulo" aria-busy="true">
+        <li class="percha-estado"><span class="cargando" aria-hidden="true"></span><p>Colgando las prendas…</p></li>
+      </ul>
+      <noscript><p class="percha-estado">Para usar la trastienda hace falta activar JavaScript.</p></noscript>
+    </section>
+
+    <div class="separador-cinta" aria-hidden="true">
+      <span class="cinta">Remini Vintage ✦ Solo personal ✦ Remini Vintage ✦ Solo personal ✦ Remini Vintage ✦ Solo personal ✦ Remini Vintage ✦ Solo personal ✦</span>
+    </div>
+
+    <!-- ============ El escaparate (banner de la portada) ============ -->
+    <section id="escaparate" class="escaparate contenedor" aria-labelledby="escaparate-titulo">
+      <h2 id="escaparate-titulo" class="titulo-bloque titulo-medio">
+        <span class="titulo-bloque-1">El</span>
+        <span class="titulo-bloque-2">Escaparate</span>
+      </h2>
+      <p class="escaparate-sub">Lo primero que se ve al entrar a la tienda. Última actualización: <time data-banner-fecha>—</time></p>
+
+      <div class="escaparate-rejilla">
+        <figure class="escaparate-vista">
+          <div class="escaparate-marco">
+            <img data-banner-foto src="img/portada.webp" alt="Vista previa del banner: foto de portada actual" width="1000" height="599">
+            <div class="escaparate-texto" aria-hidden="true">
+              <p class="esc-l1" data-vista-l1>Venta de ropa vintage Y2K</p>
+              <p class="esc-l2" data-vista-l2>Envíos a todo el Perú</p>
+            </div>
+            <span class="destello ed-1" aria-hidden="true"></span>
+            <span class="destello ed-2" aria-hidden="true"></span>
+          </div>
+          <figcaption>Vista previa en directo: cambia mientras escribes.</figcaption>
+        </figure>
+
+        <form id="form-banner" class="escaparate-form" novalidate>
+          <div class="campo">
+            <div class="campo-fila">
+              <label for="banner-l1">Texto grande</label>
+              <span class="contador" id="banner-l1-cuenta" data-contador-de="banner-l1">0/60</span>
+            </div>
+            <input class="control" id="banner-l1" name="linea1" type="text" maxlength="60" required enterkeyhint="next" aria-describedby="banner-l1-cuenta banner-l1-error">
+            <p id="banner-l1-error" class="error-campo"></p>
+          </div>
+
+          <div class="campo">
+            <div class="campo-fila">
+              <label for="banner-l2">Texto del bloque amarillo <span class="opcional">(opcional)</span></label>
+              <span class="contador" id="banner-l2-cuenta" data-contador-de="banner-l2">0/60</span>
+            </div>
+            <input class="control" id="banner-l2" name="linea2" type="text" maxlength="60" enterkeyhint="done" aria-describedby="banner-l2-cuenta banner-l2-ayuda">
+            <p id="banner-l2-ayuda" class="ayuda">Si lo dejas vacío, no sale el bloque.</p>
+          </div>
+
+          <div class="campo">
+            <span class="campo-titulo" id="banner-foto-titulo">Foto de fondo</span>
+            <div class="foto-banner">
+              <input class="sr" id="banner-foto" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="banner-foto-ayuda banner-foto-error">
+              <label class="boton boton-secundario" for="banner-foto">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-8 8"/></svg>
+                Cambiar la foto
+              </label>
+              <p id="banner-foto-ayuda" class="ayuda">Mejor horizontal. JPG, PNG o WEBP · hasta 5 MB.</p>
+            </div>
+            <p id="banner-foto-error" class="error-campo"></p>
+          </div>
+
+          <div class="escaparate-pie">
+            <button type="submit" class="boton boton-primario">Guardar el escaparate</button>
+            <button type="button" class="boton-texto" data-banner-descartar hidden>Descartar cambios</button>
+            <p class="pendiente" data-banner-pendiente hidden>Hay cambios sin guardar</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <div class="separador-cinta" aria-hidden="true">
+      <span class="cinta">Remini Vintage ✦ Solo personal ✦ Remini Vintage ✦ Solo personal ✦ Remini Vintage ✦ Solo personal ✦ Remini Vintage ✦ Solo personal ✦</span>
+    </div>
+
+    <!-- ============ Quién vende (la sección de la portada) ============ -->
+    <section id="quien-vende" class="quien-zona contenedor" aria-labelledby="quien-zona-titulo">
+      <h2 id="quien-zona-titulo" class="titulo-bloque titulo-medio">
+        <span class="titulo-bloque-1">Quién</span>
+        <span class="titulo-bloque-2">Vende</span>
+      </h2>
+      <p class="escaparate-sub">La sección que cuenta quién está detrás de la tienda. Última actualización: <time data-quien-fecha>—</time></p>
+
+      <div class="quien-rejilla">
+        <!-- Vista previa: la misma sección de la portada, con sus clases -->
+        <figure class="vista-quien">
+          <div class="vista-quien-marco" data-vista-quien aria-hidden="true"></div>
+          <figcaption>Vista previa en directo: así se vería en la portada.</figcaption>
+        </figure>
+
+        <form id="form-quien" class="quien-form" novalidate>
+          <div class="quien-campos">
+          <div class="campo quien-campo-foto">
+            <span class="campo-titulo">Foto de quien vende o del puesto</span>
+            <div class="foto-banner">
+              <input class="sr" id="quien-foto" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="quien-foto-ayuda quien-foto-error">
+              <label class="boton boton-secundario" for="quien-foto">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-8 8"/></svg>
+                <span data-quien-foto-texto>Poner una foto</span>
+              </label>
+              <button type="button" class="boton-texto" data-quien-quitar-foto hidden>Quitar la foto</button>
+              <p id="quien-foto-ayuda" class="ayuda">JPG, PNG o WEBP · hasta 5 MB. Sin foto se ve el hueco de ejemplo.</p>
+            </div>
+            <p id="quien-foto-error" class="error-campo"></p>
+          </div>
+
+          <div class="campo">
+            <div class="campo-fila">
+              <label for="quien-texto">Texto de presentación</label>
+              <span class="contador" id="quien-texto-cuenta" data-contador-de="quien-texto">0/400</span>
+            </div>
+            <textarea class="control" id="quien-texto" rows="4" maxlength="400" aria-describedby="quien-texto-cuenta quien-texto-error"></textarea>
+            <p id="quien-texto-error" class="error-campo"></p>
+          </div>
+
+          <div class="quien-redes">
+          <div class="campo">
+            <label for="quien-instagram">Enlace de Instagram <span class="opcional">(vacío = sin botón)</span></label>
+            <input class="control" id="quien-instagram" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://www.instagram.com/tu-tienda" aria-describedby="quien-instagram-error">
+            <p id="quien-instagram-error" class="error-campo"></p>
+          </div>
+          <div class="campo">
+            <label for="quien-tiktok">Enlace de TikTok <span class="opcional">(vacío = sin botón)</span></label>
+            <input class="control" id="quien-tiktok" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://www.tiktok.com/@tu-tienda" aria-describedby="quien-tiktok-error">
+            <p id="quien-tiktok-error" class="error-campo"></p>
+          </div>
+          </div>
+          </div>
+
+          <fieldset class="campo opiniones-campo">
+            <legend class="campo-titulo">Opiniones de clientes <span class="opcional">(hasta 6)</span></legend>
+            <ol class="opiniones-lista" data-opiniones-lista></ol>
+            <!-- La tarjeta «+ Añadir opinión» la coloca admin.js al final de la lista -->
+            <div hidden><div class="opinion-anadir" data-opinion-anadir><button type="button" class="boton-anadir-opinion" data-anadir-opinion><span aria-hidden="true">+</span> Añadir opinión</button></div></div>
+            <p class="ayuda" data-opiniones-ayuda aria-live="polite"></p>
+          </fieldset>
+
+          <div class="escaparate-pie quien-pie">
+            <button type="submit" class="boton boton-primario">Guardar «Quién vende»</button>
+            <button type="button" class="boton-texto" data-quien-descartar hidden>Descartar cambios</button>
+            <p class="pendiente" data-quien-pendiente hidden>Hay cambios sin guardar</p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p>Prototipo de la trastienda · Fotos y prendas de Remini Vintage</p>
+      <p>Nada de lo que hagas aquí cambia la tienda real.</p>
+    </div>
+  </footer>
+
+  <!-- ============ Colgar prenda: la ficha de la prenda, en un solo formulario ============ -->
+  <dialog id="taller" class="taller" aria-labelledby="taller-titulo">
+    <form id="form-prenda" class="taller-form" novalidate>
+      <div class="taller-cabeza">
+        <h2 id="taller-titulo" class="taller-titulo">Colgar <span>prenda nueva</span></h2>
+        <button type="button" class="boton-redondo boton-cerrar" data-cerrar-taller aria-label="Cerrar (lo escrito se queda)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+
+      <!-- La ficha es la prenda colgada: polaroid y nota a la izquierda; a la derecha, lo escrito en su sitio,
+           la etiqueta de precio colgando y una etiqueta kraft con lo secundario -->
+      <div class="taller-cuerpo">
+        <div class="ficha-izq">
+          <div class="ficha-polaroid" data-soltar>
+            <input class="sr" id="p-fotos" type="file" accept="image/jpeg,image/png,image/webp" multiple aria-describedby="p-fotos-ayuda p-fotos-error">
+            <label for="p-fotos" class="foto-cuadro">
+              <img data-foto-principal src="data:," alt="" hidden>
+              <span class="foto-cuadro-vacio"><span class="foto-cuadro-mas" aria-hidden="true">+</span><span>Elegir fotos</span></span>
+            </label>
+            <div class="miniaturas-fila">
+              <ul class="miniaturas-taller" data-fotos-lista aria-label="Fotos elegidas" hidden></ul>
+              <label for="p-fotos" class="mini-mas" data-mini-mas hidden><span aria-hidden="true">+</span><span class="sr">Añadir más fotos</span></label>
+            </div>
+            <p id="p-fotos-ayuda" class="f-ayuda" data-fotos-ayuda hidden>La primera es la portada.</p>
+            <p id="p-fotos-error" class="error-campo"></p>
+          </div>
+
+          <!-- Descripción: una nota de papel bajo la polaroid -->
+          <div class="nota-desc">
+            <label for="p-descripcion">Descripción <span class="f-opc">(opcional)</span></label>
+            <textarea id="p-descripcion" name="descripcion" rows="3" maxlength="500" placeholder="Cuéntala en una o dos frases"></textarea>
+          </div>
+        </div>
+
+        <div class="ficha-der">
+          <div class="ficha-datos">
+            <div class="f-fila f-marca" data-req="p-marca">
+              <label class="f-rotulo" for="p-marca">Marca</label>
+              <div class="f-dato f-dato-linea">
+                <input class="escrito c-marca" id="p-marca" name="marca" type="text" required maxlength="40" placeholder="Ej.: Levi's" enterkeyhint="next" aria-describedby="p-marca-error">
+                <button type="button" class="chip chip-sin-marca" data-poner="p-marca" data-valor="Sin marca">Sin marca</button>
+                <p id="p-marca-error" class="error-campo"></p>
+              </div>
+            </div>
+
+            <div class="f-fila f-nombre" data-req="p-nombre">
+              <label class="f-rotulo" for="p-nombre">Nombre</label>
+              <div class="f-dato f-dato-linea">
+                <textarea class="escrito c-nombre" id="p-nombre" name="nombre" rows="1" required maxlength="80" placeholder="Qué es" enterkeyhint="next" aria-describedby="p-nombre-error"></textarea>
+                <p id="p-nombre-error" class="error-campo"></p>
+              </div>
+            </div>
+
+            <!-- Precio: la etiqueta colgante de la portada, editable -->
+            <div class="f-precio" data-req="p-precio">
+              <div class="precio-colgante">
+                <span class="hilo" aria-hidden="true"></span>
+                <div class="etiqueta-precio etiqueta-precio-campo">
+                  <label class="sr" for="p-precio">Precio en soles</label>
+                  <span class="precio-cifra"><span class="precio-s" aria-hidden="true">S/</span><input id="p-precio" name="precio" type="number" min="0.01" step="0.01" inputmode="decimal" required placeholder="—" aria-describedby="p-precio-error"></span>
+                  <small aria-hidden="true">soles</small>
+                </div>
+              </div>
+              <p id="p-precio-error" class="error-campo"></p>
+            </div>
+
+            <fieldset class="f-fila f-cat" id="p-categoria" data-req="p-categoria" aria-describedby="p-categoria-error">
+              <legend class="sr">Categoría</legend>
+              <span class="f-rotulo" aria-hidden="true">Categoría</span>
+              <div class="f-dato">
+                <div class="chips-fila" data-categorias></div>
+                <div id="caja-categoria" class="caja-categoria" hidden>
+                  <label class="sr" for="p-categoria-nueva">Nombre de la categoría nueva</label>
+                  <input class="escrito" id="p-categoria-nueva" type="text" maxlength="30" placeholder="Nombre de la categoría" aria-describedby="p-categoria-nueva-error" enterkeyhint="done">
+                  <button type="button" class="chip chip-fuerte" data-anadir-categoria>Añadir</button>
+                  <p id="p-categoria-nueva-error" class="error-campo"></p>
+                </div>
+                <p id="p-categoria-error" class="error-campo"></p>
+              </div>
+            </fieldset>
+
+            <fieldset class="f-fila f-genero" id="p-genero" data-req="p-genero" aria-describedby="p-genero-error">
+              <legend class="sr">Para</legend>
+              <span class="f-rotulo" aria-hidden="true">Para</span>
+              <div class="f-dato">
+                <div class="chips-fila">
+                  <label class="chip-radio"><input type="radio" name="genero" value="Mujer"><span class="chip">Mujer</span></label>
+                  <label class="chip-radio"><input type="radio" name="genero" value="Hombre"><span class="chip">Hombre</span></label>
+                  <label class="chip-radio"><input type="radio" name="genero" value="Unisex"><span class="chip">Unisex</span></label>
+                </div>
+                <p id="p-genero-error" class="error-campo"></p>
+              </div>
+            </fieldset>
+
+            <!-- Estado: el termómetro (un range nativo transparente sobre el tubo). Empieza sin elegir -->
+            <div class="f-fila f-estado" data-req="p-estado">
+              <label class="f-rotulo" for="p-estado">Estado</label>
+              <div class="f-dato">
+                <div class="termo-fila">
+                  <div class="termometro sin-elegir" data-termometro style="--nivel:1">
+                    <span class="termo-bulbo" aria-hidden="true"></span>
+                    <span class="termo-tubo">
+                      <span class="termo-mercurio" aria-hidden="true"></span>
+                      <span class="termo-punta" aria-hidden="true" data-termo-num></span>
+                      <input class="termo-rango" id="p-estado" name="estado" type="range" min="1" max="10" step="1" value="10" aria-describedby="p-estado-frase p-estado-error">
+                    </span>
+                  </div>
+                  <p id="p-estado-frase" class="termo-frase" data-frase-estado>Toca para elegir</p>
+                </div>
+                <p id="p-estado-error" class="error-campo"></p>
+              </div>
+            </div>
+
+            <!-- Talla: el metro de modista (range nativo transparente); el valor de verdad va en #p-talla -->
+            <div class="f-fila f-talla" data-req="p-talla">
+              <label class="f-rotulo" for="p-talla-cinta">Talla</label>
+              <div class="f-dato">
+                <div class="talla-fila">
+                  <div class="cinta-metrica recogida" data-cinta style="--f:0;--n:7">
+                    <span class="cinta-carrete" aria-hidden="true"></span>
+                    <span class="cinta-pista">
+                      <span class="cinta-tira" aria-hidden="true"></span>
+                      <span class="cinta-punta" aria-hidden="true"></span>
+                      <span class="cinta-marcas" aria-hidden="true" data-cinta-marcas></span>
+                      <input class="cinta-rango" id="p-talla-cinta" type="range" min="0" max="7" step="1" value="0" aria-valuetext="Cinta recogida: sin talla" aria-describedby="p-talla-error">
+                    </span>
+                    <input class="escrito cinta-otra" id="p-talla" name="talla" type="text" maxlength="20" placeholder="Ej.: 38 europea" enterkeyhint="next" aria-label="Otra talla (escríbela)" aria-describedby="p-talla-error" hidden>
+                  </div>
+                  <div class="talla-otras">
+                    <button type="button" class="chip" data-poner="p-talla" data-valor="Estándar">Estándar</button>
+                    <button type="button" class="chip chip-otra" data-otra-talla aria-expanded="false" aria-controls="p-talla">Otra…</button>
+                  </div>
+                </div>
+                <p id="p-talla-error" class="error-campo"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lo secundario, en una etiqueta kraft -->
+          <div class="kraft">
+            <div class="kraft-renglon kraft-doble">
+              <div class="kraft-campo f-real" data-req="p-talla-real">
+                <span class="kraft-etiqueta">Le queda</span>
+                <button type="button" class="chip" data-igual-talla aria-pressed="false">Igual</button>
+                <label class="sr" for="p-talla-real">Le queda: otra talla (si no es igual a la de la etiqueta)</label>
+                <input class="kraft-input" id="p-talla-real" name="tallaReal" type="text" maxlength="20" placeholder="u otra: L holgada" enterkeyhint="next" aria-describedby="p-talla-real-error">
+                <p id="p-talla-real-error" class="error-campo"></p>
+              </div>
+              <div class="kraft-campo f-epoca" role="group" aria-labelledby="p-epoca-etiqueta">
+                <span class="kraft-etiqueta" id="p-epoca-etiqueta">Época</span>
+                <div class="chips-fila" data-epocas>
+                  <button type="button" class="chip" data-poner="p-decada" data-valor="Y2K">Y2K</button>
+                  <button type="button" class="chip" data-poner="p-decada" data-valor="90s" tabindex="-1">90s</button>
+                  <button type="button" class="chip" data-poner="p-decada" data-valor="80s" tabindex="-1">80s</button>
+                  <button type="button" class="chip" data-poner="p-decada" data-valor="Vintage" tabindex="-1">Vintage</button>
+                  <button type="button" class="chip chip-otra" data-otra-epoca aria-expanded="false" aria-controls="p-decada" tabindex="-1">Otra…</button>
+                </div>
+                <label class="sr" for="p-decada">Otra época</label>
+                <input class="kraft-input kraft-corto" id="p-decada" name="decada" type="text" maxlength="20" placeholder="Ej.: 70s" enterkeyhint="next" hidden>
+              </div>
+            </div>
+
+            <fieldset class="kraft-renglon kraft-campo f-medidas" aria-describedby="p-medidas-ayuda p-medidas-error">
+              <legend class="sr">Medidas en centímetros, en plano</legend>
+              <div class="medidas-linea">
+                <span class="kraft-etiqueta" aria-hidden="true">Medidas</span>
+                <span class="medida" data-medida-de="arriba"><label for="p-pecho">Pecho</label><input class="kraft-input" id="p-pecho" name="pecho" type="number" min="1" max="300" step="any" inputmode="decimal" data-medida></span>
+                <span class="medida" data-medida-de="abajo" hidden><label for="p-cintura">Cintura</label><input class="kraft-input" id="p-cintura" name="cintura" type="number" min="1" max="300" step="any" inputmode="decimal" data-medida></span>
+                <span class="medida"><label for="p-largo">Largo</label><input class="kraft-input" id="p-largo" name="largo" type="number" min="1" max="300" step="any" inputmode="decimal" data-medida></span>
+                <span class="medida" data-medida-de="arriba"><label for="p-hombros">Hombros</label><input class="kraft-input" id="p-hombros" name="hombros" type="number" min="1" max="300" step="any" inputmode="decimal" data-medida></span>
+                <span class="medida" data-medida-de="abajo" hidden><label for="p-tiro">Tiro</label><input class="kraft-input" id="p-tiro" name="tiro" type="number" min="1" max="300" step="any" inputmode="decimal" data-medida></span>
+                <span class="medidas-cm" data-medidas-cm aria-hidden="true">cm</span>
+                <button type="button" class="kraft-enlace" data-medidas-tipicas hidden>Volver a las típicas</button>
+              </div>
+              <p id="p-medidas-ayuda" class="kraft-ayuda" data-medidas-ayuda>Elige la talla y se rellenan las medidas típicas.</p>
+              <p class="sr" data-medidas-anuncio aria-live="polite"></p>
+              <p id="p-medidas-error" class="error-campo"></p>
+            </fieldset>
+
+            <div class="kraft-renglon kraft-campo f-nota">
+              <label class="kraft-etiqueta" for="p-nota">Detalles</label>
+              <input class="kraft-input" id="p-nota" name="notaEstado" type="text" maxlength="80" placeholder="Ej.: leve desgaste en el cuello" enterkeyhint="next">
+            </div>
+          </div>
+
+          <!-- En el móvil, «Vaciar» va al final de la ficha (con confirmación), no en el pie -->
+          <p class="vaciar-final"><button type="button" class="boton-texto" data-vaciar>Vaciar la ficha</button></p>
+        </div>
+      </div>
+
+      <div class="taller-pie">
+        <div class="faltan" data-faltan></div>
+        <p id="taller-estado" class="sr" role="status" aria-live="polite"></p>
+        <button type="button" class="boton-texto vaciar-pie" data-vaciar>Vaciar</button>
+        <button type="submit" class="boton boton-primario boton-colgar-tienda">Colgar en la tienda</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ Confirmación (restablecer la demo) ============ -->
+  <dialog id="confirmar" class="confirmar" aria-labelledby="confirmar-titulo" aria-describedby="confirmar-texto">
+    <div class="confirmar-papel">
+      <span class="ojal" aria-hidden="true"></span>
+      <h2 id="confirmar-titulo" class="confirmar-titulo"></h2>
+      <p id="confirmar-texto" class="confirmar-texto"></p>
+      <div class="confirmar-botones">
+        <button type="button" class="boton boton-peligro" data-confirmar-si></button>
+        <button type="button" class="boton boton-papel" data-confirmar-no>Cancelar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Avisos: como el mensaje de WhatsApp de la portada -->
+  <div id="aviso" class="aviso-chat" role="status" aria-live="polite"></div>
+</body>
+</html>
