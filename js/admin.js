@@ -5,11 +5,16 @@
 (function () {
   "use strict";
 
-  var CLAVE = "remini-admin-demo-v1";
+  // v2: datos/prendas.json trae ya para quién, talla real, medidas, detalles y situación
+  var CLAVE = "remini-admin-demo-v2";
+  // La demo de antes (v1) ya no se lee: se borra para no dejar datos huérfanos en el navegador
+  try { localStorage.removeItem("remini-admin-demo-v1"); } catch (e) { /* sin almacenamiento */ }
   var MAX_FOTO = 5 * 1024 * 1024;
   var TIPOS_FOTO = ["image/jpeg", "image/png", "image/webp"];
-  var CATEGORIAS = ["Camisa", "Casacas", "Joyitas", "Pantalón", "Polo", "Short"];
-  var DE_DATOS = { camisas: "Camisa", casacas: "Casacas", pantalones: "Pantalón", polos: "Polo", shorts: "Short" };
+  // En singular en el panel; la tienda las enseña en plural (camisas, casacas…). La joyita no es una
+  // categoría: es la estrella de una prenda
+  var CATEGORIAS = ["Camisa", "Casaca", "Pantalón", "Polo", "Short"];
+  var DE_DATOS = { camisas: "Camisa", casacas: "Casaca", pantalones: "Pantalón", polos: "Polo", shorts: "Short" };
   var BANNER_INICIAL = { l1: "Venta de ropa vintage Y2K", l2: "Envíos a todo el Perú", fecha: null };
   // «Quién vende»: de inicio, los textos de ejemplo de la portada (sin nombres de personas)
   var QUIEN_INICIAL = {
@@ -81,12 +86,10 @@
   function cm(n) {
     return Number(n).toLocaleString("es-PE", { maximumFractionDigits: 1 });
   }
+  /* La escala del estado es la de la tienda: js/escala.js (window.EscalaEstado) */
   function fraseEstado(n) {
-    if (n >= 10) return "como nueva, sin uso";
-    if (n === 9) return "casi nueva, sin detalles a la vista";
-    if (n === 8) return "buen estado, leve desgaste de uso";
-    if (n === 7) return "estado aceptable, con señales de uso";
-    return "con uso visible: cuenta los detalles";
+    var e = window.EscalaEstado(n);
+    return e ? e.frase : "";
   }
   function plural(n, uno, varios) { return n === 1 ? uno : varios; }
 
@@ -235,6 +238,16 @@
     };
   }
 
+  var GENEROS = ["Mujer", "Hombre", "Unisex"];
+  // En datos/prendas.json «aprox: true» vale para todas; el panel guarda la lista de las aproximadas
+  function medidasDeDatos(m) {
+    if (!m || typeof m !== "object") return {};
+    var copia = {};
+    NOMBRES_MEDIDA.forEach(function (k) { if (m[k] !== undefined) copia[k] = m[k]; });
+    copia.aprox = m.aprox === true ? Object.keys(copia) : m.aprox;
+    return sanearMedidas(copia);
+  }
+
   function desdeDatos(prendas) {
     return {
       banner: Object.assign({}, BANNER_INICIAL),
@@ -247,16 +260,16 @@
           marca: p.marca,
           decada: p.epoca || "",
           categoria: DE_DATOS[p.categoria] || p.categoria,
-          genero: "",
+          genero: GENEROS.indexOf(p.genero) !== -1 ? p.genero : "",
           talla: p.talla,
-          tallaReal: "",
+          tallaReal: cadena(p.tallaReal),
           estado: parseInt(p.estado, 10) || 10,
-          notaEstado: "",
-          medidas: {},
+          notaEstado: cadena(p.notaEstado),
+          medidas: medidasDeDatos(p.medidas),
           precio: p.precio,
           descripcion: p.descripcion || "",
           foto: "img/prendas/" + p.slug + "-1.webp",
-          situacion: "disponible",
+          situacion: SITUACIONES.indexOf(p.situacion) !== -1 ? p.situacion : "disponible",
           destacada: !!p.joyita
         };
       })
@@ -775,13 +788,15 @@
   /* Estado en la polaroid: un sello de tinta pequeño, como los de la portada.
      Verde tinta (9-10), tinta azul oscura (7-8), rojo tinta (6 o menos). Sin estado, no se muestra */
   function selloEstado(estadoPrenda) {
-    var n = parseInt(estadoPrenda, 10);
-    if (!(n >= 1 && n <= 10)) return "";
-    var palabra = n >= 10 ? "Como nueva" : n === 9 ? "Casi nueva" : n === 8 ? "Muy bueno" : n === 7 ? "Bueno" : "Usado";
-    var tinta = n >= 9 ? "sello-verde" : n >= 7 ? "sello-azul" : "sello-rojo";
-    return '<span class="sello-estado ' + tinta + '">' +
+    var e = window.EscalaEstado(estadoPrenda);
+    if (!e) return "";
+    var n = e.n;
+    var palabra = e.palabra;
+    return '<span class="sello-estado ' + e.tinta + '">' +
       '<span class="sr">· Estado ' + n + " de 10, " + palabra.toLowerCase() + "</span>" +
-      '<b aria-hidden="true">' + n + '/10</b><small aria-hidden="true">' + palabra + "</small></span>";
+      '<b aria-hidden="true">' + n + '/10</b><small aria-hidden="true">' +
+      // cada palabra en su <span>: en el móvil van una debajo de otra y el sello cabe en la fila
+      palabra.split(" ").map(function (x) { return "<span>" + esc(x) + "</span>"; }).join(" ") + "</small></span>";
   }
 
   function htmlNueva() {
