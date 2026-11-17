@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Trastienda · Remini Vintage (prototipo del acceso)</title>
+  <meta name="theme-color" content="#14110d">
+
+  <link rel="icon" href="img/logo-remini.webp" type="image/webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/estilos.css?v=20261117-4">
+  <link rel="stylesheet" href="css/admin.css?v=20261117-4">
+  <link rel="preload" as="image" href="img/portada.webp" fetchpriority="high">
+  <script src="js/login.js?v=20261117-4" defer></script>
+</head>
+<body class="pagina-login">
+  <div class="franja" role="note">
+    <div class="contenedor">
+      <span><strong>Propuesta de rediseño para Remini Vintage</strong> · prototipo del acceso, no es el panel real ·</span>
+      <a href="index.html">Ver la propuesta de tienda</a>
+    </div>
+  </div>
+
+  <main class="login">
+    <img class="login-fondo" src="img/portada.webp" alt="" width="1000" height="599" fetchpriority="high">
+
+    <!-- Decoración: las mismas piezas que flotan en la portada -->
+    <div class="login-flotantes" aria-hidden="true">
+      <div class="login-polaroid lp-1" style="--rot:-9deg">
+        <img src="img/prendas/polo-all-over-print-tiger-1.webp" alt="" width="1000" height="1350" decoding="async">
+        <span>Polo Tiger <b>S/&nbsp;50</b></span>
+      </div>
+      <div class="login-polaroid lp-2" style="--rot:8deg">
+        <img src="img/prendas/camisa-christian-audigier-rosas-y-dagas-1.webp" alt="" width="1000" height="1350" decoding="async">
+        <span>Camisa Audigier <b>S/&nbsp;500</b></span>
+      </div>
+      <div class="login-polaroid lp-3" style="--rot:5deg">
+        <img src="img/prendas/short-denim-coogi-bordado-1.webp" alt="" width="1000" height="1350" loading="lazy" decoding="async">
+        <span>Short Coogi <b>S/&nbsp;150</b></span>
+      </div>
+      <span class="cinta login-cinta">Remini Vintage ✦ Solo personal ✦ Remini Vintage ✦ Solo personal ✦ Remini Vintage ✦ Solo personal ✦</span>
+      <span class="destello login-d1"></span>
+      <span class="destello login-d2"></span>
+      <span class="destello login-d3"></span>
+      <span class="destello login-d4"></span>
+    </div>
+
+    <!-- El formulario es una etiqueta de ropa colgada de su cordel -->
+    <div class="etiqueta-login">
+      <span class="cordel" aria-hidden="true"></span>
+      <div class="etiqueta-borde">
+        <div class="etiqueta-papel">
+          <span class="ojal" aria-hidden="true"></span>
+          <p class="etiqueta-ante">Remini Vintage · Lima</p>
+          <h1 class="login-titulo">Trastienda</h1>
+          <p class="login-sub">Aquí cuelgas prendas, marcas las vendidas y cambias el escaparate.</p>
+
+          <form id="form-login" class="login-form" action="admin.html" method="get" novalidate>
+            <div class="linea">
+              <label for="correo">Correo</label>
+              <input id="correo" type="email" autocomplete="username" inputmode="email" autocapitalize="off" spellcheck="false" enterkeyhint="go">
+            </div>
+
+            <div class="linea">
+              <label for="clave">Contraseña</label>
+              <div class="linea-con-boton">
+                <input id="clave" type="password" autocomplete="current-password" enterkeyhint="go">
+                <button type="button" class="boton-ver" data-ver-clave aria-controls="clave">
+                  <span class="texto-ver">Mostrar</span><span class="sr"> contraseña</span>
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" class="boton boton-primario boton-abrir" data-entrar>
+              <span class="cargando cargando-boton" aria-hidden="true" hidden></span>
+              <span data-entrar-texto>Abrir la trastienda</span>
+            </button>
+          </form>
+
+          <p class="aviso-demo">
+            <span class="etiqueta etiqueta-demo">Demo</span>
+            Pulsa «Abrir la trastienda» para entrar: no hace falta escribir nada. No se envía nada.
+          </p>
+          <div class="etiqueta-pie">
+            <a class="login-volver" href="index.html">← Volver a la tienda</a>
+            <span class="sello sello-tinta login-sello" aria-hidden="true">Solo<br>personal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
