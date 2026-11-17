@@ -11,6 +11,16 @@
     "mas-250": function (p) { return p > 250; }
   };
   var ORDEN_TALLAS = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+  // «Para»: lo unisex sale tanto en Mujer como en Hombre (y una prenda sin «para quién»
+  // cuenta como unisex: mejor que salga en los dos que en ninguno)
+  function esUnisex(g) { return !g || g === "Unisex"; }
+  var PARA = {
+    mujer: function (g) { return g === "Mujer" || esUnisex(g); },
+    hombre: function (g) { return g === "Hombre" || esUnisex(g); }
+  };
+  // Solo las claves propias: «#todas&para=__proto__» o «constructor» no son filtros
+  function tiene(obj, clave) { return Object.prototype.hasOwnProperty.call(obj, clave); }
+  var NOMBRE_PARA = { mujer: "para mujer", hombre: "para hombre" };
 
   var prendas = [];
   var estado = vacio();
@@ -18,14 +28,14 @@
   var rejilla, resultado, buscar, limpiar, selects;
 
   function vacio() {
-    return { cat: "todas", talla: "", precio: "", marca: "", q: "" };
+    return { cat: "todas", para: "", talla: "", precio: "", marca: "", q: "" };
   }
 
   function hayFiltros(e) {
-    return e.cat !== "todas" || !!e.talla || !!e.precio || !!e.marca || !!e.q;
+    return e.cat !== "todas" || !!e.para || !!e.talla || !!e.precio || !!e.marca || !!e.q;
   }
 
-  /* ---------- Hash: #casacas&talla=M&precio=100-250&marca=Coogi&q=tiger ---------- */
+  /* ---------- Hash: #casacas&para=mujer&talla=M&precio=100-250&marca=Coogi&q=tiger ---------- */
 
   function leerHash() {
     var h = location.hash.replace(/^#/, "");
@@ -44,8 +54,12 @@
       var clave = parte.slice(0, i);
       var valor = "";
       try { valor = decodeURIComponent(parte.slice(i + 1).replace(/\+/g, " ")); } catch (err) { /* hash mal formado */ }
-      if (clave === "talla" || clave === "marca" || clave === "q") e[clave] = valor;
-      if (clave === "precio" && PRECIOS[valor]) e.precio = valor;
+      if (clave === "q") e.q = valor;
+      // talla y marca, solo si alguna prenda la tiene: un enlace viejo con «talla=ZZ» no deja
+      // la lista vacía con un filtro que no se ve en ningún desplegable
+      if ((clave === "talla" || clave === "marca") && prendas.some(function (p) { return p[clave] === valor; })) e[clave] = valor;
+      if (clave === "precio" && tiene(PRECIOS, valor)) e.precio = valor;
+      if (clave === "para" && tiene(PARA, valor)) e.para = valor;
     });
     return e;
   }
@@ -54,7 +68,7 @@
     var url = location.pathname + location.search;
     if (hayFiltros(estado)) {
       var partes = [estado.cat];
-      ["talla", "precio", "marca", "q"].forEach(function (k) {
+      ["para", "talla", "precio", "marca", "q"].forEach(function (k) {
         if (estado[k]) partes.push(k + "=" + encodeURIComponent(estado[k]));
       });
       url += "#" + partes.join("&");
@@ -70,6 +84,7 @@
     var q = R.normalizar(e.q.trim());
     return prendas.filter(function (p) {
       if (e.cat !== "todas" && p.categoria !== e.cat) return false;
+      if (e.para && !PARA[e.para](p.genero)) return false;
       if (e.talla && p.talla !== e.talla) return false;
       if (e.marca && p.marca !== e.marca) return false;
       if (e.precio && !PRECIOS[e.precio](Number(p.precio))) return false;
@@ -92,21 +107,59 @@
     '<svg class="icono-guardar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>' +
     '<svg class="icono-guardada" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>';
 
-  function tarjeta(p) {
+  /* «M · le queda L holgada», o «Talla M» si le queda su talla */
+  function htmlTalla(p) {
+    var real = R.leQueda(p);
+    return real
+      ? '<span class="sr">Talla </span><b>' + R.esc(p.talla) + "</b> · le queda " + R.esc(real)
+      : "Talla <b>" + R.esc(p.talla) + "</b>";
+  }
+
+  /* Etiqueta de precio colgada de un hilo, como en el perchero de la trastienda */
+  function htmlPrecio(p, tachado) {
     return (
-      "<li><article class=\"tarjeta\">" +
+      '<p class="tarjeta-precio">' +
+      '<span class="hilo" aria-hidden="true"></span>' +
+      '<span class="etiqueta-precio"><span class="sr">' + (tachado ? "Precio anterior: " : "Precio: ") + "</span>" + R.precio(p.precio) + "</span>" +
+      "</p>"
+    );
+  }
+
+  function tarjeta(p) {
+    var reservada = R.esReservada(p);
+    var etiquetas = (p.joyita ? '<span class="etiqueta etiqueta-joyita">Joyita</span>' : "") +
+      (p.epoca ? '<span class="etiqueta-epoca">' + R.esc(p.epoca) + "</span>" : "");
+    // Lo que va sobre la foto (etiquetas, sello y «Reservada») se ve ahí, pero el lector de
+    // pantalla lo oye después de la marca y el nombre, como el precio
+    var est = R.estadoDe(p.estado);
+    var paraLector = [
+      reservada ? "Reservada" : "",
+      p.joyita ? "Joyita" : "",
+      p.epoca ? "Época " + p.epoca : "",
+      est ? "Estado " + est.n + " de 10, " + est.palabra.toLowerCase() : ""
+    ].filter(Boolean).join(" · ");
+    return (
+      '<li><article class="tarjeta' + (reservada ? " tarjeta-reservada" : "") + '">' +
       '<div class="tarjeta-foto">' +
       '<img src="' + R.foto(p.slug, 1) + '" alt="' + R.esc(R.alt(p, 1)) + '" width="1000" height="1350" loading="lazy" decoding="async">' +
-      (p.joyita ? '<span class="etiqueta etiqueta-joyita">Joyita</span>' : "") +
+      '<div class="tarjeta-sobre-foto" aria-hidden="true">' +
+      (etiquetas ? '<p class="tarjeta-etiquetas">' + etiquetas + "</p>" : "") +
+      R.htmlSello(p.estado, "sello-foto") +
+      (reservada ? '<span class="sello sello-reservada">Reservada</span>' : "") +
+      "</div>" +
       "</div>" +
       '<div class="tarjeta-cuerpo">' +
       '<p class="tarjeta-marca">' + R.esc(p.marca) + "</p>" +
       '<h3 class="tarjeta-nombre"><a class="enlace-estirado" href="' + R.enlacePrenda(p.slug) + '">' + R.esc(p.nombre) + "</a></h3>" +
-      '<p class="tarjeta-datos"><span>Talla ' + R.esc(p.talla) + "</span><span>Estado " + R.esc(p.estado) + "</span></p>" +
+      (paraLector ? '<p class="sr">' + R.esc(paraLector) + "</p>" : "") +
+      '<p class="tarjeta-talla">' + htmlTalla(p) + "</p>" +
+      htmlPrecio(p) +
       '<div class="tarjeta-pie">' +
-      '<p class="precio">' + R.precio(p.precio) + "</p>" +
-      '<button type="button" class="boton boton-guardar" data-guardar="' + R.esc(p.slug) + '" data-nombre="' + R.esc(p.nombre) + '" aria-pressed="false" aria-label="Guardar ' + R.esc(p.nombre) + ' en Mi bolsa">' +
-      ICONO_GUARDAR + '<span class="texto-guardar">Guardar</span></button>' +
+      (reservada
+        ? '<a class="boton boton-avisar" href="' + R.esc(R.enlaceWhatsApp(R.mensajeAviso(p))) + '" target="_blank" rel="noopener noreferrer">' +
+          R.iconoWhatsApp + "<span>Avisarme si se libera</span><span class=\"sr\"> · " + R.esc(p.nombre) + " (abre WhatsApp)</span></a>"
+        : '<button type="button" class="boton boton-guardar" data-guardar="' + R.esc(p.slug) + '" data-nombre="' + R.esc(p.nombre) + '" aria-pressed="false" aria-label="Guardar ' + R.esc(p.nombre) + ' en Mi bolsa">' +
+          ICONO_GUARDAR + '<span class="texto-guardar">Guardar</span></button>') +
       "</div></div></article></li>"
     );
   }
@@ -123,7 +176,8 @@
       '<p><span class="etiqueta etiqueta-ejemplo">Ejemplo</span></p>' +
       '<h3 class="tarjeta-nombre">Ejemplo de prenda vendida</h3>' +
       '<p class="tarjeta-datos"><span>Se queda unos días en gris, sin botón, para que se vea que la tienda vende.</span></p>' +
-      '<div class="tarjeta-pie"><p class="precio"><span class="sr">Precio anterior </span>S/ 90</p><p class="tarjeta-datos"><strong>Vendida</strong></p></div>' +
+      htmlPrecio({ precio: 90 }, true) +
+      '<div class="tarjeta-pie"><p class="tarjeta-datos"><strong>Vendida</strong></p></div>' +
       "</div></article></li>"
     );
   }
@@ -132,8 +186,8 @@
      (p. ej. «audigier» con Casacas elegida), ofrecer buscar lo mismo en todas las prendas. */
   function htmlSinResultados() {
     var q = estado.q.trim();
-    var otros = estado.cat !== "todas" || !!estado.talla || !!estado.precio || !!estado.marca;
-    var enTodas = q && otros ? filtrar({ cat: "todas", talla: "", precio: "", marca: "", q: q }).length : 0;
+    var otros = estado.cat !== "todas" || !!estado.para || !!estado.talla || !!estado.precio || !!estado.marca;
+    var enTodas = q && otros ? filtrar({ cat: "todas", para: "", talla: "", precio: "", marca: "", q: q }).length : 0;
     var texto;
     if (q && otros) texto = "«" + R.esc(q) + "» no aparece con los filtros que elegiste.";
     else if (q) texto = "No encontramos «" + R.esc(q) + "». Prueba con la marca o con menos letras: cada viernes entran nuevas.";
@@ -191,7 +245,14 @@
     var n = lista.length;
     var texto = n + (n === 1 ? " prenda" : " prendas");
     if (estado.cat !== "todas") texto += " en " + R.nombreCategoria(estado.cat);
+    if (estado.para) texto += " " + NOMBRE_PARA[estado.para];
     if (conFiltros) texto += " de " + prendas.length;
+    // Con «Mujer» u «Hombre» salen también las unisex: se dice cuántas, para que no extrañe
+    // ver un polo de hombre al elegir «Mujer»
+    if (estado.para) {
+      var unisex = lista.filter(function (p) { return esUnisex(p.genero); }).length;
+      if (unisex) texto += unisex === n ? (n === 1 ? " (es unisex)" : " (todas unisex)") : " (" + unisex + " unisex)";
+    }
     resultado.textContent = texto;
 
     document.querySelectorAll(".chip[data-cat]").forEach(function (chip) {
@@ -201,6 +262,16 @@
     // con «audigier» escrito, «Camisas 1» y «Casacas 0» dicen dónde está antes de tocar
     document.querySelectorAll("[data-cuenta]").forEach(function (el) {
       el.textContent = String(cuantasCon({ cat: el.getAttribute("data-cuenta") }));
+    });
+    // «Para»: Todo, Mujer y Hombre, con lo que daría cada uno con los demás filtros
+    document.querySelectorAll(".chip[data-para]").forEach(function (chip) {
+      var valor = chip.getAttribute("data-para");
+      var cuantas = cuantasCon({ para: valor });
+      var elegido = valor === estado.para;
+      chip.setAttribute("aria-pressed", elegido ? "true" : "false");
+      chip.querySelector(".chip-cuenta").textContent = String(cuantas);
+      // como en los desplegables: lo que daría 0 prendas no se puede elegir (salvo el elegido)
+      chip.disabled = cuantas === 0 && !elegido;
     });
     selects.forEach(function (s) {
       var k = s.getAttribute("data-filtro");
@@ -212,8 +283,8 @@
     if (buscar.value !== estado.q) buscar.value = estado.q;
     limpiar.hidden = !conFiltros;
 
-    // Botón «Filtrar» del móvil: cuántos filtros hay puestos (categoría, talla, precio, marca y búsqueda)
-    var activos = (estado.cat !== "todas" ? 1 : 0) + ["talla", "precio", "marca", "q"].filter(function (k) { return !!estado[k]; }).length;
+    // Botón «Filtrar» del móvil: cuántos filtros hay puestos (categoría, para, talla, precio, marca y búsqueda)
+    var activos = (estado.cat !== "todas" ? 1 : 0) + ["para", "talla", "precio", "marca", "q"].filter(function (k) { return !!estado[k]; }).length;
     var cuenta = document.querySelector("[data-filtros-activos]");
     var cuentaTexto = document.querySelector("[data-filtros-activos-texto]");
     if (cuenta) {
@@ -336,6 +407,12 @@
       });
     });
 
+    document.querySelectorAll(".chip[data-para]").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        cambiar({ para: chip.getAttribute("data-para") });
+      });
+    });
+
     selects.forEach(function (s) {
       s.addEventListener("change", function () {
         var c = {};
@@ -363,7 +440,7 @@
         document.querySelector('.chip[data-cat="todas"]').focus();
       }
       if (e.target.closest("[data-buscar-en-todas]")) {
-        estado = { cat: "todas", talla: "", precio: "", marca: "", q: estado.q };
+        estado = { cat: "todas", para: "", talla: "", precio: "", marca: "", q: estado.q };
         escribirHash();
         pintar();
         document.querySelector('.chip[data-cat="todas"]').focus();

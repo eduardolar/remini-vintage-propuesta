@@ -24,21 +24,25 @@
 
   function ponerSeo(p) {
     document.title = p.nombre + " · Talla " + p.talla + " · " + R.precio(p.precio) + " | Remini Vintage";
+    // «Vintage Y2K», pero no «Vintage Vintage» cuando la época es justo «Vintage»
+    var vintage = !p.epoca || R.normalizar(p.epoca) === "vintage" ? "vintage" : "vintage " + p.epoca;
     ponerMeta(
       "description",
       p.nombre + " de " + p.marca + ", talla " + p.talla + ", estado " + p.estado + ". " +
       (p.descripcion ? p.descripcion + " " : "") +
-      "Vintage " + p.epoca + " única, con envíos a todo el Perú. Resérvala por WhatsApp y paga con Yape o Plin."
+      "Prenda " + vintage + " única, con envíos a todo el Perú. Resérvala por WhatsApp y paga con Yape o Plin."
     );
 
     var fotos = [];
     for (var i = 1; i <= (p.fotos || 3); i++) fotos.push(R.urlAbsoluta(R.foto(p.slug, i)));
 
+    var DISPONIBILIDAD = { reservada: "Reserved", vendida: "SoldOut" };
+    var GENERO = { Mujer: "female", Hombre: "male", Unisex: "unisex" };
     var datos = {
       "@context": "https://schema.org",
       "@type": "Product",
       name: p.nombre,
-      description: p.descripcion || p.nombre + " vintage " + p.epoca + ", estado " + p.estado + ".",
+      description: p.descripcion || p.nombre + ", " + vintage + ", estado " + p.estado + ".",
       sku: p.slug,
       brand: { "@type": "Brand", name: p.marca },
       size: p.talla,
@@ -49,25 +53,91 @@
         url: R.urlAbsoluta(R.enlacePrenda(p.slug)),
         price: Number(p.precio).toFixed(2),
         priceCurrency: "PEN",
-        availability: "https://schema.org/InStock",
+        availability: "https://schema.org/" + (DISPONIBILIDAD[p.situacion] || "InStock"),
+        // Todo es de segunda mano: un 10/10 «como nueva» sigue siendo usada (NewCondition solo
+        // valdría para una prenda sin estrenar, con su etiqueta, y ese dato no existe)
         itemCondition: "https://schema.org/UsedCondition"
       }
     };
+    if (GENERO[p.genero]) datos.audience = { "@type": "PeopleAudience", suggestedGender: GENERO[p.genero] };
     var script = document.createElement("script");
     script.type = "application/ld+json";
     script.textContent = JSON.stringify(datos);
     document.head.appendChild(script);
   }
 
-  /* ---------- Medidas según el tipo de prenda (ejemplo) ---------- */
+  /* ---------- Etiqueta kraft: talla, medidas, estado, detalles, época y para ----------
+     Orden por lo que más se pregunta: «¿me queda?» (talla y medidas) y «¿en qué estado está?»
+     (estado y detalles) van primero, para que entren en la primera pantalla del móvil; la época
+     ya sale sobre la foto y «para quién» se filtra en la portada, así que van al final. */
 
-  function medidasEjemplo(p) {
-    var piezas = p.categoria === "pantalones" || p.categoria === "shorts"
-      ? ["Cintura", "Largo", "Tiro"]
-      : ["Pecho", "Largo", "Manga"];
-    return piezas.map(function (n) {
-      return n + ' <span class="hueco" aria-hidden="true">__</span><span class="sr">sin dato</span> cm';
-    }).join(" · ");
+  function renglon(pares) {
+    return '<div class="kraft-renglon">' + pares.map(function (x) {
+      return "<dt>" + x[0] + "</dt><dd>" + x[1] + "</dd>";
+    }).join("") + "</div>";
+  }
+
+  function htmlKraft(p) {
+    var real = R.leQueda(p);
+    var m = R.medidas(p);
+    var est = R.estadoDe(p.estado);
+    var medidas = m.lista.length
+      ? m.lista.map(function (x) { return x.nombre + " <b>" + R.cm(x.valor) + "</b>"; }).join(" · ") +
+        ' <span class="kraft-unidad">' + m.unidad + "</span>"
+      : "Pídelas por WhatsApp";
+    return (
+      '<section class="kraft-ficha" aria-labelledby="kraft-titulo">' +
+      '<h2 class="sr" id="kraft-titulo">Talla, medidas y estado</h2>' +
+      '<span class="kraft-ojal" aria-hidden="true"></span>' +
+      "<dl>" +
+      // «Le queda» solo con talla real: «su talla» si coincide; sin el dato, no se inventa
+      renglon([["Talla", "<b>" + R.esc(p.talla) + "</b>"]].concat(
+        real ? [["Le queda", "<b>" + R.esc(real) + "</b>"]] : String(p.tallaReal || "").trim() ? [["Le queda", "su talla"]] : []
+      )) +
+      renglon([["Medidas", medidas]]) +
+      '<div class="kraft-renglon kraft-estado">' +
+      "<dt>Estado</dt><dd>" + R.htmlSello(p.estado, "sello-ficha", true) + (est ? " " + R.esc(est.detalle) : R.esc(p.estado)) + "</dd>" +
+      "</div>" +
+      renglon([["Detalles", p.notaEstado ? R.esc(p.notaEstado) : "Sin detalles a la vista"]]) +
+      renglon([
+        ["Época", "<b>" + R.esc(p.epoca || "—") + "</b>"],
+        ["Para", p.genero ? "<b>" + R.esc(p.genero) + "</b>" : "—"]
+      ]) +
+      "</dl>" +
+      htmlComoMedir(p) +
+      // Los campos que la tienda aún no tiene van inventados: se dice cuáles, en una línea
+      '<p class="kraft-nota">Ejemplo: le queda, medidas, detalles y para quién.</p>' +
+      "</section>"
+    );
+  }
+
+  /* «¿Cómo medir?»: se abre en la misma etiqueta, debajo de las medidas (sin saltar a otra
+     parte de la página ni repetir el título en una sección aparte): un dibujo y una línea */
+  var DIBUJO_ARRIBA =
+    '<svg class="dibujo-medir" viewBox="0 0 170 124" role="img" aria-label="Dibujo de una prenda de arriba en plano: hombros de costura a costura, pecho de axila a axila y largo del hombro al bajo">' +
+    '<path class="dibujo-prenda" d="M52 16 L34 20 L8 42 L22 58 L36 48 V116 H112 V48 L126 58 L140 42 L114 20 L96 16 Q74 30 52 16 Z"/>' +
+    '<g class="dibujo-linea"><path d="M34 8 H114 M34 4 V12 M114 4 V12"/><path d="M36 54 H112 M36 50 V58 M112 50 V58"/><path d="M152 20 V116 M148 20 H156 M148 116 H156"/></g>' +
+    '<g class="dibujo-texto" aria-hidden="true"><text x="74" y="3" text-anchor="middle">hombros</text><text x="74" y="70" text-anchor="middle">pecho</text><text x="160" y="72" text-anchor="middle" transform="rotate(-90 160 72)">largo</text></g>' +
+    "</svg>";
+  var DIBUJO_ABAJO =
+    '<svg class="dibujo-medir" viewBox="0 0 170 124" role="img" aria-label="Dibujo de un pantalón en plano: cintura de lado a lado, tiro de la cintura a la entrepierna y largo de la cintura al bajo">' +
+    '<path class="dibujo-prenda" d="M40 16 H112 L118 116 H90 L78 54 L74 54 L62 116 H34 Z"/>' +
+    '<g class="dibujo-linea"><path d="M40 8 H112 M40 4 V12 M112 4 V12"/><path d="M76 18 V52 M72 18 H80 M72 52 H80"/><path d="M134 16 V116 M130 16 H138 M130 116 H138"/></g>' +
+    '<g class="dibujo-texto" aria-hidden="true"><text x="76" y="3" text-anchor="middle">cintura</text><text x="96" y="40" text-anchor="middle">tiro</text><text x="146" y="66" text-anchor="middle" transform="rotate(-90 146 66)">largo</text></g>' +
+    "</svg>";
+
+  function htmlComoMedir(p) {
+    var abajo = R.esDeAbajo(p);
+    return (
+      '<details id="como-medir" class="como-medir"><summary>¿Cómo medir?</summary>' +
+      '<div class="como-medir-cuerpo">' + (abajo ? DIBUJO_ABAJO : DIBUJO_ARRIBA) +
+      '<p class="descripcion">' +
+      (abajo
+        ? "Con la prenda en plano: cintura de lado a lado, largo de la cintura al bajo por fuera y tiro de la cintura a la entrepierna."
+        : "Con la prenda en plano: pecho de axila a axila, largo del hombro al bajo y hombros de costura a costura.") +
+      " Compáralas con una prenda tuya que te quede bien.</p>" +
+      "</div></details>"
+    );
   }
 
   /* ---------- Pintado ---------- */
@@ -76,6 +146,7 @@
     var total = p.fotos || 3;
     var nombreCat = R.nombreCategoria(p.categoria);
     var urlCat = "index.html#" + p.categoria;
+    var reservada = R.esReservada(p);
 
     var figuras = "";
     var miniaturas = "";
@@ -86,8 +157,8 @@
         (i === 1 ? ' fetchpriority="high"' : ' loading="lazy"') + ' decoding="async">' +
         "</figure>";
       miniaturas +=
-        '<li><button type="button" data-foto="' + (i - 1) + '"' + (i === 1 ? ' aria-current="true"' : "") + ">" +
-        '<img src="' + R.foto(p.slug, i) + '" alt="' + R.esc(R.alt(p, i)) + '" width="64" height="80" loading="lazy" decoding="async">' +
+        '<li><button type="button" data-foto="' + (i - 1) + '" aria-label="Ver foto ' + i + " de " + total + '"' + (i === 1 ? ' aria-current="true"' : "") + ">" +
+        '<img src="' + R.foto(p.slug, i) + '" alt="" width="64" height="80" loading="lazy" decoding="async">' +
         "</button></li>";
     }
 
@@ -101,7 +172,12 @@
       /* Galería antes que la cabecera: en el móvil la foto sale primero; en el ordenador
          la rejilla la pone a la izquierda igual que antes */
       '<section class="galeria" aria-label="Fotos de la prenda">' +
+      '<div class="galeria-marco">' +
       '<div class="galeria-pista" tabindex="0" aria-label="Fotos: desliza o usa las flechas">' + figuras + "</div>" +
+      // la época ya la lee el lector en la etiqueta kraft: aquí es solo la cinta a la vista
+      (p.epoca ? '<span class="etiqueta-epoca" aria-hidden="true">' + R.esc(p.epoca) + "</span>" : "") +
+      (reservada ? '<span class="sello sello-reservada" aria-hidden="true">Reservada</span>' : "") +
+      "</div>" +
       '<ul class="miniaturas" aria-label="Elegir foto">' + miniaturas + "</ul>" +
       "</section>" +
 
@@ -115,16 +191,15 @@
       "<h1>" + R.esc(p.nombre) + "</h1>" +
       '<p class="precio"><span class="sr">Precio: </span>' + R.precio(p.precio) + "</p>" +
       "</div>" +
-      '<ul class="datos-prenda">' +
-      '<li class="dato">Talla <b>' + R.esc(p.talla) + "</b></li>" +
-      '<li class="dato">Estado <b>' + R.esc(p.estado) + "</b> · " + R.esc(R.fraseEstado(p.estado)) + "</li>" +
-      '<li class="dato">Categoría <a href="' + urlCat + '"><b>' + R.esc(nombreCat) + "</b></a></li>" +
-      '<li class="dato">Época <b>' + R.esc(p.epoca) + "</b></li>" +
-      "</ul>" +
+      htmlKraft(p) +
+      (reservada
+        ? '<p class="aviso-reservada"><strong>Reservada.</strong> Alguien la tiene apartada. Toca «Avisarme si se libera» y te escribimos por WhatsApp. ' +
+          '<span class="etiqueta etiqueta-ejemplo">Ejemplo</span></p>'
+        : "") +
       '<div class="envio bloque-ejemplo">' +
       '<p class="envio-cabeza">Envío y pago <span class="etiqueta etiqueta-ejemplo">Ejemplo</span></p>' +
       "<p>Envío Lima S/ __ (24-48 h) · Provincias por Shalom u Olva (2-5 días) · Yape, Plin o transferencia</p>" +
-      '<p class="nota-ejemplo">Precios y plazos de ejemplo: la tienda pondría los suyos. «Reservar por WhatsApp» abre el chat sin número (número de la tienda).</p>' +
+      '<p class="nota-ejemplo">El chat de WhatsApp se abre sin número: en la tienda iría el suyo.</p>' +
       "</div>" +
       "</div>" +
 
@@ -132,15 +207,9 @@
       (p.descripcion
         ? "<section><h2>Descripción</h2><p class=\"descripcion\">" + R.esc(p.descripcion) + "</p></section>"
         : "") +
-      '<section class="bloque-ejemplo"><h2>Medidas <span class="etiqueta etiqueta-ejemplo">Ejemplo</span></h2>' +
-      '<p class="medidas">' + medidasEjemplo(p) + "</p>" +
-      '<p class="nota-ejemplo">(ejemplo: la tienda las añadiría al subir la prenda; medidas en plano, de costura a costura)</p></section>' +
-      '<section class="bloque-ejemplo"><h2>Defectos <span class="etiqueta etiqueta-ejemplo">Ejemplo</span></h2>' +
-      '<p class="descripcion">Defectos: __ (por ejemplo «mancha pequeña en el puño izquierdo», con su foto)</p>' +
-      '<p class="nota-ejemplo">(ejemplo: la tienda los añadiría al subir la prenda; si no tiene, «Sin defectos»)</p></section>' +
       "<section><h2>Cómo comprar</h2>" +
       '<ol class="mini-pasos">' +
-      "<li>Reservas por WhatsApp con el botón de abajo.</li>" +
+      "<li>" + (reservada ? "Toca «Avisarme si se libera» abajo y te escribimos por WhatsApp si se libera." : "Reservas por WhatsApp con el botón de abajo.") + "</li>" +
       "<li>Pagas con Yape, Plin o transferencia.</li>" +
       "<li>Te llega en 24-48 h en Lima o 2-5 días en provincias.</li>" +
       "</ol></section>" +
@@ -150,6 +219,7 @@
     actual = p;
     ficha.setAttribute("aria-busy", "false");
     activarGaleria();
+    activarComoMedir();
     pintarBarra(p);
     ponerSeo(p);
     R.actualizarBolsa();
@@ -159,12 +229,32 @@
     var barra = document.getElementById("barra");
     document.getElementById("barra-precio").innerHTML = '<span class="sr">Precio: </span>' + R.precio(p.precio);
     var guardar = document.getElementById("barra-guardar");
-    guardar.setAttribute("data-guardar", p.slug);
-    guardar.setAttribute("data-nombre", p.nombre);
     var wa = document.getElementById("barra-whatsapp");
-    wa.href = R.enlaceWhatsApp(R.mensajeUna(p));
-    wa.innerHTML = R.iconoWhatsApp + "Reservar por WhatsApp";
+    // Reservada: sin «Guardar» y, en vez de reservar, preguntar si se libera
+    if (R.esReservada(p)) {
+      guardar.hidden = true;
+      guardar.removeAttribute("data-guardar");
+      wa.href = R.enlaceWhatsApp(R.mensajeAviso(p));
+      wa.innerHTML = R.iconoWhatsApp + "Avisarme si se libera";
+    } else {
+      guardar.setAttribute("data-guardar", p.slug);
+      guardar.setAttribute("data-nombre", p.nombre);
+      wa.href = R.enlaceWhatsApp(R.mensajeUna(p));
+      wa.innerHTML = R.iconoWhatsApp + "Reservar por WhatsApp";
+    }
     barra.hidden = false;
+  }
+
+  /* Al abrir «¿Cómo medir?», el dibujo se trae a la vista (por encima de la barra fija:
+     el CSS deja un scroll-padding del alto de la barra) */
+  function activarComoMedir() {
+    var medir = ficha.querySelector("#como-medir");
+    if (!medir) return;
+    medir.addEventListener("toggle", function () {
+      if (!medir.open) return;
+      var suave = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      medir.querySelector(".como-medir-cuerpo").scrollIntoView({ block: "nearest", behavior: suave ? "smooth" : "auto" });
+    });
   }
 
   /* ---------- Galería: deslizar en móvil, miniaturas en todas las pantallas ---------- */

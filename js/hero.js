@@ -88,7 +88,10 @@
     var guardado = false;
     try { guardado = localStorage.getItem(CLAVE) === "1"; } catch (e) { /* sin almacenamiento */ }
     ponerPausa(guardado);
-    boton.hidden = false;
+    // Con «reducir movimiento» la portada ya está quieta: no hay nada que pausar (ni para el lector)
+    function ponerBoton() { boton.hidden = movReducido.matches; }
+    ponerBoton();
+    if (movReducido.addEventListener) movReducido.addEventListener("change", ponerBoton);
 
     boton.addEventListener("click", function () {
       var pausado = !raiz.classList.contains("pausado");

@@ -25,11 +25,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap">
-  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="css/estilos.css?v=20261117-7">
   <link rel="preload" as="image" href="img/portada.webp" fetchpriority="high">
-  <script src="js/comun.js" defer></script>
-  <script src="js/portada.js" defer></script>
-  <script src="js/hero.js" defer></script>
+  <script src="js/escala.js?v=20261117-7" defer></script>
+  <script src="js/comun.js?v=20261117-7" defer></script>
+  <script src="js/portada.js?v=20261117-7" defer></script>
+  <script src="js/hero.js?v=20261117-7" defer></script>
 </head>
 <body>
   <a class="saltar" href="#coleccion">Saltar a la colección</a>
@@ -146,6 +147,15 @@
           <li><button type="button" class="chip" data-cat="polos" aria-pressed="false">Polos <span class="chip-cuenta" data-cuenta="polos"></span></button></li>
           <li><button type="button" class="chip" data-cat="shorts" aria-pressed="false">Shorts <span class="chip-cuenta" data-cuenta="shorts"></span></button></li>
         </ul>
+
+        <!-- Para quién: lo unisex sale en Mujer y en Hombre -->
+        <div class="para" role="group" aria-labelledby="para-titulo" aria-describedby="para-ayuda">
+          <span class="para-titulo" id="para-titulo">Para</span>
+          <span class="sr" id="para-ayuda">Lo unisex sale en Mujer y en Hombre.</span>
+          <button type="button" class="chip" data-para="" aria-pressed="true">Todo <span class="chip-cuenta"></span></button>
+          <button type="button" class="chip" data-para="mujer" aria-pressed="false">Mujer <span class="chip-cuenta"></span></button>
+          <button type="button" class="chip" data-para="hombre" aria-pressed="false">Hombre <span class="chip-cuenta"></span></button>
+        </div>
 
         <div class="filtros" role="group" aria-label="Filtros">
           <div>

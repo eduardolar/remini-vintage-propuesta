@@ -57,17 +57,64 @@
       .replace(/[̀-ͯ]/g, "");
   };
 
-  /* Frase que acompaña a la nota del estado */
-  R.fraseEstado = function (estado) {
-    var nota = parseInt(String(estado), 10);
-    if (nota >= 10) return "como nueva, sin uso";
-    if (nota === 9) return "casi nueva, sin detalles a la vista";
-    if (nota === 8) return "buen estado, leve desgaste de uso";
-    if (nota === 7) return "estado aceptable, con señales de uso";
-    return "con uso visible: revisa las fotos";
+  /* ---------------- Estado de la prenda ----------------
+     La escala (palabras, frases y tinta) está en js/escala.js, la misma que usa la trastienda */
+  R.estadoDe = window.EscalaEstado;
+
+  /* Sello de tinta «9/10 · CASI NUEVA» (el mismo que el de la trastienda).
+     sinPrefijo: donde ya hay un rótulo «Estado» al lado, el lector no lo repite */
+  R.htmlSello = function (estado, clase, sinPrefijo) {
+    var e = R.estadoDe(estado);
+    if (!e) return "";
+    // cada palabra en su <span>: en la foto de la tarjeta van una debajo de otra (sello casi cuadrado)
+    var palabra = e.palabra.split(" ").map(function (x) { return "<span>" + R.esc(x) + "</span>"; });
+    return (
+      '<span class="sello-estado ' + e.tinta + (clase ? " " + clase : "") + '">' +
+      '<span class="sr">' + (sinPrefijo ? "" : "Estado ") + e.n + " de 10, " + e.palabra.toLowerCase() + "</span>" +
+      '<b aria-hidden="true">' + e.n + "/10</b>" +
+      '<small aria-hidden="true">' + palabra.join(" ") + "</small></span>"
+    );
   };
 
-  /* ---------------- Datos ---------------- */
+  R.esReservada = function (p) {
+    return p.situacion === "reservada";
+  };
+
+  /* Talla real («le queda L holgada») solo si dice algo distinto de la talla */
+  R.leQueda = function (p) {
+    var real = String(p.tallaReal || "").trim();
+    return real && R.normalizar(real) !== R.normalizar(p.talla) ? real : "";
+  };
+
+  /* Medidas en plano: arriba pecho, largo y hombros; abajo cintura, largo y tiro */
+  R.esDeAbajo = function (p) {
+    return p.categoria === "pantalones" || p.categoria === "shorts";
+  };
+
+  R.cm = function (n) {
+    return Number(n).toLocaleString("es-PE", { maximumFractionDigits: 1 });
+  };
+
+  /* [{ nombre: "Pecho", valor: 57 }, …] con las que haya, y si son aproximadas */
+  R.medidas = function (p) {
+    var m = p.medidas || {};
+    var claves = R.esDeAbajo(p) ? ["cintura", "largo", "tiro"] : ["pecho", "largo", "hombros"];
+    var lista = claves
+      .filter(function (k) { return typeof m[k] === "number" && m[k] > 0; })
+      .map(function (k) { return { nombre: k.charAt(0).toUpperCase() + k.slice(1), valor: m[k] }; });
+    // aprox: true (datos/prendas.json) o la lista de las aproximadas (como las guarda la trastienda)
+    var aprox = m.aprox === true || (Array.isArray(m.aprox) && m.aprox.length > 0);
+    return { lista: lista, aprox: aprox, unidad: aprox ? "cm aprox." : "cm" };
+  };
+
+  /* «pecho 57 · largo 74 · hombros 50 cm aprox.» (vacío si no hay medidas) */
+  R.textoMedidas = function (p) {
+    var m = R.medidas(p);
+    if (!m.lista.length) return "";
+    return m.lista.map(function (x) { return x.nombre.toLowerCase() + " " + R.cm(x.valor); }).join(" · ") + " " + m.unidad;
+  };
+
+    /* ---------------- Datos ---------------- */
 
   var promesa = null;
   R.cargarPrendas = function () {
@@ -112,11 +159,28 @@
      escribir el distrito o la ciudad (con un «[ciudad]» en medio, muchos lo mandarían tal cual). */
   var CIERRE_ENVIO = "El envío sería a: ";
 
+  /* «talla M, le queda L holgada, S/ 120» */
+  function datosMensaje(p) {
+    var real = R.leQueda(p);
+    return "talla " + p.talla + (real ? ", le queda " + real : "") + ", " + R.precio(p.precio);
+  }
+
   R.mensajeUna = function (p) {
+    var medidas = R.textoMedidas(p);
     return (
-      "Hola, quiero reservar *" + p.nombre + "* (talla " + p.talla + ", " + R.precio(p.precio) + ").\n" +
+      "Hola, quiero reservar *" + p.nombre + "* (" + datosMensaje(p) + ").\n" +
+      (medidas ? "Medidas: " + medidas + (/\.$/.test(medidas) ? "" : ".") + "\n" : "") +
       R.urlAbsoluta(R.enlacePrenda(p.slug)) + "\n" +
       "¿Sigue disponible? " + CIERRE_ENVIO
+    );
+  };
+
+  /* Prenda reservada por otra persona: pedir que avisen si se libera */
+  R.mensajeAviso = function (p) {
+    return (
+      "Hola, vi que *" + p.nombre + "* (" + datosMensaje(p) + ") está reservada.\n" +
+      R.urlAbsoluta(R.enlacePrenda(p.slug)) + "\n" +
+      "¿Me avisas si se libera?"
     );
   };
 
@@ -125,8 +189,9 @@
     var total = 0;
     var lineas = lista.map(function (p, i) {
       total += Number(p.precio);
+      var medidas = R.textoMedidas(p);
       return (
-        i + 1 + ". *" + p.nombre + "* (talla " + p.talla + ", " + R.precio(p.precio) + ") " +
+        i + 1 + ". *" + p.nombre + "* (" + datosMensaje(p) + (medidas ? "; " + medidas : "") + ") " +
         R.urlAbsoluta(R.enlacePrenda(p.slug))
       );
     });
@@ -214,20 +279,36 @@
   R.avisar = avisar;
 
   /* Pone al día contadores, botones "Guardar" y el panel */
-  R.actualizarBolsa = function () {
-    var lista = leer();
-    var n = lista.length;
-
+  function ponerContador(n, reservadas) {
     document.querySelectorAll("[data-contador-bolsa]").forEach(function (el) {
       el.textContent = String(n);
     });
     document.querySelectorAll("[data-abrir-bolsa]").forEach(function (el) {
-      el.setAttribute("aria-label", "Mi bolsa, " + n + (n === 1 ? " prenda" : " prendas"));
+      el.setAttribute("aria-label", "Mi bolsa, " + n + (n === 1 ? " prenda" : " prendas") +
+        (reservadas ? " (" + reservadas + (reservadas === 1 ? " reservada)" : " reservadas)") : ""));
     });
     // Botón flotante del móvil: solo con algo dentro
     document.querySelectorAll("[data-bolsa-flotante]").forEach(function (el) {
       el.hidden = n === 0;
     });
+  }
+
+  R.actualizarBolsa = function () {
+    var lista = leer();
+
+    // El contador cuenta solo las prendas que existen: una guardada que ya no está en
+    // datos/prendas.json se borra de la bolsa (sin JSON, se cuenta lo guardado tal cual)
+    var cuenta = R.cargarPrendas().then(function (prendas) {
+      var existen = lista.filter(function (s) { return prendas.some(function (p) { return p.slug === s; }); });
+      if (existen.length !== lista.length) escribir(existen);
+      var reservadas = existen.filter(function (s) {
+        return prendas.some(function (p) { return p.slug === s && R.esReservada(p); });
+      }).length;
+      ponerContador(existen.length, reservadas);
+    }, function () {
+      ponerContador(lista.length, 0);
+    });
+
     document.querySelectorAll("[data-guardar]").forEach(function (boton) {
       var guardada = lista.indexOf(boton.getAttribute("data-guardar")) !== -1;
       boton.setAttribute("aria-pressed", guardada ? "true" : "false");
@@ -236,8 +317,8 @@
     });
 
     var dialogo = document.getElementById("bolsa");
-    if (dialogo && dialogo.open) return pintarPanel();
-    return Promise.resolve();
+    if (dialogo && dialogo.open) return cuenta.then(pintarPanel);
+    return cuenta;
   };
 
   /* Última prenda quitada desde el panel: se ofrece «Deshacer» en su sitio hasta cerrarlo */
@@ -276,16 +357,24 @@
           return;
         }
 
+        // Una reservada (por otra persona) se queda en la lista, pero no suma ni entra en el mensaje
+        var disponibles = elegidas.filter(function (p) { return !R.esReservada(p); });
         var total = 0;
+        disponibles.forEach(function (p) { total += Number(p.precio); });
         var filas = elegidas.map(function (p) {
-          total += Number(p.precio);
+          var reservada = R.esReservada(p);
+          var real = R.leQueda(p);
+          var est = R.estadoDe(p.estado);
           return (
-            '<li class="item-bolsa">' +
+            '<li class="item-bolsa' + (reservada ? " item-reservada" : "") + '">' +
             '<img src="' + R.foto(p.slug, 1) + '" alt="' + R.esc(R.alt(p, 1)) + '" width="64" height="80" loading="lazy">' +
             "<div>" +
             '<a href="' + R.enlacePrenda(p.slug) + '">' + R.esc(p.nombre) + "</a>" +
-            '<p class="item-datos">Talla ' + R.esc(p.talla) + " · Estado " + R.esc(p.estado) + "</p>" +
-            '<span class="precio">' + R.precio(p.precio) + "</span>" +
+            '<p class="item-datos">Talla ' + R.esc(p.talla) + (real ? " · le queda " + R.esc(real) : "") +
+            (est ? " · " + est.n + "/10 " + R.esc(est.palabra.toLowerCase()) : "") + "</p>" +
+            (reservada
+              ? '<p class="item-reservada-texto"><span class="etiqueta etiqueta-reservada">Reservada</span> No entra en el mensaje</p>'
+              : '<span class="precio">' + R.precio(p.precio) + "</span>") +
             "</div>" +
             '<button type="button" class="boton-quitar" data-quitar="' + R.esc(p.slug) + '" data-nombre="' + R.esc(p.nombre) + '" aria-label="Quitar ' + R.esc(p.nombre) + ' de la bolsa">Quitar</button>' +
             "</li>"
@@ -294,15 +383,24 @@
         if (filaDeshacer) filas.splice(Math.min(quitada.indice, filas.length), 0, filaDeshacer);
         listaEl.innerHTML = filas.join("");
 
-        var n = elegidas.length;
+        var n = disponibles.length;
+        var apartadas = elegidas.length - n;
         pie.hidden = false;
+        if (!n) {
+          pie.innerHTML =
+            '<p class="bolsa-total"><span>' + (apartadas === 1 ? "La prenda de tu bolsa está reservada" : "Las prendas de tu bolsa están reservadas") +
+            "</span></p>" +
+            '<p class="nota-ejemplo">Desde su ficha puedes pedir que te avisen si se libera.</p>';
+          return;
+        }
         pie.innerHTML =
           '<p class="bolsa-total"><span>Total (' + n + (n === 1 ? " prenda" : " prendas") + ', sin envío)</span><span class="precio">' + R.precio(total) + "</span></p>" +
-          '<a class="boton boton-whatsapp" href="' + R.esc(R.enlaceWhatsApp(R.mensajeVarias(elegidas))) + '" target="_blank" rel="noopener">' +
+          '<a class="boton boton-whatsapp" href="' + R.esc(R.enlaceWhatsApp(R.mensajeVarias(disponibles))) + '" target="_blank" rel="noopener noreferrer">' +
           ICONO_WHATSAPP +
           (n === 1 ? "Reservar la prenda" : "Reservar las " + n) + " por WhatsApp · " + R.precio(total) +
           "</a>" +
           '<p class="nota-ejemplo">' + (n > 1 ? "Un solo mensaje con todas. " : "") +
+          (apartadas ? (apartadas === 1 ? "La reservada no entra. " : "Las reservadas no entran. ") : "") +
           "Ejemplo: el chat se abre sin número (número de la tienda).</p>";
       },
       function () {
