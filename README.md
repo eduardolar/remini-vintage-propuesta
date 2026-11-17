@@ -12,6 +12,9 @@ Las páginas llevan `noindex,nofollow` y una franja fija arriba que lo dice:
 - `index.html`: portada con la colección.
 - `prenda.html?p=<slug>`: ficha de una prenda, por ejemplo
   `prenda.html?p=camisa-christian-audigier-rosas-y-dagas`.
+- `login.html`: acceso a «la trastienda». Es una demo: se entra con solo pulsar
+  «Abrir la trastienda», sin escribir nada, y no se envía nada.
+- `admin.html`: el panel de la tienda («la trastienda»).
 
 ## Qué demuestra cada parte
 
@@ -53,6 +56,20 @@ Entre paréntesis, la mejora del estudio a la que responde.
 - Imágenes con `width`/`height` y carga diferida, salvo la foto de portada y la primera foto de la ficha.
 - Sin contadores falsos de urgencia.
 - Un solo modo oscuro, con todos los colores en variables (`css/estilos.css`, `:root`).
+
+### La trastienda (acceso y panel)
+
+Todo es simulado: no hay servidor ni contraseñas, y lo que se cambia queda solo
+en el navegador de quien lo prueba («Restablecer demo» lo deja como al principio).
+Las fotos que se suben se ven mientras la página está abierta y se pierden al recargar.
+
+| Parte | Qué enseña |
+| --- | --- |
+| Acceso | Una etiqueta de ropa colgante con «TRASTIENDA» y el sello «Solo personal»; se entra pulsando el botón. |
+| El perchero | Las prendas como polaroids con su etiqueta de precio, el sello de estado («9/10 · casi nueva») y los botones a la vista: Reservar, Vendida, Joyita, Editar y la papelera (con «Deshacer»). Las pegatinas de arriba cuentan y filtran; hay buscador y filtro por categoría. |
+| Colgar o editar una prenda | Una sola ficha sin scroll en el ordenador: foto y descripción a la izquierda; marca y nombre escritos en su sitio, el precio en la etiqueta colgante, el estado con un termómetro y la talla con una cinta métrica de modista que se estira. Las medidas en cm se rellenan solas con las típicas de la talla. «Faltan…» dice qué queda por poner. |
+| El escaparate | El banner de portada, editado viéndolo como en la tienda. |
+| Quién vende | Foto, presentación, Instagram, TikTok y opiniones, con vista previa en directo. |
 
 ## Qué es de ejemplo
 
