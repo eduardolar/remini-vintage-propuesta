@@ -1,5 +1,5 @@
 {
-  "nota": "Prendas reales de remini-vintage.vercel.app a 16/11/2026, copiadas para el prototipo con permiso de la tienda. Las medidas, el envío y los pagos todavía no existen en la tienda: en el prototipo van como ejemplo y marcados así.",
+  "nota": "Prendas reales de remini-vintage.vercel.app a 16/11/2026, copiadas para el prototipo con permiso de la tienda. Los campos genero, tallaReal, medidas, notaEstado y situacion son DE EJEMPLO: la tienda aún no los tiene; las medidas son las típicas de cada talla (las de la trastienda, por eso aprox: true), la talla real, el «para quién» y los detalles del estado son inventados, y el Polo Harley-Davidson va como «reservada» para enseñar ese estado. El envío y los pagos también van como ejemplo.",
   "prendas": [
     {
       "slug": "camisa-christian-audigier-rosas-y-dagas",
@@ -12,6 +12,16 @@
       "estado": "9/10",
       "precio": 500,
       "descripcion": "Única camisa y en buen estado.",
+      "genero": "Hombre",
+      "tallaReal": "XXXL",
+      "medidas": {
+        "pecho": 66,
+        "largo": 81,
+        "hombros": 59,
+        "aprox": true
+      },
+      "notaEstado": "",
+      "situacion": "disponible",
       "fotos": 3
     },
     {
@@ -25,6 +35,16 @@
       "estado": "8/10",
       "precio": 120,
       "descripcion": "Casaca en buen estado, con leve desgaste.",
+      "genero": "Hombre",
+      "tallaReal": "L holgada",
+      "medidas": {
+        "pecho": 57,
+        "largo": 74,
+        "hombros": 50,
+        "aprox": true
+      },
+      "notaEstado": "Leve desgaste en los puños.",
+      "situacion": "disponible",
       "fotos": 3
     },
     {
@@ -38,6 +58,16 @@
       "estado": "8/10",
       "precio": 150,
       "descripcion": null,
+      "genero": "Unisex",
+      "tallaReal": "32",
+      "medidas": {
+        "cintura": 40.5,
+        "largo": 104,
+        "tiro": 28,
+        "aprox": true
+      },
+      "notaEstado": "Bajo algo gastado por el uso.",
+      "situacion": "disponible",
       "fotos": 3
     },
     {
@@ -51,6 +81,16 @@
       "estado": "10/10",
       "precio": 150,
       "descripcion": "Nuevo, sin estrenar.",
+      "genero": "Hombre",
+      "tallaReal": "38",
+      "medidas": {
+        "cintura": 48.5,
+        "largo": 54,
+        "tiro": 31,
+        "aprox": true
+      },
+      "notaEstado": "",
+      "situacion": "disponible",
       "fotos": 3
     },
     {
@@ -64,6 +104,16 @@
       "estado": "8/10",
       "precio": 50,
       "descripcion": null,
+      "genero": "Unisex",
+      "tallaReal": "L",
+      "medidas": {
+        "pecho": 57,
+        "largo": 74,
+        "hombros": 50,
+        "aprox": true
+      },
+      "notaEstado": "Estampado algo desteñido en la espalda.",
+      "situacion": "disponible",
       "fotos": 3
     },
     {
@@ -77,6 +127,16 @@
       "estado": "7/10",
       "precio": 20,
       "descripcion": "Polo azul, estado aceptable.",
+      "genero": "Mujer",
+      "tallaReal": "M",
+      "medidas": {
+        "pecho": 54,
+        "largo": 72,
+        "hombros": 47,
+        "aprox": true
+      },
+      "notaEstado": "Cuello algo dado de sí.",
+      "situacion": "reservada",
       "fotos": 3
     },
     {
@@ -90,6 +150,16 @@
       "estado": "9/10",
       "precio": 100,
       "descripcion": null,
+      "genero": "Unisex",
+      "tallaReal": "XL",
+      "medidas": {
+        "pecho": 60,
+        "largo": 77,
+        "hombros": 53,
+        "aprox": true
+      },
+      "notaEstado": "",
+      "situacion": "disponible",
       "fotos": 3
     }
   ]
