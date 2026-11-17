@@ -30,6 +30,14 @@
   --sombra-dura-s: 3px 3px 0 var(--sombra-oscura);
   --sombra-crema: 3px 3px 0 var(--texto);  /* para lo amarillo y lo verde */
 
+  /* Papel, cartón y tinta: las piezas de la tienda y de la trastienda (css/admin.css) */
+  --papel: #fbf7ee;            /* papel de polaroid */
+  --kraft: #e9cf9a;            /* cartón de etiqueta (el de .etiqueta-precio) */
+  --cordel: #e8dcc4;
+  --tinta-suave: #4a3e2c;      /* texto secundario sobre papel o kraft: 7:1 o más */
+  --rojo-tinta: #a3210f;       /* sello y errores sobre papel o kraft: 7:1 */
+  --radio-chip: 4px;           /* chips de la tienda y del panel */
+
   /* Tipografía */
   --fuente-titulos: "Anton", Impact, "Arial Narrow", "Roboto Condensed", sans-serif;
   --fuente-texto: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
@@ -344,6 +352,23 @@ button { cursor: pointer; }
   line-height: 1.4;
 }
 .etiqueta-joyita { background: var(--acento); color: var(--sobre-acento); }
+.etiqueta-reservada { border: 1.5px solid var(--acento); color: var(--acento); padding: 1px 8px; border-radius: 2px; }
+/* En la tienda, «Joyita» es una cinta amarilla pegada, girada como la de la época: las pastillas
+   con borde son botones («Guardar», «Compartir») y el amarillo con borde negro es el chip pulsado */
+.tarjeta-etiquetas .etiqueta-joyita,
+.ficha-marca .etiqueta-joyita {
+  gap: 3px;
+  padding: 1px 7px 0;
+  border: 1.5px solid var(--tinta);
+  border-radius: 2px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  line-height: 1.3;
+  rotate: -3deg;
+  cursor: default;
+}
+.tarjeta-etiquetas .etiqueta-joyita::before,
+.ficha-marca .etiqueta-joyita::before { content: "★" / ""; font-size: 0.75rem; }
 .etiqueta-ejemplo {
   border: 1px dashed var(--ejemplo-borde);
   color: var(--acento);
@@ -620,6 +645,47 @@ button { cursor: pointer; }
   text-transform: uppercase;
 }
 
+/* Sello de estado «9/10 · CASI NUEVA»: tinta con borde doble, girado. El mismo en la tienda
+   y en el perchero de la trastienda. Verde (9-10), azul (7-8) y rojo (6 o menos), 7:1 o más
+   sobre el papel y 4,8:1 o más sobre el kraft */
+.sello-estado {
+  --tinta-sello: var(--tinta);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  flex: none;
+  padding: 2px 5px 1px;
+  border: 1.5px solid var(--tinta-sello);
+  outline: 1.5px solid var(--tinta-sello);
+  outline-offset: 1.5px;
+  border-radius: 2px;
+  color: var(--tinta-sello);
+  rotate: -4deg;
+  white-space: nowrap;
+  line-height: 1;
+}
+.sello-estado b { font-family: var(--fuente-titulos); font-weight: 400; font-size: 0.9375rem; letter-spacing: 0.02em; }
+.sello-estado small { margin-top: 1px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; }
+.sello-verde { --tinta-sello: #17582f; }
+.sello-azul { --tinta-sello: #24345e; }
+.sello-rojo { --tinta-sello: var(--rojo-tinta); }
+
+/* Época («Y2K», «90s»): cinta de papel pegada, no un botón */
+.etiqueta-epoca {
+  display: inline-block;
+  padding: 2px 7px 1px;
+  background: var(--papel);
+  color: var(--tinta);
+  border: 1.5px solid var(--tinta);
+  border-radius: 2px;
+  font-size: var(--texto-xs);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: 0.03em;
+  rotate: -3deg;
+  cursor: default;
+}
+
 /* Burbuja de chat (mensaje enviado de WhatsApp) */
 .burbuja {
   display: block;
@@ -794,27 +860,32 @@ button { cursor: pointer; }
 .categorias::-webkit-scrollbar { display: none; }
 .categorias li { flex: none; scroll-snap-align: start; }
 
+/* Chips: la misma familia que la ficha de la trastienda (radio 4 y el mismo estado pulsado).
+   Lo que no se pulsa (Joyita, época, Reservada) son etiquetas: pastilla, cinta o sello */
 .chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   min-height: 44px;
-  padding: 0 16px;
-  border-radius: var(--radio-pastilla);
-  border: 2px solid var(--borde-control);
-  background: var(--superficie);
-  box-shadow: var(--sombra-dura-s);
+  padding: 0 14px;
+  border-radius: var(--radio-chip);
+  border: 1.5px solid var(--borde-control);
+  background: transparent;
+  box-shadow: none;
   color: var(--texto);
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--texto-s);
   white-space: nowrap;
 }
 .chip:hover { border-color: var(--acento); }
+/* «Para» sin prendas con los demás filtros: no se puede elegir (como las opciones a 0) */
+.chip:disabled { opacity: 0.5; cursor: not-allowed; }
+.chip:disabled:hover { border-color: var(--borde-control); }
 .chip[aria-pressed="true"] {
   background: var(--acento);
   border-color: var(--tinta);
   color: var(--sobre-acento);
-  box-shadow: var(--sombra-crema);
+  box-shadow: 2px 2px 0 var(--tinta);
 }
 .chip-cuenta {
   font-weight: 500;
@@ -827,14 +898,33 @@ button { cursor: pointer; }
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
+/* «Para»: Todo, Mujer y Hombre, con el mismo chip que las categorías */
+.para {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.para-titulo {
+  margin-right: 2px;
+  color: var(--texto-tenue);
+  font-size: var(--texto-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+@media (max-width: 380px) {
+  .para { gap: 6px; }
+  .para .chip { padding: 0 11px; }
+}
+
 .filtros select {
   width: 100%;
   min-height: 44px;
   padding: 8px 30px 8px 12px;
-  border-radius: var(--radio-pastilla);
-  border: 2px solid var(--borde-control);
-  box-shadow: var(--sombra-dura-s);
-  background-color: var(--superficie);
+  border-radius: var(--radio-chip);
+  border: 1.5px solid var(--borde-control);
+  background-color: transparent;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23cfc5b4' stroke-width='2'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
@@ -871,11 +961,20 @@ button { cursor: pointer; }
 .boton-limpiar[hidden] { display: none; }
 
 @media (min-width: 1024px) {
+  /* Categorías arriba; «Para» a la izquierda y los desplegables a la derecha */
   .controles {
     grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "cats cats"
+      "para filtros"
+      "resumen resumen";
     align-items: center;
     gap: 12px 24px;
   }
+  .categorias { grid-area: cats; }
+  .para { grid-area: para; }
+  .filtros { grid-area: filtros; }
+  .resumen { grid-area: resumen; }
   .categorias {
     flex-wrap: wrap;
     overflow: visible;
@@ -883,8 +982,6 @@ button { cursor: pointer; }
     padding-inline: 0;
   }
   .filtros { grid-template-columns: repeat(3, 156px); }
-  .chip { padding: 0 14px; }
-  .resumen { grid-column: 1 / -1; }
 }
 
 /* Cuadrícula: 2 / 3 / 4 columnas */
@@ -924,6 +1021,7 @@ button { cursor: pointer; }
   position: relative;
   flex: none; /* la foto mantiene el 4:5 aunque la fila sea más alta */
   aspect-ratio: 4 / 5;
+  overflow: hidden; /* sin esto, una foto más alta que 4:5 estira el recuadro (min-height: auto) */
   background: var(--foto-fondo);
   border-bottom: 2px solid var(--borde-control);
 }
@@ -933,10 +1031,80 @@ button { cursor: pointer; }
   object-fit: cover;
   object-position: center 40%;
 }
-.tarjeta-foto .etiqueta {
+/* Sobre la foto: arriba a la izquierda Joyita y la época; abajo a la izquierda el sello del
+   estado; arriba a la derecha cuelga el precio. Nada de esto se pulsa: el enlace de la tarjeta
+   (.enlace-estirado) queda por encima */
+.tarjeta-etiquetas {
   position: absolute;
   top: 8px; left: 8px;
-  border: 2px solid var(--tinta);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.tarjeta-etiquetas .etiqueta-epoca { margin-left: 2px; }
+
+/* El sello lleva fondo de papel: se lee sobre el blanco de la foto y sobre la prenda */
+/* Dos renglones («9/10» y «CASI NUEVA») pegados a la esquina: tapa menos prenda que el sello
+   de tres renglones de antes */
+.sello-foto {
+  position: absolute;
+  left: 6px; bottom: 6px;
+  padding: 3px 6px 2px;
+  background: rgb(251 247 238 / 0.94);
+  rotate: -4deg;
+}
+.sello-foto b { font-size: 1.0625rem; }
+.sello-foto small { display: flex; gap: 0.3em; margin-top: 1px; line-height: 1.1; }
+
+/* Reservada: el sello de la portada, girado en el centro de la foto */
+.tarjeta-foto .sello-reservada {
+  position: absolute;
+  left: 50%; top: 46%;
+  translate: -50% -50%;
+  rotate: -12deg;
+  padding: 6px 9px 4px;
+  background: rgb(12 10 7 / 0.86);
+  font-size: 1.0625rem;
+  white-space: nowrap;
+}
+@media (min-width: 720px) {
+  .tarjeta-foto .sello-reservada { font-size: 1.375rem; padding: 8px 12px 6px; }
+}
+
+/* Precio: etiqueta de cartón colgada de un hilo en la esquina de la foto, como en el perchero.
+   Va en el cuerpo (se lee después del nombre), pero se coloca sobre la foto: no añade alto */
+.tarjeta-precio {
+  position: absolute;
+  top: 0; right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: 50% 0;
+  rotate: 4deg;
+  transition: rotate 0.3s;
+}
+.tarjeta-precio .hilo { --hilo: 12px; width: 2px; background: var(--tinta); }
+.tarjeta-precio .etiqueta-precio {
+  padding: 14px 9px 6px;
+  font-size: 1.1875rem;
+  border-radius: 10px 10px 5px 5px;
+  box-shadow: 3px 3px 0 var(--tinta);
+}
+.tarjeta-precio .etiqueta-precio::before { top: 4px; width: 7px; height: 7px; }
+.tarjeta:hover .tarjeta-precio { rotate: -3deg; }
+/* Móvil estrecho: la etiqueta, algo más pequeña, no pisa «Joyita» */
+@media (max-width: 400px) {
+  .tarjeta-precio { right: 7px; }
+  .tarjeta-precio .etiqueta-precio { padding: 13px 7px 5px; font-size: 1.0625rem; }
+  .tarjeta-etiquetas { left: 7px; }
+  .tarjeta-etiquetas .etiqueta-joyita { padding-inline: 6px; letter-spacing: 0.02em; }
+}
+@media (min-width: 720px) {
+  .tarjeta-precio { right: 14px; }
+  .tarjeta-precio .hilo { --hilo: 16px; }
+  .tarjeta-precio .etiqueta-precio { padding: 16px 12px 8px; font-size: 1.375rem; border-radius: 12px 12px 6px 6px; }
+  .tarjeta-precio .etiqueta-precio::before { top: 5px; width: 8px; height: 8px; }
 }
 
 .tarjeta-cuerpo {
@@ -962,6 +1130,13 @@ button { cursor: pointer; }
 }
 .tarjeta-nombre a { color: var(--texto); text-decoration: none; }
 .tarjeta-nombre a:hover { text-decoration: underline; }
+/* «M · le queda L holgada»: la talla, en negrita, se ve más que la marca */
+.tarjeta-talla {
+  color: var(--texto-suave);
+  font-size: var(--texto-s);
+  line-height: 1.35;
+}
+.tarjeta-talla b { color: var(--texto); font-size: var(--texto-m); font-weight: 800; }
 .tarjeta-datos {
   display: flex;
   flex-wrap: wrap;
@@ -982,8 +1157,22 @@ button { cursor: pointer; }
   color: var(--texto);
   white-space: nowrap;
 }
-.tarjeta .precio { font-size: 1.5rem; line-height: 1.1; }
-.tarjeta .boton-guardar { width: 100%; position: relative; z-index: 2; }
+.tarjeta .boton-guardar,
+.tarjeta .boton-avisar { width: 100%; position: relative; z-index: 2; }
+
+/* Reservada: «Avisarme si se libera» (abre WhatsApp) en vez de «Guardar» */
+.boton-avisar {
+  gap: 6px;
+  padding: 8px 10px;
+  background: transparent;
+  color: var(--texto);
+  border-color: var(--borde-control);
+  box-shadow: var(--sombra-dura-s);
+  font-size: var(--texto-xs);
+  line-height: 1.2;
+}
+.boton-avisar:hover { border-color: var(--whatsapp); color: var(--texto); }
+.boton-avisar svg { width: 18px; height: 18px; color: var(--whatsapp); }
 
 /* Enlace que cubre toda la tarjeta (sin anidar elementos interactivos) */
 .enlace-estirado::after {
@@ -1015,9 +1204,9 @@ button { cursor: pointer; }
   letter-spacing: 0.18em;
   text-align: center;
 }
-.tarjeta-vendida .tarjeta-nombre,
-.tarjeta-vendida .precio { color: var(--vendida); }
-.tarjeta-vendida .precio { text-decoration: line-through; text-decoration-thickness: 2px; }
+.tarjeta-vendida .tarjeta-nombre { color: var(--vendida); }
+.tarjeta-vendida .tarjeta-precio { rotate: 0deg; }
+.tarjeta-vendida .etiqueta-precio { background: #cfc6b4; text-decoration: line-through; text-decoration-thickness: 2px; }
 
 /* Estados de la lista */
 .estado {
@@ -1032,7 +1221,11 @@ button { cursor: pointer; }
   outline-offset: -1px;
   text-align: center;
   color: var(--texto-suave);
+  /* una búsqueda larga sin espacios («aaaa…») se parte en vez de ensanchar la página */
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
+.estado > * { max-width: 100%; }
 .estado h2, .estado h3 {
   font-family: var(--fuente-titulos);
   font-weight: 400;
@@ -1180,6 +1373,20 @@ button { cursor: pointer; }
    -------------------------------------------------------------------------- */
 
 .pagina-ficha { padding-bottom: calc(var(--alto-barra) + 16px + env(safe-area-inset-bottom, 0px)); }
+/* Lo que recibe el foco con el teclado (o se trae a la vista) no queda debajo de la barra fija,
+   ni del botón redondo de Mi bolsa que en el móvil va encima de ella, ni de la franja y la
+   cabecera pegadas arriba */
+html:has(.pagina-ficha) {
+  scroll-padding-top: 56px;
+  scroll-padding-bottom: calc(var(--alto-barra) + 16px + env(safe-area-inset-bottom, 0px));
+}
+@media (max-width: 600px) {
+  html:has(.pagina-ficha .bolsa-flotante:not([hidden])) {
+    scroll-padding-bottom: calc(var(--alto-barra) + 90px + env(safe-area-inset-bottom, 0px));
+  }
+}
+@media (min-width: 601px) { html:has(.pagina-ficha) { scroll-padding-top: 190px; } }
+@media (min-width: 768px) { html:has(.pagina-ficha) { scroll-padding-top: 130px; } }
 
 .ficha {
   display: grid;
@@ -1315,27 +1522,109 @@ button { cursor: pointer; }
   line-height: 1;
   color: var(--acento);
 }
-.datos-prenda {
+/* Reservada: aviso bajo el precio */
+.aviso-reservada {
+  padding: 8px 12px;
+  border: 1.5px dashed var(--acento);
+  border-radius: var(--radio-pequeno);
+  color: var(--texto-suave);
+  font-size: var(--texto-s);
+}
+.aviso-reservada strong { color: var(--acento); }
+
+/* La etiqueta kraft de la ficha: talla, medidas, época, para y estado, en renglones
+   (la misma pieza que la ficha de la trastienda) */
+.kraft-ficha {
+  position: relative;
+  padding: 8px 14px 8px;
+  color: var(--tinta);
+  background-color: var(--kraft);
+  background-image: repeating-linear-gradient(97deg, rgb(110 80 30 / 0.05) 0 2px, transparent 2px 8px);
+  border: 2px solid var(--tinta);
+  border-radius: 6px;
+  box-shadow: var(--sombra-dura);
+  rotate: -0.5deg;
+}
+.kraft-ojal {
+  position: absolute;
+  top: 10px; right: 12px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--fondo);
+  box-shadow: 0 0 0 2px #b59a62;
+}
+.kraft-ficha dl { margin: 0; }
+.kraft-ficha .kraft-renglon {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  list-style: none;
-}
-.dato {
-  display: inline-flex;
   align-items: baseline;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: var(--radio-pequeno);
-  background: var(--superficie);
-  outline: 1px solid var(--borde);
-  outline-offset: -1px;
-  font-size: var(--texto-s);
-  color: var(--texto-suave);
+  gap: 2px 8px;
+  padding-block: 5px;
+  border-bottom: 1px solid rgb(74 62 44 / 0.35);
+  font-size: 0.9375rem;
+  line-height: 1.35;
 }
-.dato b { color: var(--texto); font-weight: 700; }
-.dato a { color: var(--texto); }
-.dato a:hover { color: var(--acento); }
+.kraft-ficha .kraft-renglon:first-child { padding-right: 22px; } /* el ojal */
+.kraft-ficha .kraft-renglon dt {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+.kraft-ficha .kraft-renglon dd { margin: 0; font-variant-numeric: tabular-nums; }
+.kraft-ficha .kraft-renglon dd + dt { margin-left: 8px; }
+.kraft-ficha .kraft-renglon b { font-weight: 800; }
+.kraft-unidad { color: var(--tinta-suave); font-size: var(--texto-xs); font-weight: 700; }
+.kraft-ficha .kraft-estado { align-items: center; }
+
+.kraft-nota {
+  padding-top: 5px;
+  color: var(--tinta-suave);
+  font-size: var(--texto-xs);
+  font-style: italic;
+}
+.kraft-ficha :focus-visible { outline: 2px solid var(--tinta); outline-offset: 2px; }
+
+/* «¿Cómo medir?»: se abre ahí mismo, con el dibujo en tinta sobre el cartón */
+.kraft-ficha .como-medir { border-bottom: 1px solid rgb(74 62 44 / 0.35); }
+.kraft-ficha .como-medir summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  min-height: 44px;
+  color: var(--tinta);
+  font-size: var(--texto-s);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  list-style: none;
+  cursor: pointer;
+}
+.kraft-ficha .como-medir summary::-webkit-details-marker { display: none; }
+/* flecha: abajo cerrado, arriba abierto */
+.kraft-ficha .como-medir summary::after {
+  content: "";
+  width: 7px; height: 7px;
+  margin-top: -3px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  rotate: 45deg;
+}
+.kraft-ficha .como-medir[open] summary::after { margin-top: 3px; rotate: -135deg; }
+.kraft-ficha .como-medir summary:hover { text-decoration-thickness: 2px; }
+.kraft-ficha .como-medir-cuerpo { padding: 2px 0 10px; }
+.kraft-ficha .como-medir .descripcion { color: var(--tinta-suave); }
+
+/* Sello de la ficha: «9/10 · CASI NUEVA» en una línea */
+.sello-ficha { flex-direction: row; align-items: baseline; gap: 5px; padding: 3px 6px 2px; margin-right: 4px; }
+.sello-ficha b { font-size: 1.0625rem; }
+.sello-ficha small::before { content: "· "; }
+@media (max-width: 600px) {
+  .kraft-ficha { padding: 6px 12px; }
+  .kraft-ficha .kraft-renglon { padding-block: 4px; font-size: var(--texto-s); }
+}
 
 .envio { display: grid; gap: 6px; font-size: var(--texto-s); }
 .envio-cabeza { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 700; }
@@ -1343,6 +1632,16 @@ button { cursor: pointer; }
 
 /* Galería */
 .galeria { grid-area: galeria; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.galeria-marco { position: relative; min-width: 0; }
+.galeria-marco .etiqueta-epoca { position: absolute; top: 12px; left: 10px; }
+.galeria-marco .sello-reservada {
+  position: absolute;
+  top: 18px; right: 14px;
+  rotate: -10deg;
+  padding: 6px 10px 4px;
+  background: rgb(12 10 7 / 0.86);
+  font-size: 1.25rem;
+}
 .galeria-pista {
   display: flex;
   overflow-x: auto;
@@ -1391,15 +1690,44 @@ button { cursor: pointer; }
 .miniaturas button:hover { opacity: 1; }
 .miniaturas button[aria-current="true"] { border-color: var(--acento); opacity: 1; }
 .miniaturas img { width: 100%; height: 100%; object-fit: cover; }
-/* Móvil: foto más baja y miniaturas más pequeñas para que nombre y precio entren
-   en la primera pantalla, por encima de la barra fija */
+/* Móvil: foto más baja y miniaturas más pequeñas para que nombre, precio y el principio de
+   la etiqueta kraft (talla y medidas) entren en la primera pantalla, por encima de la barra fija */
 @media (max-width: 600px) {
-  .galeria { gap: 8px; }
+  .galeria { position: relative; gap: 0; }
   .galeria-pista figure {
-    max-height: max(240px, calc(100vh - 530px));
-    max-height: max(240px, calc(100svh - 530px));
+    max-height: max(190px, calc(100vh - 600px));
+    max-height: max(190px, calc(100svh - 600px));
   }
-  .miniaturas button { width: 44px; height: 55px; }
+  /* Miniaturas → puntos sobre el borde de abajo de la foto (cada uno con 44 px de toque) */
+  .miniaturas {
+    position: absolute;
+    left: 50%; bottom: 0;
+    translate: -50% 0;
+    gap: 0;
+  }
+  .miniaturas button {
+    display: grid;
+    place-items: center;
+    width: 44px; height: 40px;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    overflow: visible;
+    opacity: 1;
+  }
+  .miniaturas button::before {
+    content: "";
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--papel);
+    box-shadow: 0 0 0 1.5px var(--tinta);
+  }
+  .miniaturas button[aria-current="true"]::before {
+    width: 12px; height: 12px;
+    background: var(--acento);
+    box-shadow: 0 0 0 2px var(--tinta);
+  }
+  .miniaturas img { display: none; }
 }
 .galeria-ayuda { color: var(--texto-tenue); font-size: var(--texto-xs); }
 
@@ -1418,12 +1746,17 @@ button { cursor: pointer; }
   margin-bottom: 6px;
 }
 .descripcion { color: var(--texto-suave); }
-.medidas {
-  font-size: var(--texto-l);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
+/* ¿Cómo medir?: el dibujo y una línea */
+.como-medir-cuerpo { display: flex; align-items: center; gap: 14px; }
+.dibujo-medir { flex: none; width: 150px; height: auto; overflow: visible; }
+/* El dibujo va sobre el cartón de la etiqueta: prenda en papel, cotas en tinta roja */
+.dibujo-prenda { fill: var(--papel); stroke: var(--tinta-suave); stroke-width: 2; stroke-linejoin: round; }
+.dibujo-linea { fill: none; stroke: var(--rojo-tinta); stroke-width: 2; stroke-linecap: round; }
+.dibujo-texto { fill: var(--tinta); font-family: var(--fuente-texto); font-size: 11px; font-weight: 700; }
+.como-medir .descripcion { font-size: var(--texto-s); }
+@media (max-width: 380px) {
+  .dibujo-medir { width: 120px; }
 }
-.medidas .hueco { color: var(--texto-tenue); letter-spacing: 0.1em; }
 .mini-pasos { display: grid; gap: 6px; padding-left: 20px; color: var(--texto-suave); font-size: var(--texto-s); }
 .mini-pasos li::marker { color: var(--acento); font-weight: 700; }
 
@@ -1448,6 +1781,7 @@ button { cursor: pointer; }
 }
 .barra-compra .precio { font-size: 1.625rem; line-height: 1; margin-right: auto; }
 .barra-compra .boton-guardar { flex: none; min-width: var(--tactil); padding-inline: 12px; }
+.barra-compra .boton-guardar[hidden] { display: none; }
 .barra-compra .boton-whatsapp { flex: 0 1 auto; padding-inline: 16px; font-size: 0.9375rem; }
 .barra-compra .boton-whatsapp svg { width: 22px; height: 22px; }
 
@@ -1562,6 +1896,18 @@ button { cursor: pointer; }
   font-weight: 600;
 }
 .boton-quitar:hover { border-color: var(--acento); color: var(--texto); }
+/* Reservada por otra persona: se queda en la lista, sin precio ni suma */
+.item-reservada { outline-style: dashed; }
+.item-reservada img { opacity: 0.6; }
+.item-reservada-texto {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  margin-top: 6px;
+  color: var(--texto-tenue);
+  font-size: var(--texto-xs);
+}
 .bolsa-vacia {
   display: grid;
   justify-items: center;

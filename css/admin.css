@@ -6,12 +6,8 @@
    ========================================================================== */
 
 :root {
-  --papel: #fbf7ee;            /* papel de polaroid */
+  /* --papel, --kraft, --cordel, --tinta-suave y --rojo-tinta están en css/estilos.css (los usa también la tienda) */
   --papel-gris: #d9d3c7;       /* polaroid de una prenda vendida */
-  --kraft: #e9cf9a;            /* cartón de etiqueta (el de .etiqueta-precio) */
-  --cordel: #e8dcc4;
-  --tinta-suave: #4a3e2c;      /* texto secundario sobre papel o kraft: 7:1 o más */
-  --rojo-tinta: #a3210f;       /* sello y errores sobre papel o kraft: 7:1 */
   --error: #ff9c85;            /* errores sobre el fondo oscuro: 9:1 */
   --listo: #4be283;
   --sombra-tinta: 6px 6px 0 var(--tinta);
@@ -2216,33 +2212,14 @@ textarea.control:focus-visible { border: 2px solid var(--acento); }
 }
 
 
-/* Estado en la polaroid: sello de tinta con borde doble, girado, en la fila de «Editar» (no añade alto) */
-.sello-estado {
-  --tinta-sello: var(--tinta);
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  flex: none;
-  padding: 2px 5px 1px;
-  border: 1.5px solid var(--tinta-sello);
-  outline: 1.5px solid var(--tinta-sello);
-  outline-offset: 1.5px;
-  border-radius: 2px;
-  color: var(--tinta-sello);
-  rotate: -4deg;
-  white-space: nowrap;
-  line-height: 1;
-}
-.sello-estado b { font-family: var(--fuente-titulos); font-weight: 400; font-size: 0.9375rem; letter-spacing: 0.02em; }
-.sello-estado small { margin-top: 1px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; }
-/* en el móvil la fila es estrecha: solo «9/10» a la vista (la palabra sigue en el texto accesible) */
+/* Estado en la polaroid: el sello de tinta (.sello-estado, en css/estilos.css, el mismo que el de la tienda)
+   va en la fila de «Editar» y no añade alto */
+/* en el móvil la fila es estrecha: la palabra va en dos líneas bajo «9/10» («CASI / NUEVA»),
+   como en la tarjeta de la tienda; el sello no pasa del alto de los botones de la fila */
 @media (max-width: 599px) {
-  .sello-estado small { display: none; }
-  .sello-estado b { font-size: 1rem; }
+  .sello-estado { padding: 1px 4px 0; }
+  .sello-estado small { display: flex; flex-direction: column; align-items: center; margin-top: 0; line-height: 1; }
 }
-.sello-verde { --tinta-sello: #17582f; }  /* 7,8:1 sobre el papel, 5,6:1 sobre el papel gris de vendida */
-.sello-azul { --tinta-sello: #24345e; }
-.sello-rojo { --tinta-sello: var(--rojo-tinta); }
 
 /* ==========================================================================
    QUIÉN VENDE (solo panel): vista previa con las clases de la portada
