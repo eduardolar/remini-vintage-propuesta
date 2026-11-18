@@ -1,5 +1,66 @@
 # Remini Vintage · propuesta de rediseño
 
+Esta es una **propuesta de cómo podrían verse y funcionar la tienda y el panel de
+[Remini Vintage](https://remini-vintage.vercel.app/)**. Se puede abrir y tocar en el
+navegador, en el móvil o en el ordenador, sin instalar nada. Es solo una muestra: no se
+vende nada desde aquí y lo que cambies se queda en tu navegador.
+
+<h3 align="center">
+  <a href="https://eduardolar.github.io/remini-vintage-propuesta/">→ Ver la tienda</a>
+  &nbsp;&nbsp;·&nbsp;&nbsp;
+  <a href="https://eduardolar.github.io/remini-vintage-propuesta/login.html">→ Ver el panel (se entra sin escribir nada)</a>
+</h3>
+
+<p align="center">
+  <a href="https://eduardolar.github.io/remini-vintage-propuesta/">
+    <img src="docs/demo/portada.png" width="900" alt="A la izquierda, la portada de la tienda en el móvil: «Remini Vintage» en grande sobre la foto del puesto, polaroids de prendas, filtros y las primeras prendas. A la derecha, el panel en el ordenador: «El perchero» con las pegatinas de 7 en total, 6 en percha, 1 reservada y 0 vendidas, y las primeras prendas colgadas.">
+  </a>
+</p>
+
+## Cómo funciona (en 1 minuto)
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="docs/demo/tienda-movil.gif" width="300" alt="Vídeo en un móvil: la portada animada, se baja a las prendas, se elige «Para: Mujer» y la categoría Casacas, se abre la casaca Frankio Garage, se ve su etiqueta con talla, medidas en centímetros y estado, se abre «¿Cómo medir?» con un dibujo y se toca «Reservar por WhatsApp».">
+      <br><b>Elegir y reservar una prenda.</b> Filtras por para quién y por tipo, abres la prenda y ves de un vistazo la talla, las medidas, el estado y cómo medir. Un toque abre WhatsApp con el mensaje de reserva ya escrito.
+      <br><a href="https://eduardolar.github.io/remini-vintage-propuesta/">Probarlo</a>
+    </td>
+    <td align="center" width="50%">
+      <img src="docs/demo/bolsa-movil.gif" width="300" alt="Vídeo en un móvil: se toca «Guardar» en tres prendas (una camisa, una casaca y un short), aparece el botón redondo de la bolsa con un 3, se abre «Mi bolsa» con las tres prendas, el total de 770 soles y el botón verde «Reservar las 3 por WhatsApp».">
+      <br><b>Guardar varias y pedirlas de una vez.</b> «Mi bolsa» junta las prendas que te gustan, suma el total y prepara un solo mensaje de WhatsApp para reservarlas todas.
+      <br><a href="https://eduardolar.github.io/remini-vintage-propuesta/">Probarlo</a>
+    </td>
+  </tr>
+</table>
+
+<p align="center">
+  <img src="docs/demo/panel-colgar.gif" width="820" alt="Vídeo en el ordenador: se entra al panel pulsando «Abrir la trastienda», se ve el perchero, se marca la camisa como «Vendida» (sale la franja VENDIDA) y se devuelve a «Disponible». Después, en «Colgar prenda nueva», se pone una foto, la marca, el nombre y el precio, se elige Casaca y Unisex, se mueve el termómetro del estado hasta 8, se estira la cinta métrica hasta la talla M y las medidas se rellenan solas; la lista de lo que falta se vacía y la prenda aparece la primera del perchero.">
+  <br><b>El panel de la tienda en el ordenador.</b> Marcar una prenda como vendida es un toque (y se deshace con otro). Para colgar una nueva: foto, nombre y precio; la talla se elige estirando una cinta métrica y las medidas se ponen solas. Abajo se ve lo que falta.
+  <br><a href="https://eduardolar.github.io/remini-vintage-propuesta/login.html">Probarlo</a>
+</p>
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="docs/demo/panel-movil.gif" width="300" alt="Vídeo en un móvil: el panel con el perchero y sus pegatinas de cuántas prendas hay; se toca «Reservar» en la casaca Southpole y le sale el sello RESERVADA; se toca «Editar», se cambia el precio de 120 a 99 soles, se guarda y aparece «Cambios guardados» con un botón «Deshacer».">
+    </td>
+    <td width="50%">
+      <b>El panel también en el móvil.</b> Cada prenda lleva sus botones a mano: reservar, marcar vendida o editar. Se ve con sellos si está reservada o vendida, y cualquier cambio se puede deshacer.
+      <br><br><a href="https://eduardolar.github.io/remini-vintage-propuesta/login.html">Probarlo</a>
+      <br><br><sub>Los vídeos también están en MP4: <a href="docs/demo/tienda-movil.mp4">tienda</a>, <a href="docs/demo/bolsa-movil.mp4">bolsa</a>, <a href="docs/demo/panel-colgar.mp4">panel en el ordenador</a> y <a href="docs/demo/panel-movil.mp4">panel en el móvil</a>.</sub>
+    </td>
+  </tr>
+</table>
+
+Más detalle de cada parte, más abajo: [qué demuestra cada parte](#qué-demuestra-cada-parte),
+[la trastienda](#la-trastienda-acceso-y-panel), [qué es de ejemplo](#qué-es-de-ejemplo) y
+[cómo verlo en local](#cómo-verlo-en-local).
+
+---
+
+## Detalles técnicos
+
 **Esto no es la tienda.** Es un prototipo de propuesta para la dueña de
 [Remini Vintage](https://remini-vintage.vercel.app/), para enseñar cómo
 quedarían en su web las mejoras del estudio *«Propuestas para Remini Vintage»*
@@ -16,11 +77,11 @@ Las páginas llevan `noindex,nofollow` y una franja fija arriba que lo dice:
   «Abrir la trastienda», sin escribir nada, y no se envía nada.
 - `admin.html`: el panel de la tienda («la trastienda»).
 
-## Qué demuestra cada parte
+### Qué demuestra cada parte
 
 Entre paréntesis, la mejora del estudio a la que responde.
 
-### Portada
+#### Portada
 
 | Parte | Qué enseña | Mejora del estudio |
 | --- | --- | --- |
@@ -35,7 +96,7 @@ Entre paréntesis, la mejora del estudio a la que responde.
 | Quién vende | Hueco para la foto de quien vende, texto, Instagram, TikTok y opiniones de clientes. | *Quién vende* |
 | Open Graph | Título, descripción y la foto de portada al compartir el enlace. | *Cada página con su título, su descripción y su foto* |
 
-### Ficha de prenda
+#### Ficha de prenda
 
 | Parte | Qué enseña | Mejora del estudio |
 | --- | --- | --- |
@@ -48,7 +109,7 @@ Entre paréntesis, la mejora del estudio a la que responde.
 | Volver y compartir | «Inicio» en las migas vuelve a la colección con sus filtros y su posición si se llegó desde ella, y «Compartir» junto a la marca abre la hoja de compartir del móvil (o copia el enlace). | — |
 | SEO de muestra | `<title>` y descripción propios de cada prenda, JSON-LD `Product` (marca, talla, fotos, precio en PEN, disponibilidad según la situación —`InStock` o `Reserved`—, siempre `UsedCondition`, porque un 10/10 «como nueva» sigue siendo de segunda mano, y para quién con `audience`) y texto alternativo real en cada foto («Nombre, talla X, vista 1 de 3»). | *Cada página con su título…*, *Mapa del sitio y texto en las fotos*, *Datos de producto para Google* |
 
-### Accesibilidad y calidad
+#### Accesibilidad y calidad
 
 - Contraste AA en todo el texto; el texto pequeño en mayúsculas tiene al menos 13 px y un gris claro.
 - Botones y enlaces de 44-48 px, contorno amarillo de 2 px al navegar con teclado y enlace «Saltar a la colección».
@@ -58,7 +119,7 @@ Entre paréntesis, la mejora del estudio a la que responde.
 - Sin contadores falsos de urgencia.
 - Un solo modo oscuro, con todos los colores en variables (`css/estilos.css`, `:root`).
 
-### La trastienda (acceso y panel)
+#### La trastienda (acceso y panel)
 
 Todo es simulado: no hay servidor ni contraseñas, y lo que se cambia queda solo
 en el navegador de quien lo prueba («Restablecer demo» lo deja como al principio).
@@ -78,7 +139,7 @@ categoría, es la estrella de una prenda. El panel carga `datos/prendas.json` co
 | El escaparate | El banner de portada, editado viéndolo como en la tienda. |
 | Quién vende | Foto, presentación, Instagram, TikTok y opiniones, con vista previa en directo. |
 
-## Qué es de ejemplo
+### Qué es de ejemplo
 
 Todo esto va marcado en la página con la etiqueta «Ejemplo» o con un borde discontinuo:
 
@@ -89,7 +150,7 @@ Todo esto va marcado en la página con la etiqueta «Ejemplo» o con un borde di
 - **La prenda vendida**: es una tarjeta inventada que reutiliza una foto de la Casaca Frankio Garage.
 - **Open Graph**: `og:image` va con ruta relativa porque el prototipo se publica en una subcarpeta; en la tienda real debe ser una URL absoluta.
 
-## Cómo verlo en local
+### Cómo verlo en local
 
 Las prendas se cargan con `fetch('datos/prendas.json')`, y el navegador lo bloquea si abres
 `index.html` con doble clic (`file://`): verás un aviso que lo explica. Hay que servir la carpeta:
@@ -104,7 +165,7 @@ y entrar en <http://localhost:8000>. Cualquier otro servidor estático sirve igu
 Todas las rutas son relativas, así que funciona también en GitHub Pages bajo
 `/remini-vintage-propuesta/`.
 
-## Archivos
+### Archivos
 
 - `index.html`, `prenda.html`: las dos páginas.
 - `css/estilos.css`: estilos con variables de color, tipografía y espacios.
@@ -115,6 +176,7 @@ Todas las rutas son relativas, así que funciona también en GitHub Pages bajo
 - `js/prenda.js`: ficha, galería, título, descripción y JSON-LD.
 - `datos/prendas.json`: las 7 prendas.
 - `img/`: logo, foto de portada y 3 fotos por prenda.
+- `docs/demo/`: los vídeos de «Cómo funciona» (GIF y MP4), una imagen fija de cada uno y `portada.png`, grabados del prototipo con datos de ejemplo.
 
 Sin frameworks ni librerías; solo las fuentes Anton e Inter de Google Fonts.
 
